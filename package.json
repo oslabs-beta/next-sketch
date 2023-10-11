@@ -1,28 +1,33 @@
 {
-  "name": "next-sketch",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist-electron/electron.js",
+  "name": "nexttst",
+  "private": true,
+  "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.13",
-    "@vitejs/plugin-react": "^4.1.0",
-    "electron": "^27.0.0",
-    "electron-builder": "^24.6.4",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "@vitejs/plugin-react": "^4.0.4",
+    "eslint": "^8.48.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
     "typescript": "^5.2.2",
-    "vite": "^4.4.11",
-    "vite-plugin-electron": "^0.14.1",
-    "vite-plugin-electron-renderer": "^0.14.5"
-  }
+    "vite": "^4.4.9",
+    "electron": "^26.1.0",
+    "electron-builder": "^24.6.4",
+    "vite-plugin-electron": "^0.14.0",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vite-tsconfig-paths": "^4.2.1"
+  },
+  "main": "dist-electron/main.js"
 }
