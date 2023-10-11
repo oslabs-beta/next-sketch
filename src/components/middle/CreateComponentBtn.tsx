@@ -31,9 +31,7 @@ const CreateComponentBtn = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newComponent: string = event.target.value;
-    console.log(event.target.value);
     setComponent(newComponent);
-    console.log('component', component);
   };
 
   const handleSubmit = (event): void => {
@@ -50,6 +48,7 @@ const CreateComponentBtn = () => {
       alert('Components need to be PascalCase');
     } else {
       setListComponents([...listComponents, component]);
+      handleClose();
     }
   };
 
@@ -63,7 +62,7 @@ const CreateComponentBtn = () => {
             id='filled-basic'
             label='Component'
             variant='filled'
-            placeholder='Ex: App.tsx'
+            placeholder='Ex: App'
             color='secondary'
             fullWidth
             onChange={handleTextFieldChange}
@@ -77,7 +76,7 @@ const CreateComponentBtn = () => {
         </form>
       </Dialog>
 
-      <ComponentDisplay />
+      <ComponentDisplay components={listComponents} />
     </>
   );
 };
