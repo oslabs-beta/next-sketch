@@ -5,7 +5,8 @@
   "main": "dist-electron/electron.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder"
+    "build": "tsc && vite build && electron-builder",
+    "preview": "vite preview"
   },
   "author": "",
   "license": "ISC",

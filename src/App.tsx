@@ -1,6 +1,8 @@
+import AddHTMLTags from "./components/middle/AddHTMLTags";
+
 const App = () => {
     return(
-        <p>Hello World</p>
+        <AddHTMLTags />
     )
 }
 
