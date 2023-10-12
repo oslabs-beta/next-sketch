@@ -11,11 +11,13 @@ const HTMLTag = ({ name, handleOnDrag }: HTMLTagProps): JSX.Element => {
     <div
       className="
             bg-red-500
-            w-8
+            grid
+            grid-flow-col
+            auto-cols-max
             m-2
         "
         draggable
-        onDragStart={handleOnDrag}
+        onDragStart={(e) => handleOnDrag(e, name)}
     >
       <p>{name}</p>
     </div>
