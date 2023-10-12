@@ -1,9 +1,12 @@
-import AddHTMLTags from "./components/middle/AddHTMLTags";
+import HTMLTagsContainer from "./components/middle/HTMLTagsContainer";
+import "./App.css";
 
 const App = () => {
-    return(
-        <AddHTMLTags />
-    )
-}
+  return (
+    <div className="flex">
+      <HTMLTagsContainer />
+    </div>
+  );
+};
 
 export default App;
