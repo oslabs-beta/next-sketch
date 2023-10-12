@@ -1,7 +1,7 @@
+import React, { MouseEvent, useContext } from 'react';
 import { Button } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Context } from './CreateComponentBtn';
-import { useContext } from 'react';
 
 interface DeleteBtnProps {
   id: number;
@@ -10,7 +10,7 @@ interface DeleteBtnProps {
 function DeleteBtn({ id }: DeleteBtnProps) {
   const [listComponents, setListComponents] = useContext(Context);
 
-  const handleRemoveClick = (event) => {
+  const handleRemoveClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const deletedComponent = id;
     setListComponents(
@@ -19,8 +19,13 @@ function DeleteBtn({ id }: DeleteBtnProps) {
   };
   return (
     <>
-      <Button color='error' variant='outlined' size='small'>
-        <ClearIcon onClick={handleRemoveClick} />
+      <Button
+        color='error'
+        variant='outlined'
+        size='small'
+        onClick={handleRemoveClick}
+      >
+        <ClearIcon />
       </Button>
     </>
   );

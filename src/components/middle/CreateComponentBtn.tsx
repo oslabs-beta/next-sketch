@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -7,8 +7,15 @@ import {
   TextField,
 } from '@mui/material';
 import ComponentDisplay from './ComponentDisplay';
-export const Context = React.createContext();
 
+interface ListComponentsType {
+  listComponents: string[];
+  setListComponents: Dispatch<SetStateAction<string[]>>; //dispatch it is the type used for the function used in useState
+}
+
+export const Context = React.createContext<ListComponentsType | undefined>(
+  undefined
+);
 
 const CreateComponentBtn = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -32,10 +39,10 @@ const CreateComponentBtn = () => {
     setComponent(newComponent);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    if (component === undefined || component === null || component === '') {
+    if (!component) {
       alert('Invalid input');
     } else if (listComponents.includes(component)) {
       alert('Component already exists');

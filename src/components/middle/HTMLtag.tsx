@@ -1,4 +1,4 @@
-import { Key, DragEvent } from "react";
+import { Key, DragEvent } from 'react';
 
 interface HTMLTagProps {
   name: string;
@@ -9,13 +9,13 @@ interface HTMLTagProps {
 const HTMLTag = ({ name, handleOnDrag }: HTMLTagProps): JSX.Element => {
   return (
     <div
-      className="
+      className='
             bg-red-500
             w-8
             m-2
-        "
-        draggable
-        onDragStart={handleOnDrag}
+        '
+      draggable
+      onDragStart={handleOnDrag}
     >
       <p>{name}</p>
     </div>
