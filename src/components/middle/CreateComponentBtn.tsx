@@ -7,10 +7,8 @@ import {
   TextField,
 } from '@mui/material';
 import ComponentDisplay from './ComponentDisplay';
+export const Context = React.createContext();
 
-// interface CreateComponentProps {
-//   component: string;
-// }
 
 const CreateComponentBtn = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -34,7 +32,7 @@ const CreateComponentBtn = () => {
     setComponent(newComponent);
   };
 
-  const handleSubmit = (event): void => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     if (component === undefined || component === null || component === '') {
@@ -53,7 +51,7 @@ const CreateComponentBtn = () => {
   };
 
   return (
-    <>
+    <Context.Provider value={[listComponents, setListComponents]}>
       <Button onClick={handleOpen}>Create Component</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create new component</DialogTitle>
@@ -77,8 +75,10 @@ const CreateComponentBtn = () => {
       </Dialog>
 
       <ComponentDisplay components={listComponents} />
-    </>
+    </Context.Provider>
   );
 };
 
 export default CreateComponentBtn;
+
+// onClick: React.MouseEventHandler<HTMLButtonElement>;

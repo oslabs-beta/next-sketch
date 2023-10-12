@@ -1,15 +1,26 @@
 import { Button } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
+import { Context } from './CreateComponentBtn';
+import { useContext } from 'react';
 
-function DeleteBtn() {
-  // const handleDelete = (event) {
+interface DeleteBtnProps {
+  id: number;
+}
 
-  // }
+function DeleteBtn({ id }: DeleteBtnProps) {
+  const [listComponents, setListComponents] = useContext(Context);
 
+  const handleRemoveClick = (event) => {
+    event.preventDefault();
+    const deletedComponent = id;
+    setListComponents(
+      listComponents.filter((component, index) => index !== deletedComponent)
+    );
+  };
   return (
     <>
       <Button color='error' variant='outlined' size='small'>
-        <ClearIcon />
+        <ClearIcon onClick={handleRemoveClick} />
       </Button>
     </>
   );

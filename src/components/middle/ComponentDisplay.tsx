@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { List, ListItem, ListItemText, Divider } from '@mui/material';
 import DeleteBtn from './DeleteBtn';
 
 interface ComponentDisplayProps {
@@ -7,14 +7,17 @@ interface ComponentDisplayProps {
 
 function ComponentDisplay({ components }: ComponentDisplayProps) {
   return (
-    <div>
+    <List>
       {components.map((component, index) => (
-        <div>
-          <Button key={index}>{component}</Button>
-          <DeleteBtn />
-        </div>
+        <>
+          <ListItem divider sx={{ width: 1 / 4 }}>
+            <ListItemText primary={component} />
+            <DeleteBtn id={index} />
+          </ListItem>
+          <Divider sx={{ width: 1 / 4 }} />
+        </>
       ))}
-    </div>
+    </List>
   );
 }
 
