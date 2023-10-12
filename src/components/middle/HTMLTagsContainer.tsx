@@ -1,40 +1,66 @@
-import { useState, DragEvent } from "react";
-// import HTMLTag from "./HTMLtag";
+import { useState, DragEvent, useRef } from "react";
+import HTMLTag from "./HTMLtag";
 // import Display from "../right/Display";
 
 const HTMLTagsContainer = (): JSX.Element => {
   const [tags, setTags] = useState<string[]>([]);
+  console.log("TAGS", tags);
 
   const handleOnDrag = (
-    e: DragEvent,
+    e: DragEvent<HTMLDivElement> | undefined,
     tagType: string
   ): void => {
-    e.dataTransfer.setData("tagType", tagType);
+    e?.dataTransfer.setData("tagType", tagType);
   };
 
   const handleOnDrop = (e: DragEvent): void => {
     const tagType = e.dataTransfer.getData("tagType") as string;
-    console.log('tagtype', tagType)
-    setTags([...tags, tagType]);
+    // console.log("tagtype", tagType);
+    if (tagType) {
+      setTags([...tags, tagType]);
+    }
   };
 
   const handleDragOver = (e: DragEvent): void => {
     e.preventDefault();
   };
 
-//   const htmlTags: string[] = ["div", "img"];
+  const htmlTags: string[] = ["div", "img", "p", "form", "button", "link"];
 
-//   const arrayOfTags: JSX.Element[] = [];
+  const arrayOfTags: JSX.Element[] = [];
 
-//   for (let i = 0; i < htmlTags.length; i++) {
-//     arrayOfTags.push(
-//       <HTMLTag
-//         name={htmlTags[i]}
-//         key={`${htmlTags[i]}`}
-//         handleOnDrag={handleOnDrag}
-//       />
-//     );
-//   }
+  for (let i = 0; i < htmlTags.length; i++) {
+    arrayOfTags.push(
+      <HTMLTag
+        name={htmlTags[i]}
+        key={`${htmlTags[i]}`}
+        handleOnDrag={handleOnDrag}
+      />
+    );
+  }
+
+  const dragItem = useRef<any>(null);
+  const dragOverItem = useRef<any>(null);
+
+//   console.log('dragItem', dragItem)
+//   console.log('dragOverItem', dragOverItem)
+
+  const handleSort = () => {
+
+    console.log('dragItem', dragItem)
+    console.log('dragOverItem', dragOverItem)
+
+    const _tags = [...tags];
+
+    const draggedItemContent = _tags.splice(dragItem.current, 1)[0];
+
+    _tags.splice(dragOverItem.current, 0, draggedItemContent);
+
+    dragItem.current = null;
+    dragOverItem.current = null;
+
+    setTags(_tags);
+  };
 
   return (
     <div className="flex align-middle">
@@ -62,29 +88,7 @@ const HTMLTagsContainer = (): JSX.Element => {
             HTML Tags
           </p>
         </div>
-        {/* <div>{arrayOfTags}</div> */}
-        <div
-          className="
-              bg-red-500
-              w-10
-              m-1
-          "
-          draggable
-          onDragStart={(e) => handleOnDrag(e, "<div>")}
-        >
-          {`<div>`}
-        </div>
-        <div
-          className="
-              bg-red-500
-              w-8
-              m-1
-          "
-          draggable
-          onDragStart={(e) => handleOnDrag(e, "img")}
-        >
-          img
-        </div>
+        <div>{arrayOfTags}</div>
       </div>
       <div
         className="
@@ -93,7 +97,8 @@ const HTMLTagsContainer = (): JSX.Element => {
             h-[400px]
             max-h-[400px]
         "
-        onDrop={handleOnDrop} onDragOver={handleDragOver}
+        onDrop={handleOnDrop}
+        onDragOver={handleDragOver}
       >
         <div
           className="
@@ -110,7 +115,22 @@ const HTMLTagsContainer = (): JSX.Element => {
         </div>
         <div>
           {tags.map((tag, index) => (
-            <div className="bg-green-400 w-10 m-1" key={index}>{tag}</div>
+            <div
+              className="
+              bg-green-400 
+              grid
+              grid-flow-col
+              auto-cols-max
+              m-2"
+              key={index}
+              draggable
+              onDragStart={() => (dragItem.current = index)}
+              onDragEnter={() => (dragOverItem.current = index)}
+              onDragEnd={handleSort}
+              onDragOver={(e) => e.preventDefault()}
+            >
+              {tag}
+            </div>
           ))}
         </div>
       </div>
