@@ -1,11 +1,15 @@
-import HTMLTagsContainer from "./components/middle/HTMLTagsContainer";
-import "./App.css";
+import HTMLTagsContainer from './components/middle/HTMLTagsContainer';
+import './App.css';
+import CreateComponentBtn from './components/middle/CreateComponentBtn';
 
 const App = () => {
   return (
-    <div className="flex">
-      <HTMLTagsContainer />
-    </div>
+    <>
+      <CreateComponentBtn />
+      <div className='flex'>
+        <HTMLTagsContainer />
+      </div>
+    </>
   );
 };
 
