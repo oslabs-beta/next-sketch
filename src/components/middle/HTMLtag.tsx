@@ -1,4 +1,4 @@
-import { Key, DragEvent } from "react";
+import { Key, DragEvent } from 'react';
 
 interface HTMLTagProps {
   name: string;
