@@ -10,6 +10,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
+    "react/jsx-filename-extension": [0],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
