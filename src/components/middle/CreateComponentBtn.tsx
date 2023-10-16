@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { CodeContext } from '../../App';
 import {
   Button,
   Dialog,
@@ -23,6 +24,8 @@ const CreateComponentBtn = () => {
   const [component, setComponent] = useState<string>('');
   //useState for all of the components that have been created
   const [listComponents, setListComponents] = useState<string[]>([]);
+  //useContext for codePreview, when we add a component it shows the codePreview
+  const [componentName, setComponentName] = useContext(CodeContext);
 
   const handleOpen = () => {
     setOpen(true);
@@ -53,6 +56,7 @@ const CreateComponentBtn = () => {
       alert('Components need to be PascalCase');
     } else {
       setListComponents([...listComponents, component]);
+      setComponentName(component);
       handleClose();
     }
   };

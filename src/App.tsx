@@ -14,7 +14,7 @@ export const CodeContext = React.createContext<ComponentNameType | undefined>(
 );
 
 const App = () => {
-  const { componentName, setComponentName } = useState<string>('');
+  const [componentName, setComponentName] = useState<string>('App');
   return (
     <CodeContext.Provider value={[componentName, setComponentName]}>
       <CreateComponentBtn />

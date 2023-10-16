@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Button } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import { CodeContext } from '../../App';
@@ -9,11 +9,16 @@ interface DisplayCodeProps {
 
 const DisplayCode = ({ component }: DisplayCodeProps) => {
   const [componentName, setComponentName] = useContext(CodeContext);
-  function showClick() {
+  // useEffect(() => {
+  //   // This block will run every time `componentName` changes
+  //   console.log(`Updated componentName: ${componentName}`);
+  // }, [componentName]);
+
+  const showClick = () => {
     console.log(component);
-    setComponentName('lauraaa');
+    setComponentName(component);
     console.log(componentName);
-  }
+  };
   return (
     <>
       <Button
