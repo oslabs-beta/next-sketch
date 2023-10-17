@@ -25,19 +25,19 @@ function Folder({ handleInsertNode, explorer }: any) {
 
     const [folderData, setFolderData] = useState(null);
 
-    useEffect(() => {
-        fetch('/')
-            // .then((response) => JSON.stringify(response))
-            .then((response) => response.json())
-            .then((data) => {
-                setFolderData(data);
-                console.log(data);
-            })
-            .catch((err) => {
-                console.error("Error fetching data:", err)
-            });
-        // .then((data) => console.log(data))
-    }, [])
+    // useEffect(() => {
+    //     fetch('/')
+    //         // .then((response) => JSON.stringify(response))
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setFolderData(data);
+    //             console.log(data);
+    //         })
+    //         .catch((err) => {
+    //             console.error("Error fetching data:", err)
+    //         });
+    //     // .then((data) => console.log(data))
+    // }, [])
 
 
     

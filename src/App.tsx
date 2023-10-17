@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import HTMLTagsContainer from './components/middle/HTMLTagsContainer';
+import TagsContainer from './components/middle/TagsContainer';
 import './App.css';
 import CreateComponentBtn from './components/middle/CreateComponentBtn';
 import CodePreview from './components/right/CodePreview';
@@ -38,7 +38,7 @@ const App = () => {
 
       <CreateComponentBtn />
       <div className='flex'>
-        <HTMLTagsContainer />
+        <TagsContainer />
       </div>
       <CodePreview />
     </CodeContext.Provider>
