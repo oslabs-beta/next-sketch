@@ -1,1 +1,6 @@
-export type Tag = string;
+import { UniqueIdentifier } from "@dnd-kit/core";
+
+export type Tag = {
+    id: UniqueIdentifier;
+    name: string;
+}

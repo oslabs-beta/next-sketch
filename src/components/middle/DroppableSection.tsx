@@ -16,11 +16,13 @@ export const DroppableSection = ({ tags }: DroppableSectionProps) => {
     id: "droppable",
   });
 
+  // console.log('tags', tags)
+
   return (
     <SortableContext items={tags} strategy={verticalListSortingStrategy}>
       <div ref={setNodeRef}>
         {tags.map((tag, index) => (
-          <SortableTagItem key={`${tag}-${index}`} id={tag} >
+          <SortableTagItem key={`${tag}-${index}`} id={tag.id} >
             <TagItem tag={tag}/>
           </SortableTagItem>
         ))}

@@ -1,5 +1,6 @@
 import { Tag } from "../../types";
 
+
 interface TagItemProps {
   tag: Tag;
 }
@@ -13,7 +14,7 @@ export const TagItem = ({ tag }: TagItemProps): JSX.Element => {
     auto-cols-max
     m-2"
     >
-        {tag}
+        {tag.name}
     </div>
   );
 };

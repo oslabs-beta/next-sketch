@@ -1,39 +1,76 @@
-import { useState, DragEvent } from "react";
+import { useState } from "react";
 // import HTMLTag from "./HTMLtag";
 // import Display from "../right/Display";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { DroppableSection } from "./DroppableSection";
 import { DraggableItem } from "./DraggableItem";
 import { Tag } from "../../types";
 
-const HTMLTagsContainer = (): JSX.Element => {
-  const staticTags: string[] = ["div", "img", "p", "form", "button", "link"];
+const id_gen = (() => {
+  let id = 1;
+  return () => id++;
+})()
+
+const TagsContainer = (): JSX.Element => {
+
+  const staticTags: Tag[] = [
+    {
+      id: id_gen(),
+      name: 'div',
+    },
+    {
+      id: id_gen(),
+      name: 'img',
+    },
+    {
+      id: id_gen(),
+      name: 'p',
+    },
+    {
+      id: id_gen(),
+      name: 'form',
+    },
+    {
+      id: id_gen(),
+      name: 'button',
+    },
+    {
+      id: id_gen(),
+      name: 'link',
+    },
+  ];
 
   const [tags, setTags] = useState<Tag[]>([]);
   // console.log("TAGS", tags);
 
-  const handleSortDragEnd = (event: any) => {
+  const handleSortDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
+    // console.log(event);
     // console.log("ACTIVE", active);
     // console.log("over", over);
-    // console.log("ACTIVE ID", typeof active.id);
-    // console.log("OVER ID", typeof over.id);
-    if (active.id !== over.id) {
+    // console.log(tags.findIndex(tag => tag.id === active.id))
+    // console.log("ACTIVE ID", active.id);
+    // console.log("OVER ID", over.id);
+    if (active.id !== over?.id) {
       setTags((tags) => {
-        const activeIndex = tags.indexOf(active.id);
-        const overIndex = tags.indexOf(over.id);
-        console.log("activeIndex", activeIndex);
-        console.log("overIndex", overIndex);
-        console.log(arrayMove(tags, activeIndex, overIndex));
+        const activeIndex = tags.findIndex(tag => tag.id === active.id);
+        const overIndex = tags.findIndex(tag => tag.id === over?.id);
+        // console.log("activeIndex", activeIndex);
+        // console.log("overIndex", overIndex);
+        // console.log(arrayMove(tags, activeIndex, overIndex));
         return arrayMove(tags, activeIndex, overIndex);
       });
     }
   };
 
-  const addTagToBox = (event: any) => {
+  const addTagToBox = (event: DragEndEvent) => {
     const { active } = event;
-    const newTag = active.data.current?.title;
+    // console.log(event);
+    const newTag = {
+      id: active.id,
+      name: active.data.current?.title
+    };
     // console.log("newTag", newTag);
     // if (over?.id !== "droppable" || !newTag) return;
     setTags([...tags, newTag]);
@@ -48,8 +85,8 @@ const HTMLTagsContainer = (): JSX.Element => {
           </div>
           <div>
             {staticTags.map((staticTag) => (
-              <DraggableItem key={staticTag} id={staticTag}>
-                {staticTag}
+              <DraggableItem key={`${staticTag.name}-${staticTag.id}`} id={staticTag.id}>
+                {staticTag.name}
               </DraggableItem>
             ))}
           </div>
@@ -70,4 +107,4 @@ const HTMLTagsContainer = (): JSX.Element => {
   );
 };
 
-export default HTMLTagsContainer;
+export default TagsContainer;

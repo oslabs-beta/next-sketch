@@ -1,6 +1,6 @@
+import { ReactNode } from 'react'
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { ReactNode } from "react";
 
 interface SortableTagItemProps {
   id: string | number;
@@ -9,12 +9,18 @@ interface SortableTagItemProps {
 
 export const SortableTagItem = ({ id, children }: SortableTagItemProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: id });
+    useSortable({ 
+      id: id,
+      animateLayoutChanges: () => false,
+     });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  // console.log('id', id);
+  // console.log('children', children);
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>

@@ -16,8 +16,8 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
   };
-
-  // console.log('ID drag', id)
+  // console.log('id', id);
+  // console.log('ID drag', children)
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
