@@ -3,7 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { ReactNode } from "react";
 
 interface SortableTagItemProps {
-  id: string;
+  id: string | number;
   children: ReactNode;
 }
 

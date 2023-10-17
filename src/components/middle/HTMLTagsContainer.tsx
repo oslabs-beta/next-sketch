@@ -13,23 +13,26 @@ const HTMLTagsContainer = (): JSX.Element => {
   const [tags, setTags] = useState<Tag[]>([]);
   // console.log("TAGS", tags);
 
-
   const handleSortDragEnd = (event: any) => {
     const { active, over } = event;
-    console.log('ACTIVE', active.id);
-    console.log('OVER', over.id);
+    // console.log("ACTIVE", active);
+    // console.log("over", over);
+    // console.log("ACTIVE ID", typeof active.id);
+    // console.log("OVER ID", typeof over.id);
     if (active.id !== over.id) {
       setTags((tags) => {
         const activeIndex = tags.indexOf(active.id);
         const overIndex = tags.indexOf(over.id);
-        console.log(arrayMove(tags, activeIndex, overIndex))
+        console.log("activeIndex", activeIndex);
+        console.log("overIndex", overIndex);
+        console.log(arrayMove(tags, activeIndex, overIndex));
         return arrayMove(tags, activeIndex, overIndex);
       });
     }
   };
 
   const addTagToBox = (event: any) => {
-    const { active, over } = event;
+    const { active } = event;
     const newTag = active.data.current?.title;
     // console.log("newTag", newTag);
     // if (over?.id !== "droppable" || !newTag) return;
@@ -51,13 +54,16 @@ const HTMLTagsContainer = (): JSX.Element => {
             ))}
           </div>
         </div>
-        <DndContext collisionDetection={closestCenter} onDragEnd={handleSortDragEnd}>
-        <div className="bg-amber-200 w-[350px] h-[400px] max-h-[400px]">
-          <div className="bg-lime-200">
-            <p className="text-center">Box</p>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleSortDragEnd}
+        >
+          <div className="bg-amber-200 w-[350px] h-[400px] max-h-[400px]">
+            <div className="bg-lime-200">
+              <p className="text-center">Box</p>
+            </div>
+            <DroppableSection tags={tags} />
           </div>
-          <DroppableSection tags={tags} />
-        </div>
         </DndContext>
       </DndContext>
     </div>
