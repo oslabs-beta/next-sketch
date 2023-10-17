@@ -1,6 +1,18 @@
-// import AddHTMLTags from "./components/middle/AddHTMLTags";
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import HTMLTagsContainer from './components/middle/HTMLTagsContainer';
+import './App.css';
+import CreateComponentBtn from './components/middle/CreateComponentBtn';
+import CodePreview from './components/right/CodePreview';
+
+interface ComponentNameType {
+  componentName: string;
+  setComponentName: Dispatch<SetStateAction<string>>;
+}
+
+export const CodeContext = React.createContext<ComponentNameType | undefined>(
+  undefined
+);
 // import ShowFiles from "./components/left/FileStructure/ShowFiles";
-import { useState } from "react";
 import explorer from "./components/left/data/folderData";
 import Folder from "./components/left/folder.tsx"
 import useTraverseTree from "./components/left/hooks/use-traverse-tree.ts";
@@ -8,29 +20,30 @@ import useTraverseTree from "./components/left/hooks/use-traverse-tree.ts";
 // const filepath = './components/left/data/folderData.ts'
 
 const App = () => {
-    const [explorerData, setExplorerData] = useState(explorer);
+  const [explorerData, setExplorerData] = useState(explorer);
+  const [componentName, setComponentName] = useState<string>('App');
 
-    const {insertNode} = useTraverseTree();
+  const { insertNode } = useTraverseTree();
 
-    const handleInsertNode =(folderId: Number, item: String, isFolder: boolean) => {
-        const finalTree: any = insertNode(explorerData, folderId, item, isFolder)
-
-        setExplorerData(finalTree)
-        // fs.writeFile(filepath, JSON.stringify(explorer), function writeJSON(err: Error) {
-        //     if (err) return console.log(err);
-        //     console.log(JSON.stringify(explorer));
-        //     console.log('writing to ' + filepath);
-        //   });
-    }
+  const handleInsertNode = (folderId: number, item: string, isFolder: boolean) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const finalTree: any = insertNode(explorerData, folderId, item, isFolder)
 
 
-    return(
-        <div>
-            {/* <AddHTMLTags /> */}
-            {/* < ShowFiles /> */}
-           <Folder handleInsertNode={handleInsertNode} explorer = {explorerData}/>
-        </div>
-    )
+    setExplorerData(finalTree)
+  }
+  return (
+    <CodeContext.Provider value={[componentName, setComponentName]}>
+      <Folder handleInsertNode={handleInsertNode} explorer={explorerData} />
+
+      <CreateComponentBtn />
+      <div className='flex'>
+        <HTMLTagsContainer />
+      </div>
+      <CodePreview />
+    </CodeContext.Provider>
+  )
 }
+
 
 export default App;

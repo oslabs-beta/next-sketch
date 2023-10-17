@@ -20,6 +20,7 @@ interface Input {
 
 import React, { useState } from "react"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Folder({ handleInsertNode, explorer }: any) {
 
 
@@ -93,7 +94,7 @@ function Folder({ handleInsertNode, explorer }: any) {
                     )
                 }
 
-                {explorer.items.map((exp: any) => {
+                {explorer.items.map((exp) => {
                     return <Folder handleInsertNode={handleInsertNode} explorer={exp} key={exp.id} />
                 })}
             </div>
