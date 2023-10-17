@@ -20,12 +20,25 @@ const useTraverseTree = () => {
         return { ...tree, items: latestNode };
     }
 
-    // const deleteNode = (tree:any, folderId: Number, item: String, isFolder: boolean) => {
-    //     if(tree.id === folderId && tree.isFolder){
-    //         tree.items.splice(1,1);
-    //         return tree;
-    //     }
-    // }
+    const deleteNode = (tree:any, folderId: Number) => {
+        console.log('in delete')
+      
+
+
+         const items = tree.items.filter((ob) => {
+                console.log('ob.id', ob.id)
+                return ob.id !== folderId
+            })
+    
+    
+        console.log('final', items)
+        let latestNode = [];
+        latestNode = tree.items.map((ob: object) => {
+            return deleteNode(ob, folderId);
+        });
+
+        return { ...tree, items: items };
+    }
 
     // const updateNode = () = {}
 
@@ -33,7 +46,7 @@ const useTraverseTree = () => {
 
 
 
-    return { insertNode };
+    return { insertNode, deleteNode };
 
 };
 

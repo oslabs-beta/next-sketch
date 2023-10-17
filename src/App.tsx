@@ -23,7 +23,7 @@ const App = () => {
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
 
-  const { insertNode } = useTraverseTree();
+  const { insertNode, deleteNode } = useTraverseTree();
 
   const handleInsertNode = (folderId: number, item: string, isFolder: boolean) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,9 +32,16 @@ const App = () => {
 
     setExplorerData(finalTree)
   }
+
+
+  const handleDeleteNode = (folderId: number) => {
+      const finalTree: any = deleteNode(explorerData, folderId);
+      setExplorerData(finalTree)
+  }
+
   return (
     <CodeContext.Provider value={[componentName, setComponentName]}>
-      <Folder handleInsertNode={handleInsertNode} explorer={explorerData} />
+      <Folder handleInsertNode={handleInsertNode} handleDeleteNode={handleDeleteNode} explorer={explorerData} />
 
       <CreateComponentBtn />
       <div className='flex'>
