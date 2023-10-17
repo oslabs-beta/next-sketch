@@ -14,8 +14,8 @@ export const CodeContext = React.createContext<ComponentNameType | undefined>(
 );
 // import ShowFiles from "./components/left/FileStructure/ShowFiles";
 import explorer from "./components/left/data/folderData";
-import Folder from "./components/left/folder.tsx"
-import useTraverseTree from "./components/left/hooks/use-traverse-tree.ts";
+import Folder from "./components/left/folder"
+import useTraverseTree from "./components/left/hooks/use-traverse-tree";
 // const fs = require('fs');
 // const filepath = './components/left/data/folderData.ts'
 

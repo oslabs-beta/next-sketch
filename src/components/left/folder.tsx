@@ -18,16 +18,29 @@ interface Input {
     isFolder: boolean | null | undefined
 }
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Folder({ handleInsertNode, explorer }: any) {
 
+    const [folderData, setFolderData] = useState(null);
 
-    fetch('/')
-        .then((response) => JSON.stringify(response))
-        .then((data) => console.log(data))
+    useEffect(() => {
+        fetch('/')
+            // .then((response) => JSON.stringify(response))
+            .then((response) => response.json())
+            .then((data) => {
+                setFolderData(data);
+                console.log(data);
+            })
+            .catch((err) => {
+                console.error("Error fetching data:", err)
+            });
+        // .then((data) => console.log(data))
+    }, [])
 
+
+    
 
     const [expand, setExpand] = useState<boolean>(false);
     const [folderIcon, setFolderIcon] = useState<string>('>');
