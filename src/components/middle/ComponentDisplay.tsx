@@ -1,6 +1,6 @@
-import { List, ListItem, ListItemText, Divider, Grid } from "@mui/material";
-import DeleteBtn from "./DeleteBtn";
-import DisplayCode from "./DisplayCode";
+import { List, ListItem, ListItemText, Divider, Grid } from '@mui/material';
+import DeleteBtn from './DeleteBtn';
+import DisplayCode from './DisplayCode';
 
 interface ComponentDisplayProps {
   components: string[];
@@ -13,13 +13,13 @@ function ComponentDisplay({ components }: ComponentDisplayProps) {
         <ListItem
           key={index}
           sx={{
-            display: "flex",
-            justifyContent: "space-around",
+            display: 'flex',
+            justifyContent: 'space-around',
           }}
         >
           <ListItemText primary={component} />
-            <DisplayCode component={component} />
-            <DeleteBtn id={index} />
+          <DisplayCode component={component} />
+          <DeleteBtn id={index} />
           <Divider />
         </ListItem>
       ))}

@@ -17,7 +17,9 @@ const CodePreview = () => {
   const codeSnippet = `
     import React from 'react';
 
-    const ${componentName} = () => {};
+    const ${componentName} = () => {
+      return ();
+    };
 
     export default ${componentName};
 
