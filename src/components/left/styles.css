@@ -39,11 +39,11 @@
 } */
 
 .folder>div>button {
-    font-size: 15px;
+    /* font-size: 15px;
     background-color: white;
-    border: 1px solid lightgray;
+    border: 1px solid lightgray; */
 
-    
+    padding-left: 10px;
 }
 
 
@@ -63,3 +63,52 @@
         border: 1px solid lightgray;
 
 }
+
+
+
+
+
+.cursor input {
+    /* position: absolute;
+    width: 1px;
+    height: 80%;
+    background-color: gray;
+    left: 5px;
+    top: 10%;
+    animation-name: blink;
+    animation-duration: 800ms;
+    animation-iteration-count: infinite;
+    opacity: 1; */
+    border: solid black 1px
+    
+}
+
+.cursor button {
+    border:solid black 1px;
+    margin-left: 5px;
+    
+}
+/* .cursor {
+    position: relative;
+}
+.cursor input {
+    position: absolute;
+    width: 1px;
+    height: 80%;
+    background-color: gray;
+    left: 5px;
+    top: 10%;
+    animation-name: blink;
+    animation-duration: 800ms;
+    animation-iteration-count: infinite;
+    opacity: 1;
+}
+
+.cursor input:focus + i {
+    display: none;
+}
+
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: 0; }
+} */

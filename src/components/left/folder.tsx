@@ -1,3 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
+import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faFolderClosed } from '@fortawesome/free-solid-svg-icons';
+import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
 
 interface Input {
@@ -11,7 +16,9 @@ import React, { useEffect, useState } from "react"
 function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
     
     const [expand, setExpand] = useState<boolean>(false);
-    const [folderIcon, setFolderIcon] = useState<string>('>');
+    const [folderIcon, setFolderIcon] = useState<string>('▶');
+    const [folderLogo, setFolderLogo] = useState(<FontAwesomeIcon icon={faFolderClosed}/>);
+
 
     const [showInput, setShowInput] = useState<Input>({
         visible: false,
@@ -21,7 +28,9 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
     const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
         e?.stopPropagation();
         setExpand(true)
-        setFolderIcon('⌄')
+        setFolderIcon('▼')
+        setFolderLogo(<FontAwesomeIcon icon={faFolderOpen}/>)
+        
         setShowInput({
             visible: true,
             isFolder: arg,
@@ -53,17 +62,24 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
 
 
             <div className="folder" onClick={() => {
-                if (!expand) setFolderIcon('⌄')
-                else setFolderIcon('>')
+                if (!expand) {
+                    setFolderIcon('▼')
+                    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen}/>)
+                }
+                else {
+                    setFolderIcon('▶')
+                    setFolderLogo(<FontAwesomeIcon icon={faFolderClosed}/>)
+
+                }
                 setExpand(!expand)
             }
             }>
 
-                <span>{folderIcon} 📁 {explorer.name} </span>
+                <span>{folderIcon} {folderLogo} {explorer.name} </span>
 
                 <div>
-                    <button onClick={(e) => handleNewFolder(e, true)}> Folder+ </button>
-                    <button onClick={(e) => handleNewFolder(e, false)}> File+ </button>
+                    <button onClick={(e) => handleNewFolder(e, true)}> <FontAwesomeIcon icon = {faFolderPlus}/>  </button>
+                    <button onClick={(e) => handleNewFolder(e, false)}> <FontAwesomeIcon icon = {faFileCirclePlus} /> </button>
                     <button onClick={(e) => handleDeleteFolder(e, false)}> Delete </button>
 
                 </div>
@@ -82,14 +98,15 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
                                 autoFocus
                                 onBlur={() => {
                                     setShowInput({ ...showInput, visible: false })
-                                        , setFolderIcon('>')
+                                    setFolderIcon('▶')  
+                                    setFolderLogo(<FontAwesomeIcon icon={faFolderClosed}/>)
                                 }}
                             />
                         </div>
                     )
                 }
 
-                {explorer.items.map((exp) => {
+                {explorer.items.map((exp: any) => {
                     return <Folder handleInsertNode={handleInsertNode} handleDeleteNode ={handleDeleteNode} explorer={exp} key={exp.id} />
                 })}
             </div>

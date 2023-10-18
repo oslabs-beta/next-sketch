@@ -38,19 +38,37 @@ const useTraverseTree = () => {
     }
 
     const createCustomEndpoint = (tree: any, folderId: number, item: string, isFolder: boolean ) => {
-       
+       let fileAlreadyExists = false;
 
-        for(const file of tree.items) {
-            if(file.name === 'src') {
-                file.items.unshift({
+        for(const folder of tree.items) {
+            if(folder.name === 'src') {
+
+
+
+
+                for(const files of folder.items){
+                    if(files.name === item) {
+                        alert('Folder name already exists!')
+                        fileAlreadyExists = true
+                }
+
+
+            }
+
+
+
+            if(fileAlreadyExists === false){
+                folder.items.unshift({
                     id: new Date().getTime(),
                     name: item,
                     isFolder: true,
                     items: []})
+                
+                }
             }
+
         }
 
-        console.log('after', tree.items)
 
 
         return { ...tree};
