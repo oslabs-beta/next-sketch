@@ -29,21 +29,39 @@ const useTraverseTree = () => {
             })
     
     
-        let latestNode = [];
-        latestNode = tree.items.map((ob: object) => {
-            return deleteNode(ob, folderId);
-        });
+            if (items.length === tree.items.length) {
+                const temp = tree.items.map((obj) => deleteNode(obj, folderId));
+                return { ...tree, items: temp };
+              }
 
         return { ...tree, items: items };
     }
 
-    // const updateNode = () = {}
+    const createCustomEndpoint = (tree: any, folderId: number, item: string, isFolder: boolean ) => {
+       
+
+        for(const file of tree.items) {
+            if(file.name === 'src') {
+                file.items.unshift({
+                    id: new Date().getTime(),
+                    name: item,
+                    isFolder: true,
+                    items: []})
+            }
+        }
+
+        console.log('after', tree.items)
+
+
+        return { ...tree};
+
+    }
 
 
 
 
 
-    return { insertNode, deleteNode };
+    return { insertNode, deleteNode, createCustomEndpoint };
 
 };
 

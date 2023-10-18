@@ -6,6 +6,7 @@ import CodePreview from './components/right/CodePreview';
 import explorer from "./components/left/data/folderData";
 import Folder from "./components/left/folder"
 import useTraverseTree from "./components/left/hooks/use-traverse-tree";
+import CustomEndpoint from './components/left/CustomEndpoint';
 
 interface ComponentNameType {
   componentName: string;
@@ -22,7 +23,7 @@ const App = () => {
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
 
-  const { insertNode, deleteNode } = useTraverseTree();
+  const { insertNode, deleteNode, createCustomEndpoint } = useTraverseTree();
 
   const handleInsertNode = (folderId: number, item: string, isFolder: boolean) => {
     const finalTree: any = insertNode(explorerData, folderId, item, isFolder)
@@ -37,9 +38,26 @@ const App = () => {
       setExplorerData(finalTree)
   }
 
+
+  const handleCreateCustomEndpoint = (folderId: number, item: string, ) => {
+    const finalTree: any = createCustomEndpoint(explorerData, folderId, item);
+    setExplorerData(finalTree)
+}
+
+
+
   return (
     <CodeContext.Provider value={[componentName, setComponentName]}>
-      <Folder handleInsertNode={handleInsertNode} handleDeleteNode={handleDeleteNode} explorer={explorerData} />
+      <Folder 
+      handleInsertNode={handleInsertNode}
+      handleDeleteNode={handleDeleteNode}
+      explorer ={explorerData}
+      />
+
+      <CustomEndpoint 
+      handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+      explorer={explorerData} 
+      />
       <CreateComponentBtn />
       <div className='flex'>
         <TagsContainer />
