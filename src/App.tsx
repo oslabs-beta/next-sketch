@@ -3,6 +3,9 @@ import TagsContainer from './components/middle/TagsContainer';
 import './App.css';
 import CreateComponentBtn from './components/middle/CreateComponentBtn';
 import CodePreview from './components/right/CodePreview';
+import explorer from "./components/left/data/folderData";
+import Folder from "./components/left/folder"
+import useTraverseTree from "./components/left/hooks/use-traverse-tree";
 
 interface ComponentNameType {
   componentName: string;
@@ -12,30 +15,31 @@ interface ComponentNameType {
 export const CodeContext = React.createContext<ComponentNameType | undefined>(
   undefined
 );
-// import ShowFiles from "./components/left/FileStructure/ShowFiles";
-import explorer from "./components/left/data/folderData";
-import Folder from "./components/left/folder"
-import useTraverseTree from "./components/left/hooks/use-traverse-tree";
-// const fs = require('fs');
-// const filepath = './components/left/data/folderData.ts'
+
+
 
 const App = () => {
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
 
-  const { insertNode } = useTraverseTree();
+  const { insertNode, deleteNode } = useTraverseTree();
 
   const handleInsertNode = (folderId: number, item: string, isFolder: boolean) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const finalTree: any = insertNode(explorerData, folderId, item, isFolder)
 
 
     setExplorerData(finalTree)
   }
+
+
+  const handleDeleteNode = (folderId: number) => {
+      const finalTree: any = deleteNode(explorerData, folderId);
+      setExplorerData(finalTree)
+  }
+
   return (
     <CodeContext.Provider value={[componentName, setComponentName]}>
-      <Folder handleInsertNode={handleInsertNode} explorer={explorerData} />
-
+      <Folder handleInsertNode={handleInsertNode} handleDeleteNode={handleDeleteNode} explorer={explorerData} />
       <CreateComponentBtn />
       <div className='flex'>
         <TagsContainer />

@@ -20,12 +20,22 @@ const useTraverseTree = () => {
         return { ...tree, items: latestNode };
     }
 
-    // const deleteNode = (tree:any, folderId: Number, item: String, isFolder: boolean) => {
-    //     if(tree.id === folderId && tree.isFolder){
-    //         tree.items.splice(1,1);
-    //         return tree;
-    //     }
-    // }
+    const deleteNode = (tree:any, folderId: Number) => {
+      
+
+
+         const items = tree.items.filter((ob: any) => {
+                return ob.id !== folderId
+            })
+    
+    
+        let latestNode = [];
+        latestNode = tree.items.map((ob: object) => {
+            return deleteNode(ob, folderId);
+        });
+
+        return { ...tree, items: items };
+    }
 
     // const updateNode = () = {}
 
@@ -33,7 +43,7 @@ const useTraverseTree = () => {
 
 
 
-    return { insertNode };
+    return { insertNode, deleteNode };
 
 };
 

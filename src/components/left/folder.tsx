@@ -1,16 +1,3 @@
-// interface ExplorerItem {
-//     id: string;
-//     name: string;
-//     isFolder: boolean;
-//     items: ExplorerItem[];
-//   }
-
-//   interface ExplorerData {
-//     id: string;
-//     name: string;
-//     isFolder: boolean;
-//     items: ExplorerItem[];
-//   }
 
 
 interface Input {
@@ -21,7 +8,7 @@ interface Input {
 import React, { useEffect, useState } from "react"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Folder({ handleInsertNode, explorer }: any) {
+function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
 
     const [folderData, setFolderData] = useState(null);
 
@@ -53,8 +40,7 @@ function Folder({ handleInsertNode, explorer }: any) {
     const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
         e?.stopPropagation();
         setExpand(true)
-        if (!expand) setFolderIcon('⌄')
-        else setFolderIcon('>')
+     setFolderIcon('⌄')
         setShowInput({
             visible: true,
             isFolder: arg,
@@ -70,6 +56,13 @@ function Folder({ handleInsertNode, explorer }: any) {
         }
     }
 
+    const handleDeleteFolder = (e?: React.MouseEvent, arg?: boolean) => {
+        e?.stopPropagation();
+        handleDeleteNode(explorer.id)
+        setShowInput({ ...showInput, visible: false })
+
+    }
+
     if (explorer.isFolder) {
         return <div style={{ marginTop: 5 }}>
             <div className="folder" onClick={() => {
@@ -82,8 +75,10 @@ function Folder({ handleInsertNode, explorer }: any) {
                 <span>{folderIcon} 📁 {explorer.name} </span>
 
                 <div>
-                    <button onClick={(e) => handleNewFolder(e, true)}>Folder+</button>
-                    <button onClick={(e) => handleNewFolder(e, false)}>File +</button>
+                    <button onClick={(e) => handleNewFolder(e, true)}> Folder+ </button>
+                    <button onClick={(e) => handleNewFolder(e, false)}> File+ </button>
+                    <button onClick={(e) => handleDeleteFolder(e, false)}> Delete </button>
+
                 </div>
 
             </div>
@@ -100,7 +95,7 @@ function Folder({ handleInsertNode, explorer }: any) {
                                 autoFocus
                                 onBlur={() => {
                                     setShowInput({ ...showInput, visible: false })
-                                        , setExpand(false)
+                                        , setFolderIcon('>')
                                 }}
                             />
                         </div>
@@ -108,12 +103,20 @@ function Folder({ handleInsertNode, explorer }: any) {
                 }
 
                 {explorer.items.map((exp) => {
-                    return <Folder handleInsertNode={handleInsertNode} explorer={exp} key={exp.id} />
+                    return <Folder handleInsertNode={handleInsertNode} handleDeleteNode ={handleDeleteNode} explorer={exp} key={exp.id} />
                 })}
             </div>
         </div>
     } else {
-        return <span className="file"> 📄 {explorer.name}</span>
+        return (
+        
+        <div className = 'folder'>
+        
+        📄 {explorer.name} <button onClick={(e) => handleDeleteFolder(e, false)}> Delete </button>
+
+       
+        </div>
+        )
     }
 }
 

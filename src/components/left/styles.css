@@ -29,18 +29,37 @@
     cursor: pointer;
 }
 
-.folder>span {
+/* .folder>span {
     margin: 0 5px;
-}
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+        border: 1px solid lightgray;
+
+} */
 
 .folder>div>button {
     font-size: 15px;
     background-color: white;
+    border: 1px solid lightgray;
+
+    
 }
+
+
+.folder>button{
+    font-size: 15px;
+    background-color: white;
+    border: 1px solid lightgray;
+
+}
+
 
 .file {
     margin-top: 5px;
     padding-left: 5px;
     display: flex;
     flex-direction: column;
+        border: 1px solid lightgray;
+
 }
