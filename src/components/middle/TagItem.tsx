@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import { Tag } from '../../types';
+import { Tag } from '../../utils/interfaces';
 
 interface TagItemProps {
   tag: Tag;

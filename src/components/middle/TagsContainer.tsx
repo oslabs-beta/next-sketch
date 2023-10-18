@@ -3,38 +3,34 @@ import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { DroppableSection } from './DroppableSection';
 import { DraggableItem } from './DraggableItem';
-import { Tag } from '../../types';
+import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
-
-const id_gen = (() => {
-  let id = 1;
-  return () => id++;
-})();
+import { generateId } from '../../utils/generateId';
 
 const TagsContainer = (): JSX.Element => {
   const staticTags: Tag[] = [
     {
-      id: id_gen(),
+      id: generateId(),
       name: 'div',
     },
     {
-      id: id_gen(),
+      id: generateId(),
       name: 'img',
     },
     {
-      id: id_gen(),
+      id: generateId(),
       name: 'p',
     },
     {
-      id: id_gen(),
+      id: generateId(),
       name: 'form',
     },
     {
-      id: id_gen(),
+      id: generateId(),
       name: 'button',
     },
     {
-      id: id_gen(),
+      id: generateId(),
       name: 'link',
     },
   ];
@@ -60,6 +56,7 @@ const TagsContainer = (): JSX.Element => {
     };
     setTags([...tags, newTag]);
   };
+
   return (
     <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
       <DndContext onDragEnd={addTagToBox}>
