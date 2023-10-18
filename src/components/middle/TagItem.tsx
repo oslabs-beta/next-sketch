@@ -1,20 +1,10 @@
-import { Tag } from "../../types";
-
+import { Typography } from '@mui/material';
+import { Tag } from '../../types';
 
 interface TagItemProps {
   tag: Tag;
 }
 
 export const TagItem = ({ tag }: TagItemProps): JSX.Element => {
-  return (
-    <div className="
-    bg-green-400 
-    grid
-    grid-flow-col
-    auto-cols-max
-    m-2"
-    >
-        {tag.name}
-    </div>
-  );
+  return <Typography>{tag.name}</Typography>;
 };

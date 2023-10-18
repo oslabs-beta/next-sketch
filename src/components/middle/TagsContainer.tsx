@@ -1,19 +1,17 @@
-import { useState } from "react";
-// import HTMLTag from "./HTMLtag";
-// import Display from "../right/Display";
-import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
-import { DroppableSection } from "./DroppableSection";
-import { DraggableItem } from "./DraggableItem";
-import { Tag } from "../../types";
+import { useState } from 'react';
+import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
+import { arrayMove } from '@dnd-kit/sortable';
+import { DroppableSection } from './DroppableSection';
+import { DraggableItem } from './DraggableItem';
+import { Tag } from '../../types';
+import { Box, Typography } from '@mui/material';
 
 const id_gen = (() => {
   let id = 1;
   return () => id++;
-})()
+})();
 
 const TagsContainer = (): JSX.Element => {
-
   const staticTags: Tag[] = [
     {
       id: id_gen(),
@@ -42,23 +40,13 @@ const TagsContainer = (): JSX.Element => {
   ];
 
   const [tags, setTags] = useState<Tag[]>([]);
-  // console.log("TAGS", tags);
 
   const handleSortDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    // console.log(event);
-    // console.log("ACTIVE", active);
-    // console.log("over", over);
-    // console.log(tags.findIndex(tag => tag.id === active.id))
-    // console.log("ACTIVE ID", active.id);
-    // console.log("OVER ID", over.id);
     if (active.id !== over?.id) {
       setTags((tags) => {
-        const activeIndex = tags.findIndex(tag => tag.id === active.id);
-        const overIndex = tags.findIndex(tag => tag.id === over?.id);
-        // console.log("activeIndex", activeIndex);
-        // console.log("overIndex", overIndex);
-        // console.log(arrayMove(tags, activeIndex, overIndex));
+        const activeIndex = tags.findIndex((tag) => tag.id === active.id);
+        const overIndex = tags.findIndex((tag) => tag.id === over?.id);
         return arrayMove(tags, activeIndex, overIndex);
       });
     }
@@ -66,44 +54,71 @@ const TagsContainer = (): JSX.Element => {
 
   const addTagToBox = (event: DragEndEvent) => {
     const { active } = event;
-    // console.log(event);
     const newTag = {
       id: active.id,
-      name: active.data.current?.title
+      name: active.data.current?.title,
     };
-    // console.log("newTag", newTag);
-    // if (over?.id !== "droppable" || !newTag) return;
     setTags([...tags, newTag]);
   };
-
   return (
-    <div className="flex align-middle">
+    <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
       <DndContext onDragEnd={addTagToBox}>
-        <div className="bg-mainBackgroundColor w-[350px] h-[400px] max-h-[400px]">
-          <div className="bg-blue-500">
-            <p className="text-center">HTML Tags</p>
-          </div>
-          <div>
+        <Box
+          sx={{
+            bgcolor: '#edede9',
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <Box
+            sx={{
+              bgcolor: 'lightblue',
+              textAlign: 'center',
+            }}
+          >
+            <Typography variant='h6'>HTML Tags</Typography>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             {staticTags.map((staticTag) => (
-              <DraggableItem key={`${staticTag.name}-${staticTag.id}`} id={staticTag.id}>
+              <DraggableItem
+                key={`${staticTag.name}-${staticTag.id}`}
+                id={staticTag.id}
+              >
                 {staticTag.name}
               </DraggableItem>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
         <DndContext
           collisionDetection={closestCenter}
           onDragEnd={handleSortDragEnd}
         >
-          <div className="bg-amber-200 w-[350px] h-[400px] max-h-[400px]">
-            <div className="bg-lime-200">
-              <p className="text-center">Box</p>
-            </div>
+          <Box
+            sx={{
+              bgcolor: 'lightsteelblue',
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            <Box
+              sx={{
+                bgcolor: 'lightgoldenrodyellow',
+                textAlign: 'center',
+              }}
+            >
+              <Typography variant='h6'>Box</Typography>
+            </Box>
             <DroppableSection tags={tags} />
-          </div>
+          </Box>
         </DndContext>
       </DndContext>
-    </div>
+    </Box>
   );
 };
 
