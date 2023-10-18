@@ -4,9 +4,9 @@ import TagsContainer from './components/middle/TagsContainer';
 import './App.css';
 import CreateComponentBtn from './components/middle/CreateComponentBtn';
 import CodePreview from './components/right/CodePreview';
-import explorer from "./components/left/data/folderData";
-import Folder from "./components/left/folder"
-import useTraverseTree from "./components/left/hooks/use-traverse-tree";
+import explorer from './components/left/data/folderData';
+import Folder from './components/left/folder';
+import useTraverseTree from './components/left/hooks/use-traverse-tree';
 import CustomEndpoint from './components/left/CustomEndpoint';
 
 interface ComponentNameType {
@@ -35,17 +35,14 @@ const App = () => {
   };
 
   const handleDeleteNode = (folderId: number) => {
-      const finalTree: any = deleteNode(explorerData, folderId);
-      setExplorerData(finalTree)
-  }
+    const finalTree: any = deleteNode(explorerData, folderId);
+    setExplorerData(finalTree);
+  };
 
-
-  const handleCreateCustomEndpoint = (folderId: number, item: string, ) => {
+  const handleCreateCustomEndpoint = (folderId: number, item: string) => {
     const finalTree: any = createCustomEndpoint(explorerData, folderId, item);
-    setExplorerData(finalTree)
-}
-
-
+    setExplorerData(finalTree);
+  };
 
   return (
     <CodeContext.Provider value={[componentName, setComponentName]}>
@@ -59,6 +56,11 @@ const App = () => {
             <Folder
               handleInsertNode={handleInsertNode}
               handleDeleteNode={handleDeleteNode}
+              explorer={explorerData}
+            />
+
+            <CustomEndpoint
+              handleCreateCustomEndpoint={handleCreateCustomEndpoint}
               explorer={explorerData}
             />
           </Grid>

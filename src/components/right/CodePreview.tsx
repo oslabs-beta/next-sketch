@@ -1,11 +1,11 @@
-import Prism from "prismjs";
-import { Box } from "@mui/material";
-import "./prism/prism.css"; // Use the path to the actual Prism.css file
-import "prismjs/themes/prism.css"; // Use the path to the actual Prism.css file
-import "prismjs/themes/prism-okaidia.css"; //okadia theme
-import "prismjs/components/prism-javascript";
-import { useContext, useEffect } from "react";
-import { CodeContext } from "../../App";
+import Prism from 'prismjs';
+import { Box } from '@mui/material';
+import './prism/prism.css'; // Use the path to the actual Prism.css file
+import 'prismjs/themes/prism.css'; // Use the path to the actual Prism.css file
+import 'prismjs/themes/prism-okaidia.css'; //okadia theme
+import 'prismjs/components/prism-javascript';
+import { useContext, useEffect } from 'react';
+import { CodeContext } from '../../App';
 
 const CodePreview = () => {
   const [componentName, setComponentName] = useContext(CodeContext);
@@ -20,13 +20,13 @@ const CodePreview = () => {
     const ${componentName} = () => {};
 
     export default ${componentName};
-    
+
   `;
 
   return (
     <Box>
       <pre>
-        <code className="language-javascript">{codeSnippet}</code>
+        <code className='language-javascript'>{codeSnippet}</code>
       </pre>
     </Box>
   );
