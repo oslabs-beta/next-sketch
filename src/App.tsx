@@ -13,7 +13,6 @@ import DisplayContainer from './components/right/DisplayContainer';
 import { Tag, Elements } from './utils/interfaces';
 import { generateId } from './utils/generateId';
 
-
 interface ComponentNameType {
   componentName: string;
   setComponentName: Dispatch<SetStateAction<string>>;
@@ -25,9 +24,7 @@ export const CodeContext = React.createContext<ComponentNameType | undefined>(
 
 const App = () => {
   const [elements, setElements] = useState<Tag[]>([
-    { id: generateId(),
-      name: 'div',
-    },
+    { id: generateId(), name: 'div' },
     {
       id: generateId(),
       name: 'img',
@@ -101,11 +98,9 @@ const App = () => {
             </Grid>
             <TagsContainer />
           </Grid>
-          
+
           <Grid item xs={4} sx={{ border: 2, borderColor: 'green' }}>
             <TabsComponent />
-          <Grid item xs={4}>
-            <CodePreview />
             {/* <DisplayContainer /> */}
           </Grid>
         </Grid>
