@@ -23,7 +23,7 @@ const CreateComponentBtn = () => {
   //useState for individual component created
   const [component, setComponent] = useState<string>('');
   //useState for all of the components that have been created
-  const [listComponents, setListComponents] = useState<string[]>([]);
+  const [listComponents, setListComponents] = useState<string[]>(['App']);
   //useContext for codePreview, when we add a component it shows the codePreview
   const [componentName, setComponentName] = useContext(CodeContext);
 

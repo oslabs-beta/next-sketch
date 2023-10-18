@@ -1,4 +1,5 @@
 import Prism from 'prismjs';
+import { Box } from '@mui/material';
 import './prism/prism.css'; // Use the path to the actual Prism.css file
 import 'prismjs/themes/prism.css'; // Use the path to the actual Prism.css file
 import 'prismjs/themes/prism-okaidia.css'; //okadia theme
@@ -16,15 +17,20 @@ const CodePreview = () => {
   const codeSnippet = `
     import React from 'react';
 
-    const ${componentName} = () => {};
+    const ${componentName} = () => {
+      return ();
+    };
 
     export default ${componentName};
+
   `;
 
   return (
-    <pre>
-      <code className='language-javascript'>{codeSnippet}</code>
-    </pre>
+    <Box>
+      <pre>
+        <code className='language-javascript'>{codeSnippet}</code>
+      </pre>
+    </Box>
   );
 };
 
