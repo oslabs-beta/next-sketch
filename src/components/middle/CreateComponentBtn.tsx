@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { CodeContext } from '../../App';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import {
   Button,
   Dialog,
@@ -63,7 +64,11 @@ const CreateComponentBtn = () => {
 
   return (
     <Context.Provider value={[listComponents, setListComponents]}>
-      <Button onClick={handleOpen}>Create Component</Button>
+      <Button onClick={handleOpen}>
+        {' '}
+        <LibraryAddIcon />
+        Component
+      </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create new component</DialogTitle>
         <form>

@@ -8,9 +8,11 @@ import explorer from './components/left/data/folderData';
 import Folder from './components/left/folder';
 import useTraverseTree from './components/left/hooks/use-traverse-tree';
 import CustomEndpoint from './components/left/CustomEndpoint';
+import TabsComponent from './components/right/TabsComponent';
 import DisplayContainer from './components/right/DisplayContainer';
 import { Tag, Elements } from './utils/interfaces';
 import { generateId } from './utils/generateId';
+
 
 interface ComponentNameType {
   componentName: string;
@@ -99,7 +101,9 @@ const App = () => {
             </Grid>
             <TagsContainer />
           </Grid>
-
+          
+          <Grid item xs={4} sx={{ border: 2, borderColor: 'green' }}>
+            <TabsComponent />
           <Grid item xs={4}>
             <CodePreview />
             {/* <DisplayContainer /> */}
