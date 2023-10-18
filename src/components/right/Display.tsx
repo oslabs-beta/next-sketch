@@ -1,5 +1,3 @@
-import React from "react";
-
 interface DisplayProps {
     name: string;
     key: Key | null | undefined;
