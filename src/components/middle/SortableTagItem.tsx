@@ -30,7 +30,8 @@ export const SortableTagItem = ({ id, children }: SortableTagItemProps) => {
       sx={{
         bgcolor: 'lightgreen',
         fontSize: 15,
-        marginTop: 2,
+        marginTop: 1,
+        marginBottom: 1,
         paddingRight: 5,
         paddingLeft: 5,
         width: 5,
