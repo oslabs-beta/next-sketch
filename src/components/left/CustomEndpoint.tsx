@@ -5,13 +5,27 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Checkbox from "@mui/material/Checkbox";
 
+
+
+interface modalLayout {
+    default: boolean,
+    error: boolean,
+    layout: boolean,
+    loading: boolean,
+    notFound: boolean,
+    route: boolean,
+    template: boolean,
+}
+
+
 //----------------
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,
+    height: 500,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -20,19 +34,49 @@ const style = {
   //MUI styling fior modal
 //-----------------
 
-const CustomEndpoint = ( {handleCreateCustomEndpoint, explorer}: any ) => {
+const CustomEndpoint = ( {handleCreateCustomEndpoint, handleInputBoilerFiles, explorer}: any ) => {
     
 const [inputValue, setInputValue] = useState("");
 const [open, setOpen] = useState(false);
-const [checklist, setChecklist] = useState([]);
 
 const handleOpen = () => setOpen(true);
-const handleClose = () => setOpen(false);
+
+const handleClose = () => {
+    setOpen(false);
+        setInputValue('')
+
+    
+}
+const [selectedItems, setSelectedItems]= useState<modalLayout>({
+    default: false,
+    error: false,
+    layout: false,
+    loading: false,
+    notFound: false,
+    route: false,
+    template: false
+});
 
 function handleChange(e?: any) {
     setInputValue(e.target.value);
-    
+   
   }
+
+
+function handleModalChange(e?: any){
+    setSelectedItems({
+        ...selectedItems,
+        [e.target.name]: e.target.checked,
+      });
+    console.log('value', e.target.name);
+    console.log('inputvalue', inputValue)
+    let fileName = e.target.name
+    let folderName = inputValue
+    handleInputBoilerFiles(explorer.id, fileName, folderName)
+
+}
+
+
 
     const handleCreateCustomFolder =(e?: React.MouseEvent) => {
         e?.stopPropagation()
@@ -40,7 +84,6 @@ function handleChange(e?: any) {
 
              handleCreateCustomEndpoint(explorer.id, inputValue)
             setOpen(true);
-            setInputValue('')
     
     };
 
@@ -73,31 +116,83 @@ function handleChange(e?: any) {
                 aria-describedby="modal-description"
             >
             <Box sx={style}>
-                <Typography id="modal-title" variant="h6" component="h2">
-                New Endpoint
+                <Typography id="modal-title" variant="h6" component="h2" style={{marginBottom: 20, fontSize: 30}} >
+                    Choose Your Template Files
                 </Typography>
-                <Typography id="modal-description" sx={{ mt: 2 }}>
-                    Content
-                </Typography>
+            
+                <div>
+                    <Checkbox
+                        name = "default.tsx"
+                        checked = {selectedItems.default}
+                        onChange = {handleModalChange}
+                    />
+                    default.tsx
+                </div>
+                
+                <div>
+                    <Checkbox
+                        name = "error.tsx"
+                        checked = {selectedItems.error}
+                        onChange = {handleModalChange}
+                    />
+                    error.tsx
+                </div>
+
+                <div>
+                    <Checkbox
+                        name = "layout.tsx"
+                        checked = {selectedItems.layout}
+                        onChange = {handleModalChange}
+                    />
+                    layout.tsx
+                </div>
+
+                <div>
+                    <Checkbox
+                        name = "loading.tsx"
+                        checked = {selectedItems.loading}
+                        onChange = {handleModalChange}
+                    />
+                    loading.tsx
+                </div>
+
+                <div>
+                    <Checkbox
+                        name = "not-found.tsx"
+                        checked = {selectedItems.notFound}
+                        onChange = {handleModalChange}
+                    />
+                    not-found.tsx
+                </div>
+
+                <div>
+                    <Checkbox
+                        name = "route.tsx"
+                        checked = {selectedItems.route}
+                        onChange = {handleModalChange}
+                    />
+                    route.tsx
+                </div>
+                
+                <div>
+                    <Checkbox
+                        name = "template.tsx"
+                        checked = {selectedItems.template}
+                        onChange = {handleModalChange}
+                    />
+                    template.tsx
+                </div>
+                
                 <Button onClick={handleClose} sx={{ mt: 3 }}>
                   Close
                 </Button>
                 </Box>
             </Modal>
+           
 
 
 
-            {/* <form >
-            <input 
-            type="text"
-            placeholder="create an endpoint" 
-            autoFocus
-            onKeyDown={handleCreateCustomFolder}
-            />
-            <button type = "submit" onClick={handleCreateCustomFolder}>Submit</button>
-        
-            </form>
-             */}
+
 
 
             

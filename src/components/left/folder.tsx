@@ -3,6 +3,9 @@ import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { faFolderClosed } from '@fortawesome/free-solid-svg-icons';
 import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 interface Input {
@@ -80,7 +83,7 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
                 <div>
                     <button onClick={(e) => handleNewFolder(e, true)}> <FontAwesomeIcon icon = {faFolderPlus}/>  </button>
                     <button onClick={(e) => handleNewFolder(e, false)}> <FontAwesomeIcon icon = {faFileCirclePlus} /> </button>
-                    <button onClick={(e) => handleDeleteFolder(e, false)}> Delete </button>
+                    <button onClick={(e) => handleDeleteFolder(e, false)}> <FontAwesomeIcon icon ={faTrash}/> </button>
 
                 </div>
 
@@ -100,6 +103,7 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
                                     setShowInput({ ...showInput, visible: false })
                                     setFolderIcon('▶')  
                                     setFolderLogo(<FontAwesomeIcon icon={faFolderClosed}/>)
+                                    setExpand(false)
                                 }}
                             />
                         </div>
@@ -116,7 +120,7 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
         
         <div className = 'folder'>
         
-        📄 {explorer.name} <button onClick={(e) => handleDeleteFolder(e, false)}> Delete </button>
+        📄 {explorer.name} <button onClick={(e) => handleDeleteFolder(e, false)}> <FontAwesomeIcon icon ={faTrash}/> </button>
 
        
         </div>

@@ -69,17 +69,41 @@ const useTraverseTree = () => {
 
         }
 
-
+        console.log('final', tree)
 
         return { ...tree};
 
+    }
+
+    function insertBoilerFiles(tree: any, folderId: number, item: string, folderName: string) {
+      
+
+        for(const folder of tree.items) {
+            if(folder.name === 'src') {
+
+                const filesInSrc = folder.items
+                for(let files of filesInSrc){
+                    if(files.name === folderName){
+                        files.items.unshift({
+                            id: new Date().getTime(),
+                            name: item,
+                            items: []
+                        })
+                        
+                    }
+                    
+                }
+            }
+        }
+        
+        return { ...tree};
     }
 
 
 
 
 
-    return { insertNode, deleteNode, createCustomEndpoint };
+    return { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles };
 
 };
 

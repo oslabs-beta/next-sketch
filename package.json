@@ -3,7 +3,7 @@
     "private": true,
     "version": "0.0.0",
     "scripts": {
-        "dev": "concurrently \"vite\" \"nodemon server.js\"",
+        "dev": "vite",
         "start": "nodemon server.js",
         "build": "tsc && vite build && electron-builder && start",
         "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
