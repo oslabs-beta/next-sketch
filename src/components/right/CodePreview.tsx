@@ -7,12 +7,16 @@ import 'prismjs/components/prism-javascript';
 import { useContext, useEffect } from 'react';
 import { CodeContext } from '../../App';
 
-const CodePreview = () => {
+interface CodePreviewProps {
+  code: string;
+}
+
+const CodePreview = ({ code }: CodePreviewProps) => {
   const [componentName, setComponentName] = useContext(CodeContext);
 
   useEffect(() => {
     Prism.highlightAll();
-  }, [componentName]); //make it re render every time the component name is changed
+  }, [code]); //make it re render every time the component name is changed
 
   const codeSnippet = `
     import React from 'react';
@@ -28,7 +32,7 @@ const CodePreview = () => {
   return (
     <Box>
       <pre>
-        <code className='language-javascript'>{codeSnippet}</code>
+        <code className='language-tsx'>{code}</code>
       </pre>
     </Box>
   );

@@ -49,6 +49,7 @@ const App = () => {
 
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
+  const [code, setCode] = useState<string>('Hello');
 
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
     useTraverseTree();
@@ -131,11 +132,14 @@ const App = () => {
                   handleCreateCustomEndpoint={handleCreateCustomEndpoint}
                   handleInputBoilerFiles={handleInputBoilerFiles}
                   explorer={explorerData}
+                  code={code}
                 />
                 <Folder
                   handleInsertNode={handleInsertNode}
                   handleDeleteNode={handleDeleteNode}
                   explorer={explorerData}
+                  code={code}
+                  setCode={setCode}
                 />
               </Grid>
 
@@ -147,7 +151,7 @@ const App = () => {
               </Grid>
 
               <Grid item xs={4} sx={{ height: '500px' }}>
-                <TabsComponent />
+                <TabsComponent code={code} setCode={setCode} />
                 {/* <DisplayContainer /> */}
               </Grid>
             </Grid>

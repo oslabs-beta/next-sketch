@@ -3,7 +3,11 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import React, { useState } from 'react';
 import CodePreview from './CodePreview';
 
-const TabsComponent = () => {
+interface TabsComponentProps {
+  code: string;
+}
+
+const TabsComponent = ({ code }: TabsComponentProps) => {
   const [value, setValue] = useState<JSX.Element | string>('1');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -21,7 +25,7 @@ const TabsComponent = () => {
           </TabList>
         </Box>
         <TabPanel value='1'>
-          <CodePreview />
+          <CodePreview code={code} />
         </TabPanel>
         <TabPanel value='2'>Item Two</TabPanel>
         <TabPanel value='3'>Item Three</TabPanel>
