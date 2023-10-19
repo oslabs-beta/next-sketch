@@ -33,6 +33,22 @@ const TagsContainer = (): JSX.Element => {
       id: generateId(),
       name: 'link',
     },
+    {
+      id: generateId(),
+      name: 'a',
+    },
+    {
+      id: generateId(),
+      name: 'span',
+    },
+    {
+      id: generateId(),
+      name: 'h1',
+    },
+    {
+      id: generateId(),
+      name: 'main',
+    },
   ];
 
   const [tags, setTags] = useState<Tag[]>([]);
@@ -58,19 +74,32 @@ const TagsContainer = (): JSX.Element => {
   };
 
   return (
-    <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+        height: '510px',
+        boxShadow: 20,
+        borderTopLeftRadius: '20px',
+        borderTopRightRadius: '20px',
+        borderBottomRightRadius: '20px',
+        borderBottomLeftRadius: '20px',
+      }}
+    >
       <DndContext onDragEnd={addTagToBox}>
         <Box
           sx={{
-            bgcolor: '#edede9',
             width: '100%',
             height: '100%',
+            borderTopLeftRadius: '20px',
           }}
         >
           <Box
             sx={{
-              bgcolor: 'lightblue',
+              bgcolor: 'rgba(191, 196, 248, 0.8)',
+              color: 'black',
               textAlign: 'center',
+              borderTopLeftRadius: '20px',
             }}
           >
             <Typography variant='h6'>HTML Tags</Typography>
@@ -80,6 +109,7 @@ const TagsContainer = (): JSX.Element => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              marginTop: 1.2,
             }}
           >
             {staticTags.map((staticTag) => (
@@ -98,19 +128,26 @@ const TagsContainer = (): JSX.Element => {
         >
           <Box
             sx={{
-              bgcolor: 'lightsteelblue',
+              // bgcolor: '#FFF0D5',
+              borderBottomRightRadius: '20px',
+              borderTopRightRadius: '20px',
+              borderBottomLefttRadius: '20px',
               width: '100%',
-              height: '100%',
+              overflowY: 'auto',
             }}
           >
             <Box
               sx={{
-                bgcolor: 'lightgoldenrodyellow',
+                bgcolor: 'rgba(191, 196, 248, 0.8)',
+                color: 'black',
                 textAlign: 'center',
+                borderTopRightRadius: '20px',
               }}
+              position={'sticky'}
             >
               <Typography variant='h6'>Box</Typography>
             </Box>
+
             <DroppableSection tags={tags} />
           </Box>
         </DndContext>

@@ -28,13 +28,19 @@ export const SortableTagItem = ({ id, children }: SortableTagItemProps) => {
       {...listeners}
       variant='contained'
       sx={{
-        bgcolor: 'lightgreen',
+        bgcolor: 'rgba(191, 196, 248, 0.8)',
         fontSize: 15,
-        marginTop: 2,
+        marginTop: 1,
+        marginBottom: 1,
         paddingRight: 5,
         paddingLeft: 5,
         width: 5,
         height: 30,
+        boxShadow: 8,
+        ':hover': {
+          bgcolor: '#e9eafc',
+          color: '#0A0908',
+        }
       }}
     >
       {children}

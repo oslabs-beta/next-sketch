@@ -25,13 +25,21 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
       {...listeners}
       variant='contained'
       sx={{
-        bgcolor: 'lightblue',
+        bgcolor: '#FEFCFB',
+        color: '#0A0908',
         fontSize: 15,
-        marginTop: 2,
+        marginTop: 1,
+        marginBottom: 1,
+        borderRadius: '7px',
         paddingRight: 5,
         paddingLeft: 5,
         width: 5,
         height: 30,
+        boxShadow: 8,
+        ':hover': {
+          bgcolor: 'rgba(191, 196, 248, 0.8)',
+          color: '#FEFCFB',
+        },
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, Divider, Button } from '@mui/material';
+import { List, ListItem, ListItemText, Divider, Grid } from '@mui/material';
 import DeleteBtn from './DeleteBtn';
 import DisplayCode from './DisplayCode';
 
@@ -8,7 +8,7 @@ interface ComponentDisplayProps {
 
 function ComponentDisplay({ components }: ComponentDisplayProps) {
   return (
-    <List>
+    <List sx={{ marginRight: '20px', marginLeft: '20px' }}>
       {components.map((component, index) => (
         <ListItem
           key={index}
@@ -16,9 +16,10 @@ function ComponentDisplay({ components }: ComponentDisplayProps) {
             display: 'flex',
             justifyContent: 'space-around',
             alignItems: 'center',
-            bgcolor: 'rgba(135, 206, 235, 0.3)',
+            bgcolor: '#FEFCFB',
+            color: '#0A0908',
             textAlign: 'center',
-            borderRadius: '20px',
+            borderRadius: '10px',
             marginBottom: 2,
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             transition: 'box-shadow 0.3s ease-in-out', // Smooth transition
@@ -27,7 +28,7 @@ function ComponentDisplay({ components }: ComponentDisplayProps) {
             },
           }}
         >
-          <ListItemText primary={component} sx={{ marginRight: '50' }} />
+          <ListItemText primary={component} />
           <DisplayCode component={component} />
           <DeleteBtn id={index} />
           <Divider />

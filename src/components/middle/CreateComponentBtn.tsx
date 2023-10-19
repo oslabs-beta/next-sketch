@@ -89,7 +89,6 @@ const CreateComponentBtn = () => {
           </DialogActions>
         </form>
       </Dialog>
-
       <ComponentDisplay components={listComponents} />
     </Context.Provider>
   );

@@ -21,7 +21,12 @@ export const DroppableSection = ({ tags }: DroppableSectionProps) => {
     <SortableContext items={tags} strategy={verticalListSortingStrategy}>
       <Box
         ref={setNodeRef}
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: 1.2,
+        }}
       >
         {tags.map((tag, index) => (
           <SortableTagItem key={`${tag}-${index}`} id={tag.id}>

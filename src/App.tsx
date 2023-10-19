@@ -1,9 +1,8 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Box, Grid } from '@mui/material';
+import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { Box, Grid, Typography } from '@mui/material';
 import TagsContainer from './components/middle/TagsContainer';
 import './App.css';
 import CreateComponentBtn from './components/middle/CreateComponentBtn';
-import CodePreview from './components/right/CodePreview';
 import explorer from './components/left/data/folderData';
 import Folder from './components/left/folder';
 import useTraverseTree from './components/left/hooks/use-traverse-tree';
@@ -12,6 +11,7 @@ import TabsComponent from './components/right/TabsComponent';
 import DisplayContainer from './components/right/DisplayContainer';
 import { Tag, Elements } from './utils/interfaces';
 import { generateId } from './utils/generateId';
+import WebFont from 'webfontloader';
 
 interface ComponentNameType {
   componentName: string;
@@ -50,7 +50,8 @@ const App = () => {
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
 
-  const { insertNode, deleteNode, createCustomEndpoint } = useTraverseTree();
+  const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
+    useTraverseTree();
 
   const handleInsertNode = (
     folderId: number,
@@ -72,40 +73,88 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
+  const handleInputBoilerFiles = (
+    folderId: number,
+    item: string,
+    folderName: string
+  ) => {
+    const finalTree: any = insertBoilerFiles(
+      explorerData,
+      folderId,
+      item,
+      folderName
+    );
+    setExplorerData(finalTree);
+  };
+
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ['Titillium Web'],
+      },
+    });
+  }, []);
+
   return (
-    <CodeContext.Provider value={[componentName, setComponentName]}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid
-          container
-          justifyContent={'space-between'}
-          sx={{ height: '100vh' }}
-        >
-          <Grid item xs={3.5}>
-            <CustomEndpoint
-              handleCreateCustomEndpoint={handleCreateCustomEndpoint}
-              explorer={explorerData}
-            />
-            <Folder
-              handleInsertNode={handleInsertNode}
-              handleDeleteNode={handleDeleteNode}
-              explorer={explorerData}
-            />
-          </Grid>
+    <Box>
+      <Typography
+        variant='h1'
+        fontSize={'3em'}
+        fontFamily={'Titillium Web'}
+        textAlign={'center'}
+        marginBottom={'0.5em'}
+        color={'#061E47'}
+        sx={{
+          textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
+        }}
+      >
+        NextSketch
+      </Typography>
+      <Box
+        sx={{
+          margin: 2,
+          padding: 2,
+          borderRadius: 3,
+          bgcolor: 'rgba(255, 255, 255, 0.7)',
+          boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
+        }}
+      >
+        <CodeContext.Provider value={[componentName, setComponentName]}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid
+              container
+              justifyContent={'space-between'}
+              sx={{ height: '85vh' }}
+            >
+              <Grid item xs={3.5}>
+                <CustomEndpoint
+                  handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+                  handleInputBoilerFiles={handleInputBoilerFiles}
+                  explorer={explorerData}
+                />
+                <Folder
+                  handleInsertNode={handleInsertNode}
+                  handleDeleteNode={handleDeleteNode}
+                  explorer={explorerData}
+                />
+              </Grid>
 
-          <Grid item xs={4} sx={{ display: 'flex' }}>
-            <Grid alignSelf={'flex-start'}>
-              <CreateComponentBtn />
+              <Grid item xs={4} sx={{ display: 'flex' }}>
+                <Grid alignSelf={'flex-start'}>
+                  <CreateComponentBtn />
+                </Grid>
+                <TagsContainer />
+              </Grid>
+
+              <Grid item xs={4} sx={{ height: '500px' }}>
+                <TabsComponent />
+                {/* <DisplayContainer /> */}
+              </Grid>
             </Grid>
-            <TagsContainer />
-          </Grid>
-
-          <Grid item xs={4} sx={{ border: 2, borderColor: 'green' }}>
-            <TabsComponent />
-            {/* <DisplayContainer /> */}
-          </Grid>
-        </Grid>
+          </Box>
+        </CodeContext.Provider>
       </Box>
-    </CodeContext.Provider>
+    </Box>
   );
 };
 
