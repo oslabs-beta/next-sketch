@@ -35,6 +35,11 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
         paddingLeft: 5,
         width: 5,
         height: 30,
+        boxShadow: 8,
+        ':hover': {
+          bgcolor: 'rgba(191, 196, 248, 0.8)',
+          color: '#FEFCFB',
+        },
       }}
     >
       {children}

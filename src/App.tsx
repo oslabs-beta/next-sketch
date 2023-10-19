@@ -103,7 +103,7 @@ const App = () => {
         fontFamily={'Titillium Web'}
         textAlign={'center'}
         marginBottom={'0.5em'}
-        color={'#FEFCFB'}
+        color={'#061E47'}
         sx={{
           textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
         }}
@@ -115,7 +115,7 @@ const App = () => {
           margin: 2,
           padding: 2,
           borderRadius: 3,
-          bgcolor: '#EAE0D5',
+          bgcolor: 'rgba(255, 255, 255, 0.7)',
           boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
         }}
       >
@@ -146,7 +146,7 @@ const App = () => {
                 <TagsContainer />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid item xs={4} sx={{ height: '500px' }}>
                 <TabsComponent />
                 {/* <DisplayContainer /> */}
               </Grid>
