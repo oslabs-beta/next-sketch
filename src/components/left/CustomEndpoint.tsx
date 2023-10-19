@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -6,7 +6,6 @@ import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
 
 interface modalLayout {
-  page: boolean;
   default: boolean;
   error: boolean;
   layout: boolean;
@@ -36,7 +35,6 @@ const CustomEndpoint = ({
   handleCreateCustomEndpoint,
   handleInputBoilerFiles,
   explorer,
-  code,
 }: any) => {
   const [inputValue, setInputValue] = useState('');
   const [open, setOpen] = useState(false);
@@ -46,7 +44,6 @@ const CustomEndpoint = ({
     setInputValue('');
   };
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
-    page: false,
     default: false,
     error: false,
     layout: false,
@@ -74,77 +71,59 @@ const CustomEndpoint = ({
     handleInputBoilerFiles(explorer.id, fileName, folderName);
   }
 
-  useEffect(() => {
-    console.log('Inside custom endpoint', code);
-  }, []);
-
-  const handleCreateCustomFolder = (e?: React.MouseEvent) => {
+  const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     e?.preventDefault();
 
-    const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
-        e?.stopPropagation()
-        e?.preventDefault()
+    const body = { name: inputValue };
 
-        const body ={"name": inputValue}
+    const response = await fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    console.log('response ok', response);
 
-        const response = await fetch('http://localhost:3000/',
-        {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body)
-        })
-        console.log('response ok', response)
+    if (inputValue) {
+      handleCreateCustomEndpoint(explorer.id, inputValue);
+      setOpen(true);
+    } else {
+      alert('Please enter a file name');
+    }
+  };
+  return (
+    <div className='cursor'>
+      <form>
+        <input
+          type='text'
+          autoFocus
+          placeholder=' New Endpoint'
+          onChange={handleChange}
+          value={inputValue}
+        />
 
-            if(inputValue) {
-                handleCreateCustomEndpoint(explorer.id, inputValue)
-            setOpen(true);
-            }
-            else {
-                alert('Please enter a file name')
-            }
+        <button type='submit' onClick={handleCreateCustomFolder}>
+          Submit
+        </button>
+      </form>
 
-
-
-
-
-
-    };
-    return (
-        <div className='cursor'>
-          <form>
-            <input
-              type='text'
-              autoFocus
-              placeholder=' New Endpoint'
-              onChange={handleChange}
-              value={inputValue}
-            />
-    
-            <button type='submit' onClick={handleCreateCustomFolder}>
-              Submit
-            </button>
-          </form>
-    
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby='modal-title'
-            aria-describedby='modal-description'
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='modal-title'
+        aria-describedby='modal-description'
+      >
+        <Box sx={style}>
+          <Typography
+            id='modal-title'
+            variant='h6'
+            component='h2'
+            style={{ marginBottom: 20, fontSize: 30 }}
           >
             Choose Your Template Files
           </Typography>
-
-          <div>
-            <Checkbox
-              name='page.tsx'
-              checked={selectedItems.page}
-              onChange={handleModalChange}
-            />
-            page.tsx
-          </div>
 
           <div>
             <Checkbox
