@@ -50,7 +50,8 @@ const App = () => {
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
 
-  const { insertNode, deleteNode, createCustomEndpoint } = useTraverseTree();
+
+  const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } = useTraverseTree();
 
   const handleInsertNode = (
     folderId: number,
