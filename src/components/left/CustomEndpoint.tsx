@@ -74,11 +74,22 @@ const CustomEndpoint = ({
 
 
 
-    const handleCreateCustomFolder =(e?: React.MouseEvent) => {
+    const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
         e?.stopPropagation()
-            e?.preventDefault()
+        e?.preventDefault()
 
-            
+        const body ={"name": inputValue}
+
+        const response = await fetch('http://localhost:3000/',
+        {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+        console.log('response ok', response)
+
             if(inputValue) {
                 handleCreateCustomEndpoint(explorer.id, inputValue)
             setOpen(true);
@@ -86,6 +97,12 @@ const CustomEndpoint = ({
             else {
                 alert('Please enter a file name')
             }
+
+
+
+
+
+
     };
     return (
         <div className='cursor'>
