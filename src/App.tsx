@@ -50,8 +50,8 @@ const App = () => {
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
 
-
-  const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } = useTraverseTree();
+  const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
+    useTraverseTree();
 
   const handleInsertNode = (
     folderId: number,
@@ -70,6 +70,20 @@ const App = () => {
 
   const handleCreateCustomEndpoint = (folderId: number, item: string) => {
     const finalTree: any = createCustomEndpoint(explorerData, folderId, item);
+    setExplorerData(finalTree);
+  };
+
+  const handleInputBoilerFiles = (
+    folderId: number,
+    item: string,
+    folderName: string
+  ) => {
+    const finalTree: any = insertBoilerFiles(
+      explorerData,
+      folderId,
+      item,
+      folderName
+    );
     setExplorerData(finalTree);
   };
 
@@ -115,6 +129,7 @@ const App = () => {
               <Grid item xs={3.5}>
                 <CustomEndpoint
                   handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+                  handleInputBoilerFiles={handleInputBoilerFiles}
                   explorer={explorerData}
                 />
                 <Folder
