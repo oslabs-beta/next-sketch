@@ -39,8 +39,6 @@ const CustomEndpoint = ({
   const [inputValue, setInputValue] = useState('');
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-
   const handleClose = () => {
     setOpen(false);
     setInputValue('');
@@ -66,21 +64,31 @@ const CustomEndpoint = ({
       [name]: e.target.checked,
     });
     console.log('value', e.target.name);
-    console.log('inputvalue', inputValue);
-    let fileName = e.target.name;
-    let folderName = inputValue;
-    handleInputBoilerFiles(explorer.id, fileName, folderName);
-  }
+    console.log('inputvalue', inputValue)
+    const fileName = e.target.name
+    const folderName = inputValue
+    
+    handleInputBoilerFiles(explorer.id, fileName, folderName)
 
-  const handleCreateCustomFolder = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    e?.preventDefault();
+}
 
-    handleCreateCustomEndpoint(explorer.id, inputValue);
-    setOpen(true);
-  };
 
-  return (
+
+    const handleCreateCustomFolder =(e?: React.MouseEvent) => {
+        e?.stopPropagation()
+            e?.preventDefault()
+
+            
+            if(inputValue) {
+                handleCreateCustomEndpoint(explorer.id, inputValue)
+            setOpen(true);
+            }
+            else {
+                alert('Please enter a file name')
+            }
+    };
+
+<!--   return (
     <div className='cursor'>
       <form>
         <input
@@ -134,7 +142,16 @@ const CustomEndpoint = ({
             <Checkbox
               name='layout.tsx'
               checked={selectedItems.layout}
-              onChange={handleModalChange}
+              onChange={handleModalChange} -->
+    return (
+        <div className='cursor' >
+            <form >
+            <input 
+            type="text"
+            autoFocus
+            placeholder= " New Endpoint"
+            onChange ={handleChange}
+            value={inputValue}
             />
             layout.tsx
           </div>
