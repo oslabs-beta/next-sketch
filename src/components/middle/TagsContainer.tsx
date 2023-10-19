@@ -33,6 +33,22 @@ const TagsContainer = (): JSX.Element => {
       id: generateId(),
       name: 'link',
     },
+    {
+      id: generateId(),
+      name: 'a',
+    },
+    {
+      id: generateId(),
+      name: 'span',
+    },
+    {
+      id: generateId(),
+      name: 'main',
+    },
+    {
+      id: generateId(),
+      name: 'h1',
+    },
   ];
 
   const [tags, setTags] = useState<Tag[]>([]);
@@ -58,38 +74,49 @@ const TagsContainer = (): JSX.Element => {
   };
 
   return (
-    <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+        bgcolor: 'pink',
+        height: '500px',
+        boxShadow: 20,
+      }}
+    >
       <DndContext onDragEnd={addTagToBox}>
         <Box
           sx={{
-            bgcolor: '#edede9',
+            bgcolor: '#FFF0D5',
             width: '100%',
-            height: '100%',
+            height: 'fit-content',
           }}
         >
           <Box
             sx={{
-              bgcolor: 'lightblue',
+              bgcolor: '#22333B',
+              color: '#FEFCFB',
               textAlign: 'center',
             }}
           >
             <Typography variant='h6'>HTML Tags</Typography>
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            {staticTags.map((staticTag) => (
-              <DraggableItem
-                key={`${staticTag.name}-${staticTag.id}`}
-                id={staticTag.id}
-              >
-                {staticTag.name}
-              </DraggableItem>
-            ))}
+          <Box sx={{ bgcolor: '#EAE0D5', margin: 1, boxShadow: 3 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              {staticTags.map((staticTag) => (
+                <DraggableItem
+                  key={`${staticTag.name}-${staticTag.id}`}
+                  id={staticTag.id}
+                >
+                  {staticTag.name}
+                </DraggableItem>
+              ))}
+            </Box>
           </Box>
         </Box>
         <DndContext
@@ -100,18 +127,22 @@ const TagsContainer = (): JSX.Element => {
             sx={{
               bgcolor: 'lightsteelblue',
               width: '100%',
-              height: '100%',
+              overflowY: 'auto',
             }}
           >
             <Box
               sx={{
-                bgcolor: 'lightgoldenrodyellow',
+                bgcolor: '#22333B',
+                color: '#FEFCFB',
                 textAlign: 'center',
               }}
+              position={'sticky'}
             >
               <Typography variant='h6'>Box</Typography>
             </Box>
-            <DroppableSection tags={tags} />
+            <Box sx={{ bgcolor: 'blue', margin: 1 }}>
+              <DroppableSection tags={tags} />
+            </Box>
           </Box>
         </DndContext>
       </DndContext>
