@@ -39,7 +39,10 @@ const CustomEndpoint = ( {handleCreateCustomEndpoint, handleInputBoilerFiles, ex
 const [inputValue, setInputValue] = useState("");
 const [open, setOpen] = useState(false);
 
-const handleOpen = () => setOpen(true);
+// const handleOpen = () => {
+
+//     if(inputValue) setOpen(true);
+// }
 
 const handleClose = () => {
     setOpen(false);
@@ -70,8 +73,9 @@ function handleModalChange(e?: any){
       });
     console.log('value', e.target.name);
     console.log('inputvalue', inputValue)
-    let fileName = e.target.name
-    let folderName = inputValue
+    const fileName = e.target.name
+    const folderName = inputValue
+    
     handleInputBoilerFiles(explorer.id, fileName, folderName)
 
 }
@@ -82,8 +86,14 @@ function handleModalChange(e?: any){
         e?.stopPropagation()
             e?.preventDefault()
 
-             handleCreateCustomEndpoint(explorer.id, inputValue)
+            
+            if(inputValue) {
+                handleCreateCustomEndpoint(explorer.id, inputValue)
             setOpen(true);
+            }
+            else {
+                alert('Please enter a file name')
+            }
     
     };
 
@@ -92,7 +102,6 @@ function handleModalChange(e?: any){
 
     return (
         <div className='cursor' >
-          
             <form >
             <input 
             type="text"
@@ -100,7 +109,6 @@ function handleModalChange(e?: any){
             placeholder= " New Endpoint"
             onChange ={handleChange}
             value={inputValue}
-            
             />
            
             <button type = "submit" onClick={handleCreateCustomFolder}>
