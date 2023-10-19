@@ -1,5 +1,5 @@
 import { useDroppable } from '@dnd-kit/core';
-import { Tag } from '../../types';
+import { Tag } from '../../utils/interfaces';
 import {
   SortableContext,
   verticalListSortingStrategy,

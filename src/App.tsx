@@ -8,6 +8,10 @@ import explorer from './components/left/data/folderData';
 import Folder from './components/left/folder';
 import useTraverseTree from './components/left/hooks/use-traverse-tree';
 import CustomEndpoint from './components/left/CustomEndpoint';
+import TabsComponent from './components/right/TabsComponent';
+import DisplayContainer from './components/right/DisplayContainer';
+import { Tag, Elements } from './utils/interfaces';
+import { generateId } from './utils/generateId';
 
 interface ComponentNameType {
   componentName: string;
@@ -19,6 +23,30 @@ export const CodeContext = React.createContext<ComponentNameType | undefined>(
 );
 
 const App = () => {
+  const [elements, setElements] = useState<Tag[]>([
+    { id: generateId(), name: 'div' },
+    {
+      id: generateId(),
+      name: 'img',
+    },
+    {
+      id: generateId(),
+      name: 'p',
+    },
+    {
+      id: generateId(),
+      name: 'form',
+    },
+    {
+      id: generateId(),
+      name: 'button',
+    },
+    {
+      id: generateId(),
+      name: 'link',
+    },
+  ]);
+
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
 
@@ -57,9 +85,13 @@ const App = () => {
         <Grid
           container
           justifyContent={'space-between'}
-          sx={{ border: 2, borderColor: 'pink', height: '100vh' }}
+          sx={{ height: '100vh' }}
         >
-          <Grid item xs={3.5} sx={{ border: 2, borderColor: 'red' }}>
+          <Grid item xs={3.5}>
+            <CustomEndpoint
+              handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+              explorer={explorerData}
+            />
             <Folder
               handleInsertNode={handleInsertNode}
               handleDeleteNode={handleDeleteNode}
@@ -71,13 +103,10 @@ const App = () => {
               handleInputBoilerFiles = {handleInputBoilerFiles}
               explorer={explorerData}
             />
+
           </Grid>
 
-          <Grid
-            item
-            xs={4}
-            sx={{ border: 2, borderColor: 'blue', display: 'flex' }}
-          >
+          <Grid item xs={4} sx={{ display: 'flex' }}>
             <Grid alignSelf={'flex-start'}>
               <CreateComponentBtn />
             </Grid>
@@ -85,7 +114,8 @@ const App = () => {
           </Grid>
 
           <Grid item xs={4} sx={{ border: 2, borderColor: 'green' }}>
-            <CodePreview />
+            <TabsComponent />
+            {/* <DisplayContainer /> */}
           </Grid>
         </Grid>
       </Box>

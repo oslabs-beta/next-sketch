@@ -1,6 +1,10 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 
-export type Tag = {
+export interface Tag  {
     id: UniqueIdentifier;
     name: string;
+}
+
+export interface Elements {
+    [key: string]: Tag;
 }
