@@ -82,41 +82,57 @@ const CustomEndpoint = ({
     e?.stopPropagation();
     e?.preventDefault();
 
-    if (inputValue) {
-      handleCreateCustomEndpoint(explorer.id, inputValue);
-      setOpen(true);
-    } else {
-      alert('Please enter a file name');
-    }
-  };
-  return (
-    <div className='cursor'>
-      <form>
-        <input
-          type='text'
-          autoFocus
-          placeholder=' New Endpoint'
-          onChange={handleChange}
-          value={inputValue}
-        />
+    const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
+        e?.stopPropagation()
+        e?.preventDefault()
 
-        <button type='submit' onClick={handleCreateCustomFolder}>
-          Submit
-        </button>
-      </form>
+        const body ={"name": inputValue}
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='modal-title'
-        aria-describedby='modal-description'
-      >
-        <Box sx={style}>
-          <Typography
-            id='modal-title'
-            variant='h6'
-            component='h2'
-            style={{ marginBottom: 20, fontSize: 30 }}
+        const response = await fetch('http://localhost:3000/',
+        {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+        console.log('response ok', response)
+
+            if(inputValue) {
+                handleCreateCustomEndpoint(explorer.id, inputValue)
+            setOpen(true);
+            }
+            else {
+                alert('Please enter a file name')
+            }
+
+
+
+
+
+
+    };
+    return (
+        <div className='cursor'>
+          <form>
+            <input
+              type='text'
+              autoFocus
+              placeholder=' New Endpoint'
+              onChange={handleChange}
+              value={inputValue}
+            />
+    
+            <button type='submit' onClick={handleCreateCustomFolder}>
+              Submit
+            </button>
+          </form>
+    
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby='modal-title'
+            aria-describedby='modal-description'
           >
             Choose Your Template Files
           </Typography>

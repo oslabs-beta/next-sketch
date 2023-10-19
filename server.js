@@ -12,8 +12,12 @@ app.use(express.json());
 
 
 
-app.get("/", fileController.postFiles, (req, res) => {
-    return res.status(200).json(res.locals.files);
+app.post("/", fileController.postFolder, (req, res) => {
+    return res.status(200).json();
+});
+
+app.delete("/", fileController.deleteFolder, (req, res) => {
+    return res.status(200).json();
 });
 
 

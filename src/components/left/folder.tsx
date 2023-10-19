@@ -50,11 +50,19 @@ function Folder({
     }
   };
 
-  const handleDeleteFolder = (e?: React.MouseEvent, arg?: boolean) => {
-    e?.stopPropagation();
-    handleDeleteNode(explorer.id);
-    setShowInput({ ...showInput, visible: false });
-  };
+    const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
+        e?.stopPropagation();
+        handleDeleteNode(explorer.id)
+
+       await fetch('http://localhost:3000/', {
+            method: "Delete",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"name": explorer.name})
+        })
+
+        setShowInput({ ...showInput, visible: false })
 
   useEffect(() => {
     console.log('inside folder', code);
