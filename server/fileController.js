@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const execSync = require("child_process").execSync;
-const ncp = require("ncp").ncp;
+
 
 const fileController = {
   // Recursive function to get files
@@ -127,16 +127,14 @@ const fileController = {
     //   }
     // });
 
-
-
-    
-    ncp(sourceDir, path.join(targetDir, "nextsketch"), function (err) {
+    fs.copy(sourceDir, path.join(targetDir, 'nextsketch'), { recursive: true }, (err) => {
       if (err) {
         console.error(`Error copying directory: ${err}`);
       } else {
-        console.log("Directory and its contents copied successfully.");
+        console.log('Directory and its contents copied successfully.');
       }
     });
+
 
     return next();
   },

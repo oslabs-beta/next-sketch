@@ -113,20 +113,24 @@ const CustomEndpoint = ({handleCreateCustomEndpoint, handleInputBoilerFiles, exp
     };
     return (
         <div className='cursor'>
-          <form>
-            <input
-              type='text'
-              autoFocus
-              placeholder=' New Endpoint'
-              onChange={handleChange}
-              value={inputValue}
-            />
-    
-            <button type='submit' onClick={handleCreateCustomFolder}>
-              Submit
-            </button>
-          </form>
-    
+
+<form>
+      <div className="input-container">
+        <input
+          type='text'
+          autoFocus
+          placeholder='New Endpoint'
+          onChange={handleChange}
+          value={inputValue}
+          id="searchInput"
+        />
+        <div className="text-cursor"></div>
+      </div>
+
+      <button type='submit' onClick={handleCreateCustomFolder}>
+        Submit
+      </button>
+    </form>
           <Modal
             open={open}
             onClose={handleClose}
