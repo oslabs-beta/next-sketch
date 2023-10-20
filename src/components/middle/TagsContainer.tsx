@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
-import { DroppableSection } from './DroppableSection';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
 import { generateId } from '../../utils/generateId';
+import DisplayContainer from '../right/DisplayContainer';
 
 const TagsContainer = (): JSX.Element => {
   const staticTags: Tag[] = [
@@ -52,17 +51,6 @@ const TagsContainer = (): JSX.Element => {
   ];
 
   const [tags, setTags] = useState<Tag[]>([]);
-
-  const handleSortDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (active.id !== over?.id) {
-      setTags((tags) => {
-        const activeIndex = tags.findIndex((tag) => tag.id === active.id);
-        const overIndex = tags.findIndex((tag) => tag.id === over?.id);
-        return arrayMove(tags, activeIndex, overIndex);
-      });
-    }
-  };
 
   const addTagToBox = (event: DragEndEvent) => {
     const { active } = event;
@@ -122,35 +110,7 @@ const TagsContainer = (): JSX.Element => {
             ))}
           </Box>
         </Box>
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={handleSortDragEnd}
-        >
-          <Box
-            sx={{
-              // bgcolor: '#FFF0D5',
-              borderBottomRightRadius: '20px',
-              borderTopRightRadius: '20px',
-              borderBottomLefttRadius: '20px',
-              width: '100%',
-              overflowY: 'auto',
-            }}
-          >
-            <Box
-              sx={{
-                bgcolor: 'rgba(191, 196, 248, 0.8)',
-                color: 'black',
-                textAlign: 'center',
-                borderTopRightRadius: '20px',
-              }}
-              position={'sticky'}
-            >
-              <Typography variant='h6'>Box</Typography>
-            </Box>
-
-            <DroppableSection tags={tags} />
-          </Box>
-        </DndContext>
+        <DisplayContainer tags={tags} setTags={setTags} />
       </DndContext>
     </Box>
   );

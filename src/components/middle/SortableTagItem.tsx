@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Button } from '@mui/material';
+import { Box } from '@mui/material';
+import { DndContext } from '@dnd-kit/core';
 
 interface SortableTagItemProps {
   id: string | number;
@@ -21,29 +22,22 @@ export const SortableTagItem = ({ id, children }: SortableTagItemProps) => {
   };
 
   return (
-    <Button
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      variant='contained'
-      sx={{
-        bgcolor: 'rgba(191, 196, 248, 0.8)',
-        fontSize: 15,
-        marginTop: 1,
-        marginBottom: 1,
-        paddingRight: 5,
-        paddingLeft: 5,
-        width: 5,
-        height: 30,
-        boxShadow: 8,
-        ':hover': {
-          bgcolor: '#e9eafc',
-          color: '#0A0908',
-        }
-      }}
-    >
-      {children}
-    </Button>
+      <Box
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        sx={{
+          bgcolor: 'rgba(191, 196, 248, 0.8)',
+          fontSize: 15,
+          width: '150px',
+          height: '50px',
+          marginTop: 1,
+          marginBottom: 1,
+          boxShadow: 8,
+        }}
+      >
+        {children}
+      </Box>
   );
 };

@@ -6,5 +6,9 @@ interface TagItemProps {
 }
 
 export const TagItem = ({ tag }: TagItemProps): JSX.Element => {
-  return <Typography>{tag.name}</Typography>;
+  return (
+    <Typography variant='h6' sx={{ textAlign: 'center' }}>
+      {tag.name.toUpperCase()}
+    </Typography>
+  );
 };
