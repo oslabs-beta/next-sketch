@@ -13,26 +13,64 @@ interface CodePreviewProps {
 
 const CodePreview = ({ code }: CodePreviewProps) => {
   const [componentName, setComponentName] = useContext(CodeContext);
+  let codeSnippet = '';
 
   useEffect(() => {
     Prism.highlightAll();
-  }, [code]); //make it re render every time the component name is changed
+  }, [componentName]); //make it re render every time the component name is changed
 
-  const codeSnippet = `
-    import React from 'react';
+  function renderCode(title: string) {
+    if (componentName === 'NotFound') {
+      codeSnippet = `
+import React from 'react';
 
-    const ${componentName} = () => {
-      return ();
-    };
+const ${componentName} = () => {
+  return (
+    <div>
+      <h1>404 - Page Not Found</h1>
+      {/* You can add additional content or links here */}
+    </div>
+  );
+};
 
-    export default ${componentName};
+export default ${componentName};
 
-  `;
+      `;
+    } else {
+      codeSnippet = `
+      import React from 'react';
+    
+      const ${componentName} = () => {
+        return (
+          <>
+            {/* Your page content goes here */}
+          </>
+        );
+      };
+    
+      export default ${componentName};`;
+    }
+    return codeSnippet;
+  }
+
+  renderCode(componentName);
+
+  //write the code on the physical file
+
+  // function handleCodeChange() {
+  //   const response = await fetch('http://localhost:3000/', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(body),
+  // });
+  // }
 
   return (
     <Box>
       <pre>
-        <code className='language-tsx'>{code}</code>
+        <code className='language-javascript'>{codeSnippet}</code>
       </pre>
     </Box>
   );

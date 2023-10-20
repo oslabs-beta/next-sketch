@@ -68,6 +68,10 @@ const fileController = {
 
     return next();
   },
+
+  addCode: function (req, res, next) {
+    
+  } 
 };
 
 module.exports = fileController;

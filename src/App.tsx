@@ -74,27 +74,29 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
-  const handleInputBoilerFiles = async (folderId: number, item: string, folderName: string) => {
+  const handleInputBoilerFiles = async (
+    folderId: number,
+    item: string,
+    folderName: string
+  ) => {
     const finalTree: any = insertBoilerFiles(
       explorerData,
       folderId,
       item,
       folderName
     );
-    const body ={"fileName": item, "folderName": folderName}
+    const body = { fileName: item, folderName: folderName };
 
-   await fetch('http://localhost:3000/',
-    {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    })
-
-
+    await fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
 
     setExplorerData(finalTree);
+    setComponentName(item.slice(0, -4));
   };
 
   useEffect(() => {
@@ -153,9 +155,9 @@ const App = () => {
               </Grid>
 
               <Grid item xs={4} sx={{ display: 'flex' }}>
-                <Grid alignSelf={'flex-start'}>
+                {/* <Grid alignSelf={'flex-start'}>
                   <CreateComponentBtn />
-                </Grid>
+                </Grid> */}
                 <TagsContainer />
               </Grid>
 

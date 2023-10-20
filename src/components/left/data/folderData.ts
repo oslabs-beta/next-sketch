@@ -34,28 +34,15 @@ const explorer = {
         },
         {
           id: '7',
-          name: 'layout.tsx',
+          name: 'Layout.tsx',
           isFolder: false,
           items: [],
         },
         {
           id: '8',
-          name: 'page.tsx',
+          name: 'Page.tsx',
           isFolder: false,
           items: [],
-          code: `
-        import React from 'react';
-
-        const HomePage: React.FC = () => {
-            return (
-                <div>
-                    <h1>Hello, Next.js!</h1>
-                </div>
-                );
-            };
-                    
-        export default HomePage;
-        `,
         },
       ],
     },

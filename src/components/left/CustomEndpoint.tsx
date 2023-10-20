@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
+import { CodeContext } from '../../App';
 
 interface modalLayout {
-  default: boolean;
-  error: boolean;
-  layout: boolean;
-  loading: boolean;
-  notFound: boolean;
-  route: boolean;
-  template: boolean;
+  Default: boolean;
+  Error: boolean;
+  Layout: boolean;
+  Loading: boolean;
+  NotFound: boolean;
+  Route: boolean;
+  Template: boolean;
 }
 
 //----------------
@@ -38,19 +39,20 @@ const CustomEndpoint = ({
 }: any) => {
   const [inputValue, setInputValue] = useState('');
   const [open, setOpen] = useState(false);
+  const [componentName, setComponentName] = useContext(CodeContext);
 
   const handleClose = () => {
     setOpen(false);
     setInputValue('');
   };
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
-    default: false,
-    error: false,
-    layout: false,
-    loading: false,
-    notFound: false,
-    route: false,
-    template: false,
+    Default: false,
+    Error: false,
+    Layout: false,
+    Loading: false,
+    NotFound: false,
+    Route: false,
+    Template: false,
   });
 
   function handleChange(e?: any) {
@@ -128,64 +130,64 @@ const CustomEndpoint = ({
           <div>
             <Checkbox
               name='default.tsx'
-              checked={selectedItems.default}
+              checked={selectedItems.Default}
               onChange={handleModalChange}
             />
-            default.tsx
+            Default.tsx
           </div>
 
           <div>
             <Checkbox
-              name='error.tsx'
-              checked={selectedItems.error}
+              name='Error.tsx'
+              checked={selectedItems.Error}
               onChange={handleModalChange}
             />
-            error.tsx
+            Error.tsx
           </div>
 
           <div>
             <Checkbox
-              name='layout.tsx'
-              checked={selectedItems.layout}
+              name='Layout.tsx'
+              checked={selectedItems.Layout}
               onChange={handleModalChange}
             />
-            layout.tsx
+            Layout.tsx
           </div>
 
           <div>
             <Checkbox
-              name='loading.tsx'
-              checked={selectedItems.loading}
+              name='Loading.tsx'
+              checked={selectedItems.Loading}
               onChange={handleModalChange}
             />
-            loading.tsx
+            Loading.tsx
           </div>
 
           <div>
             <Checkbox
-              name='not-found.tsx'
-              checked={selectedItems.notFound}
+              name='NotFound.tsx'
+              checked={selectedItems.NotFound}
               onChange={handleModalChange}
             />
-            not-found.tsx
+            NotFound.tsx
           </div>
 
           <div>
             <Checkbox
-              name='route.tsx'
-              checked={selectedItems.route}
+              name='Route.tsx'
+              checked={selectedItems.Route}
               onChange={handleModalChange}
             />
-            route.tsx
+            Route.tsx
           </div>
 
           <div>
             <Checkbox
-              name='template.tsx'
-              checked={selectedItems.template}
+              name='Template.tsx'
+              checked={selectedItems.Template}
               onChange={handleModalChange}
             />
-            template.tsx
+            Template.tsx
           </div>
 
           <Button onClick={handleClose} sx={{ mt: 3 }}>
