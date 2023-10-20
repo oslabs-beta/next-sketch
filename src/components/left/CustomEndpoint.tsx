@@ -60,7 +60,7 @@ const CustomEndpoint = ({
     setInputValue(e.target.value);
   }
 
-  function handleModalChange(e?: any) {
+  async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
     setSelectedItems({
       ...selectedItems,
@@ -72,6 +72,16 @@ const CustomEndpoint = ({
     const folderName = inputValue;
 
     handleInputBoilerFiles(explorer.id, fileName, folderName);
+
+    const body = { fileName: fileName, folderName: folderName };
+
+    await fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
   }
 
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
@@ -80,14 +90,13 @@ const CustomEndpoint = ({
 
     const body = { name: inputValue };
 
-    const response = await fetch('http://localhost:3000/', {
+    await fetch('http://localhost:3000/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     });
-    console.log('response ok', response);
 
     if (inputValue) {
       handleCreateCustomEndpoint(explorer.id, inputValue);
@@ -166,11 +175,11 @@ const CustomEndpoint = ({
 
           <div>
             <Checkbox
-              name='notFound.tsx'
+              name='not-found.tsx'
               checked={selectedItems.notFound}
               onChange={handleModalChange}
             />
-            notFound.tsx
+            not-found.tsx
           </div>
 
           <div>

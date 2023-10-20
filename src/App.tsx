@@ -87,7 +87,7 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
-  const handleInputBoilerFiles = async (
+  const handleInputBoilerFiles = (
     folderId: number,
     item: string,
     folderName: string
@@ -98,18 +98,6 @@ const App = () => {
       item,
       folderName
     );
-    const body = {
-      fileName: item,
-      folderName: folderName,
-    };
-
-    await fetch('http://localhost:3000/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
 
     setExplorerData(finalTree);
     setComponentName(item.slice(0, -4));
