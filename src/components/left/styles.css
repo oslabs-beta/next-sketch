@@ -61,11 +61,15 @@ form {
   
 }
 
+form:hover{
+  cursor: text;
+}
+
 /* Styles for the input field */
 input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 5px;
   font-size: 16px;
   margin-right: 5px;
@@ -97,12 +101,46 @@ button[type="submit"]:disabled {
   cursor: not-allowed;
 }
 
-@keyframes blink {
-    0%, 100% {
-      border-color: #333; /* Set caret color */
-    }
-    50% {
-      border-color: transparent; /* Hide the caret at its midpoint */
-    }
+
+  
+
+ 
+ 
+  
+ /* Styles for the input container */
+.input-container {
+  position: relative;
+}
+
+/* Styles for the input field */
+#searchInput {
+  border: none; /* Remove the default input border */
+  outline: none; /* Remove the default input focus outline */
+  padding: 0; /* Remove any padding or margins */
+  width: 100%;
+}
+
+/* Styles for the blinking cursor (initially hidden) */
+.text-cursor {
+  position: absolute;
+  height: 100%;
+  width: 2px; /* Adjust the width as needed */
+  animation: none; /* Initially, no blinking */
+}
+
+@keyframes cursor-blink {
+  0%, 100% {
+    background: transparent; /* Make the cursor disappear */
   }
+ 
+}
+
+#searchInput::placeholder {
+  color: #ccc; /* Customize the placeholder text color */
+}
+
+#searchInput:focus + .text-cursor {
+  animation: cursor-blink 1s infinite; /* Start the blinking animation when focused */
+}
+
   
