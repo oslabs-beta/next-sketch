@@ -25,8 +25,13 @@ function createWindow() {
     })
 
     // Test active push message to Renderer-process.
-    win.webContents.on('did-finish-load', () => {
+    win.webContents.on('did-finish-load', async () => {
         win?.webContents.send('main-process-message', (new Date).toLocaleString())
+        try {
+            await fetch('http://localhost:3000/');
+          } catch (error) {
+            console.error('Error during fetch:');
+          }
     })
 
     if (VITE_DEV_SERVER_URL) {
@@ -35,16 +40,25 @@ function createWindow() {
         // win.loadFile('dist/index.html')
         win.loadFile(path.join(process.env.DIST, 'index.html'))
     }
+
+
+
+
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
+app.on('window-all-closed', async () => {
     if (process.platform !== 'darwin') {
+
         app.quit()
         win = null
     }
+
+   
+
+
 })
 
 app.on('activate', () => {

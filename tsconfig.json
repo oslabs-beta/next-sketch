@@ -110,6 +110,7 @@
   "include": [
     "src",
     "electron",
+    "ExportFolder",
   ],
   "references": [
     {

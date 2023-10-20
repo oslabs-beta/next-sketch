@@ -73,17 +73,14 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
-  const handleInputBoilerFiles = (
-    folderId: number,
-    item: string,
-    folderName: string
-  ) => {
+  const handleInputBoilerFiles = (folderId: number, item: string, folderName: string) => {
     const finalTree: any = insertBoilerFiles(
       explorerData,
       folderId,
       item,
       folderName
     );
+  
     setExplorerData(finalTree);
   };
 
