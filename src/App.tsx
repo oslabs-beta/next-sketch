@@ -18,9 +18,18 @@ interface ComponentNameType {
   setComponentName: Dispatch<SetStateAction<string>>;
 }
 
+interface CodeSnippetType {
+  codeSnippet: string;
+  setCodeSnippet: Dispatch<SetStateAction<string>>;
+}
+
 export const CodeContext = React.createContext<ComponentNameType | undefined>(
   undefined
 );
+
+export const CodeSnippetContext = React.createContext<
+  CodeSnippetType | undefined
+>(undefined);
 
 const App = () => {
   const [elements, setElements] = useState<Tag[]>([
@@ -49,7 +58,11 @@ const App = () => {
 
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
-  const [code, setCode] = useState<string>('Hello');
+  //Check what this setCode is doing??
+  const [code, setCode] = useState<string>('Hello'); // Use state to store the code
+  const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
+    undefined
+  );
 
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
     useTraverseTree();
@@ -85,7 +98,10 @@ const App = () => {
       item,
       folderName
     );
-    const body = { fileName: item, folderName: folderName };
+    const body = {
+      fileName: item,
+      folderName: folderName,
+    };
 
     await fetch('http://localhost:3000/', {
       method: 'POST',
@@ -132,41 +148,43 @@ const App = () => {
         }}
       >
         <CodeContext.Provider value={[componentName, setComponentName]}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid
-              container
-              justifyContent={'space-between'}
-              sx={{ height: '85vh' }}
-            >
-              <Grid item xs={3.5}>
-                <CustomEndpoint
-                  handleCreateCustomEndpoint={handleCreateCustomEndpoint}
-                  handleInputBoilerFiles={handleInputBoilerFiles}
-                  explorer={explorerData}
-                  code={code}
-                />
-                <Folder
-                  handleInsertNode={handleInsertNode}
-                  handleDeleteNode={handleDeleteNode}
-                  explorer={explorerData}
-                  code={code}
-                  setCode={setCode}
-                />
-              </Grid>
+          <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid
+                container
+                justifyContent={'space-between'}
+                sx={{ height: '85vh' }}
+              >
+                <Grid item xs={3.5}>
+                  <CustomEndpoint
+                    handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+                    handleInputBoilerFiles={handleInputBoilerFiles}
+                    explorer={explorerData}
+                    code={code}
+                  />
+                  <Folder
+                    handleInsertNode={handleInsertNode}
+                    handleDeleteNode={handleDeleteNode}
+                    explorer={explorerData}
+                    code={code}
+                    setCode={setCode}
+                  />
+                </Grid>
 
-              <Grid item xs={4} sx={{ display: 'flex' }}>
-                {/* <Grid alignSelf={'flex-start'}>
+                <Grid item xs={4} sx={{ display: 'flex' }}>
+                  {/* <Grid alignSelf={'flex-start'}>
                   <CreateComponentBtn />
                 </Grid> */}
-                <TagsContainer />
-              </Grid>
+                  <TagsContainer />
+                </Grid>
 
-              <Grid item xs={4} sx={{ height: '500px' }}>
-                <TabsComponent code={code} setCode={setCode} />
-                {/* <DisplayContainer /> */}
+                <Grid item xs={4} sx={{ height: '500px' }}>
+                  <TabsComponent code={code} setCode={setCode} />
+                  {/* <DisplayContainer /> */}
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
+            </Box>
+          </CodeSnippetContext.Provider>
         </CodeContext.Provider>
       </Box>
     </Box>

@@ -5,11 +5,11 @@ import 'prismjs/themes/prism.css'; // Use the path to the actual Prism.css file
 import 'prismjs/themes/prism-okaidia.css'; //okadia theme
 import 'prismjs/components/prism-javascript';
 import { useContext, useEffect, useState } from 'react';
-import { CodeContext } from '../../App';
+import { CodeContext, CodeSnippetContext } from '../../App';
 
 const CodePreview = () => {
   const [componentName, setComponentName] = useContext(CodeContext);
-  const [codeSnippet, setCodeSnippet] = useState(''); // Use state to store the code
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext); // Use state to store the code
 
   useEffect(() => {
     // Generate the code snippet
