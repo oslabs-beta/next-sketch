@@ -31,11 +31,7 @@ const style = {
 //MUI styling fior modal
 //-----------------
 
-const CustomEndpoint = ({
-  handleCreateCustomEndpoint,
-  handleInputBoilerFiles,
-  explorer,
-}: any) => {
+const CustomEndpoint = ({handleCreateCustomEndpoint, handleInputBoilerFiles, explorer}: any) => {
   const [inputValue, setInputValue] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -53,11 +49,11 @@ const CustomEndpoint = ({
     template: false,
   });
 
-  function handleChange(e?: any) {
+   function handleChange(e?: any) {
     setInputValue(e.target.value);
   }
 
-  function handleModalChange(e?: any) {
+  async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
     setSelectedItems({
       ...selectedItems,
@@ -70,15 +66,37 @@ const CustomEndpoint = ({
     
     handleInputBoilerFiles(explorer.id, fileName, folderName)
 
+    const body ={"fileName": fileName, "folderName": folderName}
+
+    await fetch('http://localhost:3000/',
+    {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+
+
 }
 
 
 
-    const handleCreateCustomFolder =(e?: React.MouseEvent) => {
+    const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
         e?.stopPropagation()
-            e?.preventDefault()
+        e?.preventDefault()
 
-            
+        const body ={"name": inputValue}
+
+        await fetch('http://localhost:3000/',
+        {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+
             if(inputValue) {
                 handleCreateCustomEndpoint(explorer.id, inputValue)
             setOpen(true);
@@ -86,23 +104,33 @@ const CustomEndpoint = ({
             else {
                 alert('Please enter a file name')
             }
+
+
+
+
+
+
     };
     return (
         <div className='cursor'>
-          <form>
-            <input
-              type='text'
-              autoFocus
-              placeholder=' New Endpoint'
-              onChange={handleChange}
-              value={inputValue}
-            />
-    
-            <button type='submit' onClick={handleCreateCustomFolder}>
-              Submit
-            </button>
-          </form>
-    
+
+<form>
+      <div className="input-container">
+        <input
+          type='text'
+          autoFocus
+          placeholder='New Endpoint'
+          onChange={handleChange}
+          value={inputValue}
+          id="searchInput"
+        />
+        <div className="text-cursor"></div>
+      </div>
+
+      <button type='submit' onClick={handleCreateCustomFolder}>
+        Submit
+      </button>
+    </form>
           <Modal
             open={open}
             onClose={handleClose}
