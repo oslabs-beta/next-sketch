@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 const fileController = {
   // Recursive function to get files
@@ -50,28 +50,29 @@ const fileController = {
 
   postFolder: function (req, res, next) {
     if (req.body.name) {
-      const dir = "ExportFolder/nextsketch/src/app/";
+      const dir = 'ExportFolder/nextsketch/src/app/';
       fs.mkdirSync(path.join(dir, req.body.name));
       return next();
     }
 
     if (req.body.fileName) {
-      const fileDir = "ExportFolder/nextsketch/src/app/" + req.body.folderName;
-      fs.writeFileSync(path.join(fileDir, req.body.fileName), "");
+      const fileDir = 'ExportFolder/nextsketch/src/app/' + req.body.folderName;
+      fs.writeFileSync(path.join(fileDir, req.body.fileName), '');
       return next();
     }
   },
 
   deleteFolder: function (req, res, next) {
-    const folderDir = "ExportFolder/nextsketch";
+    const folderDir = 'ExportFolder/nextsketch';
     fs.rmSync(path.join(folderDir, req.body.name));
 
     return next();
   },
 
   addCode: function (req, res, next) {
-    
-  } 
+    console.log('Hello inside the middleware addCode');
+    return next();
+  },
 };
 
 module.exports = fileController;

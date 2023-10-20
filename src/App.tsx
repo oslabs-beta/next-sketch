@@ -96,9 +96,7 @@ const App = () => {
     });
 
     setExplorerData(finalTree);
-    //capitalize item for teh functional component
-    const capitalizedItem = item.charAt(0).toUpperCase() + item.slice(1);
-    setComponentName(capitalizedItem.slice(0, -4));
+    setComponentName(item.slice(0, -4));
   };
 
   useEffect(() => {
