@@ -13,6 +13,7 @@ interface CodePreviewProps {
 
 const CodePreview = ({ code }: CodePreviewProps) => {
   const [componentName, setComponentName] = useContext(CodeContext);
+
   let codeSnippet = '';
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const CodePreview = ({ code }: CodePreviewProps) => {
   }, [componentName]); //make it re render every time the component name is changed
 
   function renderCode(title: string) {
-    if (componentName === 'NotFound') {
+    if (componentName === 'notFound') {
       codeSnippet = `
 import React from 'react';
 
