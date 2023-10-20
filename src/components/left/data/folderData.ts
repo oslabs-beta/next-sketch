@@ -21,28 +21,35 @@ const explorer = {
             isFolder: true,
             items: [
                 {
-                    id: "5",
-                    name: "favicon.ico",
-                    isFolder: false,
-                    items: []
-                },
-                {
-                    id: "6",
-                    name: "globals.css",
-                    isFolder: false,
-                    items: []
-                },
-                {
-                    id: "7",
-                    name: "layout.tsx",
-                    isFolder: false,
-                    items: []
-                },
-                {
-                    id: "8",
-                    name: "page.tsx",
-                    isFolder: false,
-                    items: []
+                    id: "4.5",
+                    name: "app",
+                    isFolder: true,
+                    items: [
+                        {
+                            id: "5",
+                            name: "favicon.ico",
+                            isFolder: false,
+                            items: []
+                        },
+                        {
+                            id: "6",
+                            name: "globals.css",
+                            isFolder: false,
+                            items: []
+                        },
+                        {
+                            id: "7",
+                            name: "layout.tsx",
+                            isFolder: false,
+                            items: []
+                        },
+                        {
+                            id: "8",
+                            name: "page.tsx",
+                            isFolder: false,
+                            items: []
+                        }
+                    ]
                 }
             ]
         },
@@ -102,7 +109,7 @@ const explorer = {
         },
         {
             id: "18",
-            name: "ts.config.json",
+            name: "tsconfig.json",
             isFolder: false,
             items: []
         }

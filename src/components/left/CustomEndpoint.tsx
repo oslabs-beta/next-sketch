@@ -31,11 +31,7 @@ const style = {
 //MUI styling fior modal
 //-----------------
 
-const CustomEndpoint = ({
-  handleCreateCustomEndpoint,
-  handleInputBoilerFiles,
-  explorer,
-}: any) => {
+const CustomEndpoint = ({handleCreateCustomEndpoint, handleInputBoilerFiles, explorer}: any) => {
   const [inputValue, setInputValue] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -53,11 +49,11 @@ const CustomEndpoint = ({
     template: false,
   });
 
-  function handleChange(e?: any) {
+   function handleChange(e?: any) {
     setInputValue(e.target.value);
   }
 
-  function handleModalChange(e?: any) {
+  async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
     setSelectedItems({
       ...selectedItems,
@@ -70,6 +66,18 @@ const CustomEndpoint = ({
     
     handleInputBoilerFiles(explorer.id, fileName, folderName)
 
+    const body ={"fileName": fileName, "folderName": folderName}
+
+    await fetch('http://localhost:3000/',
+    {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+
+
 }
 
 
@@ -80,7 +88,7 @@ const CustomEndpoint = ({
 
         const body ={"name": inputValue}
 
-        const response = await fetch('http://localhost:3000/',
+        await fetch('http://localhost:3000/',
         {
             method: 'POST',
             headers: {
@@ -88,7 +96,6 @@ const CustomEndpoint = ({
             },
             body: JSON.stringify(body)
         })
-        console.log('response ok', response)
 
             if(inputValue) {
                 handleCreateCustomEndpoint(explorer.id, inputValue)
