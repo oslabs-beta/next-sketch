@@ -42,29 +42,59 @@ const useTraverseTree = () => {
 
 
        //loop through files of source folder and make sure there are not 2 folders with the same name
-        for(const folder of tree.items) {
-            if(folder.name === 'src') {
+        // for(const folder of tree.items) {
+        //     if(folder.name === 'src') {
 
-                for(const files of folder.items){
-                    if(files.name === item) {
-                        alert('Folder name already exists!')
-                        fileAlreadyExists = true
-                }
-            }
+        //         for(const files of folder.items){
+        //             if(files.name === item) {
+        //                 alert('Folder name already exists!')
+        //                 fileAlreadyExists = true
+        //         }
+        //     }
 
-            if(fileAlreadyExists === false){
-                folder.items.unshift({
-                    id: new Date().getTime(),
-                    name: item,
-                    isFolder: true,
-                    items: []})
+        //     if(fileAlreadyExists === false){
+        //         folder.items.unshift({
+        //             id: new Date().getTime(),
+        //             name: item,
+        //             isFolder: true,
+        //             items: []})
                 
-                }
-            }
+        //         }
+        //     }
+        // }
+
+        if (tree.name === 'app') {
+
+            console.log(tree.items)
+
+            for(const files of tree.items){
+                    if(files.name === item) {
+                            alert('Folder name already exists!')
+                                fileAlreadyExists = true
+                        }
+                    }
+
+
+        if(fileAlreadyExists === false){
+            tree.items.unshift({
+                id: new Date().getTime(),
+                name: item,
+                isFolder: true,
+                items: []
+
+            });
+            return tree;
         }
+    }
+
+        let latestNode = [];
+        latestNode = tree.items.map((ob: object) => {
+            return createCustomEndpoint(ob, folderId, item, isFolder);
+        });
+
+        return { ...tree, items: latestNode };
 
 
-        return { ...tree};
 
     }
 
