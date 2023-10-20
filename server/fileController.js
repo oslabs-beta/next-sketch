@@ -52,20 +52,20 @@ const fileController = {
 
   postFolder: function (req, res, next) {
     if (req.body.name) {
-      const dir = "ExportFolder/nextsketch/src/app/";
+      const dir = "server/ExportFolder/nextsketch/src/app/";
       fs.mkdirSync(path.join(dir, req.body.name));
       return next();
     }
 
     if (req.body.fileName) {
-      const fileDir = "ExportFolder/nextsketch/src/app/" + req.body.folderName;
+      const fileDir = "server/ExportFolder/nextsketch/src/app/" + req.body.folderName;
       fs.writeFileSync(path.join(fileDir, req.body.fileName), "");
       return next();
     }
   },
 
   deleteFolder: function (req, res, next) {
-    const folderDir = "ExportFolder/nextsketch";
+    const folderDir = "server/ExportFolder/nextsketch";
 
     //helper function to recursively get deeper into nested folders and files
     function recall(folderDir) {
@@ -86,7 +86,6 @@ const fileController = {
         //if the file is the same name as the one we clicked delete on, remove it from the directory
         if (file === req.body.name) {
           //condition to check if what we want to delete is either a folder or a file
-          console.log("in base case");
           if (fs.lstatSync(name).isDirectory())
             fs.rmSync(name, { recursive: true });
           else fs.rmSync(name);
@@ -107,7 +106,7 @@ const fileController = {
   },
 
   deleteExport: function (req, res, next) {
-    const folderDir = "ExportFolder/nextsketch";
+    const folderDir = "server/ExportFolder/nextsketch";
     fs.rmSync(folderDir, { recursive: true });
     // const output = execSync('npx create-next-app my-nextjs-app', { encoding: 'utf-8' });  // the default is 'buffer'
     // console.log('Output was:\n', output);
@@ -116,8 +115,7 @@ const fileController = {
   },
 
   createExport: function (req, res, next) {
-    console.log("asdasdadassdsadas");
-    const targetDir = "ExportFolder";
+    const targetDir = "server/ExportFolder";
     const sourceDir = "server/nextsketch";
 
     // process.chdir(dir);
