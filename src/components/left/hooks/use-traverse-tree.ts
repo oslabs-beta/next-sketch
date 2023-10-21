@@ -1,11 +1,11 @@
 const useTraverseTree = () => {
-  function insertNode(
+  const insertNode = (
     tree: any,
     folderId: number,
     item: string,
     isFolder: boolean,
     preview: string
-  ) {
+  ) => {
     if (tree.id === folderId && tree.isFolder) {
       tree.items.unshift({
         id: new Date().getTime(),
@@ -22,7 +22,7 @@ const useTraverseTree = () => {
     });
 
     return { ...tree, items: latestNode };
-  }
+  };
 
   const deleteNode = (tree: any, folderId: number) => {
     const items = tree.items.filter((ob: any) => {
@@ -96,19 +96,21 @@ const useTraverseTree = () => {
     return { ...tree, items: latestNode };
   };
 
-  function insertBoilerFiles(
+  // const retrieveCode =
+
+  const insertBoilerFiles = (
     tree: any,
     folderId: number,
     item: string,
     folderName: string,
     preview: string
-  ) {
+  ) => {
     if (tree.name === folderName) {
       tree.items.unshift({
         id: new Date().getTime(),
         name: item,
         items: [],
-        preview: '',
+        preview: preview,
       });
       return tree;
     }
@@ -119,7 +121,7 @@ const useTraverseTree = () => {
     });
 
     return { ...tree, items: latestNode };
-  }
+  };
 
   return { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles };
 };

@@ -46,11 +46,10 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
     }
   };
 
-  const handleCode = (code) => {
+  const handleCode = async () => {
     //changes the codeSnippet when the div is clicked
-    setComponentName(code.name);
-    console.log(explorer);
-    console.log(code.id);
+    console.log(explorer.preview);
+    // setComponentName(code.name);
   };
 
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {

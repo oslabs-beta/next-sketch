@@ -108,8 +108,6 @@ const fileController = {
   },
 
   updateCode: function (req, res, next) {
-    console.log('inside update controller');
-    console.log(req.body);
     const fileDir =
       'server/ExportFolder/nextsketch/src/app/' + req.body.folderName;
     fs.writeFileSync(path.join(fileDir, req.body.fileName), req.body.code);

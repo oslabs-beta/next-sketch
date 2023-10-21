@@ -25,7 +25,6 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   }, [componentName, codeSnippet]); // Re-render and update the code when componentName changes
 
   function renderCode(title: string) {
-    console.log('inside of renderCode function', componentName);
     //Check if it has end .tsx
     if (title.slice(-4) === '.tsx') {
       title = title.slice(0, -4);

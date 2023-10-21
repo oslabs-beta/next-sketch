@@ -63,8 +63,7 @@ const CustomEndpoint = ({
 
   useEffect(() => {
     // This effect runs whenever componentName changes
-    console.log('componentName has been updated to:', componentName);
-    console.log('codeSnippet has been updated to:', codeSnippet);
+
     handleUpdateCode(inputValue, componentName, codeSnippet);
   }, [codeSnippet]);
 
@@ -74,8 +73,6 @@ const CustomEndpoint = ({
       ...selectedItems,
       [name]: e.target.checked,
     });
-    console.log('value', e.target.name);
-    console.log('inputvalue', inputValue);
     const fileName = e.target.name;
     const folderName = inputValue;
 
@@ -122,7 +119,6 @@ const CustomEndpoint = ({
       if (response.ok) {
         // Handle a successful PUT request
         const updatedData = await response.json();
-        console.log('Resource updated:', updatedData);
       } else {
         // Handle PUT request failure
         console.error(
