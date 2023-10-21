@@ -37,43 +37,54 @@ const useTraverseTree = () => {
     return { ...tree, items: items };
   };
 
-  const createCustomEndpoint = (
-    tree: any,
-    folderId: number,
-    item: string,
-    isFolder: boolean
-  ) => {
-    let fileAlreadyExists = false;
+    const createCustomEndpoint = (tree: any, folderId: number, item: string, isFolder: boolean ) => {
+       let fileAlreadyExists = false;
 
-    //loop through files of source folder and make sure there are not 2 folders with the same name
-    // for(const folder of tree.items) {
-    //     if(folder.name === 'src') {
 
-    //         for(const files of folder.items){
-    //             if(files.name === item) {
-    //                 alert('Folder name already exists!')
-    //                 fileAlreadyExists = true
-    //         }
-    //     }
+       //loop through files of source folder and make sure there are not 2 folders with the same name
+        // for(const folder of tree.items) {
+        //     if(folder.name === 'src') {
 
-    //     if(fileAlreadyExists === false){
-    //         folder.items.unshift({
-    //             id: new Date().getTime(),
-    //             name: item,
-    //             isFolder: true,
-    //             items: []})
+        //         for(const files of folder.items){
+        //             if(files.name === item) {
+        //                 alert('Folder name already exists!')
+        //                 fileAlreadyExists = true
+        //         }
+        //     }
 
-    //         }
-    //     }
-    // }
+        //     if(fileAlreadyExists === false){
+        //         folder.items.unshift({
+        //             id: new Date().getTime(),
+        //             name: item,
+        //             isFolder: true,
+        //             items: []})
+                
+        //         }
+        //     }
+        // }
 
-    if (tree.name === 'app') {
-      console.log(tree.items);
+        if (tree.name === 'app') {
 
-      for (const files of tree.items) {
-        if (files.name === item) {
-          alert('Folder name already exists!');
-          fileAlreadyExists = true;
+            console.log(tree.items)
+
+            for(const files of tree.items){
+                    if(files.name === item) {
+                            alert('Folder name already exists!')
+                                fileAlreadyExists = true
+                                return a();
+                        }
+                    }
+
+
+        if(fileAlreadyExists === false){
+            tree.items.unshift({
+                id: new Date().getTime(),
+                name: item,
+                isFolder: true,
+                items: []
+
+            });
+            return tree;
         }
       }
 

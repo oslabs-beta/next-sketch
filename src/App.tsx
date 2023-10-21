@@ -32,6 +32,10 @@ export const CodeSnippetContext = React.createContext<
 >(undefined);
 
 const App = () => {
+
+  const [folderExpanded,setFolderExpanded] = useState(false);
+  const [open,setOpen] = useState(false);
+
   const [elements, setElements] = useState<Tag[]>([
     { id: generateId(), name: 'div' },
     {
@@ -158,6 +162,8 @@ const App = () => {
                     handleInputBoilerFiles={handleInputBoilerFiles}
                     explorer={explorerData}
                     code={code}
+                     open = {open}
+                  setOpen ={setOpen}
                   />
                   <Folder
                     handleInsertNode={handleInsertNode}
@@ -165,8 +171,11 @@ const App = () => {
                     explorer={explorerData}
                     code={code}
                     setCode={setCode}
+                     folderExpanded={folderExpanded}
+                  setFolderExpanded={setFolderExpanded}
                   />
                 </Grid>
+
 
                 <Grid item xs={4} sx={{ display: 'flex' }}>
                   {/* <Grid alignSelf={'flex-start'}>

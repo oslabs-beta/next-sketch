@@ -44,6 +44,7 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setShowInput({ ...showInput, visible: false });
+
     }
   };
 

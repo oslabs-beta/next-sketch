@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
+
 const fileController = {
   // Recursive function to get files
   // postFiles: function (req, res, next) {
@@ -136,18 +137,16 @@ const fileController = {
     //   }
     // });
 
-    fs.copy(
-      sourceDir,
-      path.join(targetDir, 'nextsketch'),
-      { recursive: true },
-      (err) => {
-        if (err) {
-          console.error(`Error copying directory: ${err}`);
-        } else {
-          console.log('Directory and its contents copied successfully.');
-        }
+
+    fs.copy(sourceDir, path.join(targetDir, 'nextsketch'), { recursive: true }, (err) => {
+      if (err) {
+        console.error(`Error copying directory: ${err}`);
+      } else {
+        console.log('Directory and its contents copied successfully.');
+
       }
     );
+
 
     return next();
   },

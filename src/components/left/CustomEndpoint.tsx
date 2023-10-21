@@ -32,6 +32,7 @@ const style = {
 };
 //MUI styling fior modal
 //-----------------
+const cacheModal:string[]=[];
 
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
@@ -46,6 +47,7 @@ const CustomEndpoint = ({
   const handleClose = () => {
     setOpen(false);
     setFolder('');
+    setSelectedItems({})
   };
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
     default: false,
@@ -72,7 +74,8 @@ const CustomEndpoint = ({
     const name = e.target.name.slice(0, -4);
     setSelectedItems({
       ...selectedItems,
-      [name]: e.target.checked,
+      // [name]: e.target.checked,
+      [name]: true
     });
     const fileName = e.target.name;
     const folderName = folder;
@@ -85,6 +88,11 @@ const CustomEndpoint = ({
       folderName: folderName,
       codeSnippet: codeSnippet,
     };
+        
+          if(!cacheModal.includes(fileName)){
+    handleInputBoilerFiles(explorer.id, fileName, folderName)
+      cacheModal.push(fileName)
+    }
 
     await fetch('http://localhost:3000/', {
       method: 'POST',
@@ -109,6 +117,12 @@ const CustomEndpoint = ({
     try {
       const response = await fetch('http://localhost:3000/', {
         method: 'PUT',
+
+
+    await fetch('http://localhost:3000/',
+    {
+        method: 'POST',
+
         headers: {
           'Content-Type': 'application/json',
         },
@@ -254,6 +268,9 @@ const CustomEndpoint = ({
       </Modal>
     </div>
   );
-};
+
+    };
+ 
+
 
 export default CustomEndpoint;
