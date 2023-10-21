@@ -38,14 +38,14 @@ const CustomEndpoint = ({
   handleInputBoilerFiles,
   explorer,
 }: any) => {
-  const [inputValue, setInputValue] = useState('');
+  const [folder, setFolder] = useState('');
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
   const handleClose = () => {
     setOpen(false);
-    setInputValue('');
+    setFolder('');
   };
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
     default: false,
@@ -58,13 +58,14 @@ const CustomEndpoint = ({
   });
 
   function handleChange(e?: any) {
-    setInputValue(e.target.value);
+    setFolder(e.target.value);
   }
 
   useEffect(() => {
     // This effect runs whenever componentName changes
 
-    handleUpdateCode(inputValue, componentName, codeSnippet);
+    handleUpdateCode(folder, componentName, codeSnippet);
+    handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
   }, [codeSnippet]);
 
   async function handleModalChange(e?: any) {
@@ -74,12 +75,10 @@ const CustomEndpoint = ({
       [name]: e.target.checked,
     });
     const fileName = e.target.name;
-    const folderName = inputValue;
+    const folderName = folder;
 
     //passing the name of the component to codePreview
     setComponentName(fileName);
-
-    handleInputBoilerFiles(explorer.id, fileName, folderName, codeSnippet);
 
     const body = {
       fileName: fileName,
@@ -136,7 +135,7 @@ const CustomEndpoint = ({
     e?.stopPropagation();
     e?.preventDefault();
 
-    const body = { name: inputValue };
+    const body = { name: folder };
 
     await fetch('http://localhost:3000/', {
       method: 'POST',
@@ -146,8 +145,8 @@ const CustomEndpoint = ({
       body: JSON.stringify(body),
     });
 
-    if (inputValue) {
-      handleCreateCustomEndpoint(explorer.id, inputValue);
+    if (folder) {
+      handleCreateCustomEndpoint(explorer.id, folder);
       setOpen(true);
     } else {
       alert('Please enter a file name');
@@ -161,7 +160,7 @@ const CustomEndpoint = ({
           autoFocus
           placeholder=' New Endpoint'
           onChange={handleChange}
-          value={inputValue}
+          value={folder}
         />
 
         <button type='submit' onClick={handleCreateCustomFolder}>

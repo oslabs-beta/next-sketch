@@ -20,6 +20,7 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
     <FontAwesomeIcon icon={faFolderClosed} />
   );
   const [componentName, setComponentName] = useContext(CodeContext);
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
   const [showInput, setShowInput] = useState<Input>({
     visible: false,
@@ -49,7 +50,7 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
   const handleCode = async () => {
     //changes the codeSnippet when the div is clicked
     console.log(explorer.preview);
-    // setComponentName(code.name);
+    setCodeSnippet(explorer.preview);
   };
 
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
