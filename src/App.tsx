@@ -70,9 +70,16 @@ const App = () => {
   const handleInsertNode = (
     folderId: number,
     item: string,
-    isFolder: boolean
+    isFolder: boolean,
+    preview: string
   ) => {
-    const finalTree: any = insertNode(explorerData, folderId, item, isFolder);
+    const finalTree: any = insertNode(
+      explorerData,
+      folderId,
+      item,
+      isFolder,
+      preview
+    );
 
     setExplorerData(finalTree);
   };
@@ -90,17 +97,19 @@ const App = () => {
   const handleInputBoilerFiles = (
     folderId: number,
     item: string,
-    folderName: string
+    folderName: string,
+    preview: string
   ) => {
     const finalTree: any = insertBoilerFiles(
       explorerData,
       folderId,
       item,
-      folderName
+      folderName,
+      preview
     );
 
+
     setExplorerData(finalTree);
-    setComponentName(item.slice(0, -4));
   };
 
   useEffect(() => {
@@ -167,7 +176,11 @@ const App = () => {
                 </Grid>
 
                 <Grid item xs={4} sx={{ height: '500px' }}>
-                  <TabsComponent code={code} setCode={setCode} />
+                  <TabsComponent
+                    code={code}
+                    setCode={setCode}
+                    treeData={explorerData}
+                  />
                   {/* <DisplayContainer /> */}
                 </Grid>
               </Grid>

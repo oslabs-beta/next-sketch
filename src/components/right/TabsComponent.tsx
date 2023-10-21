@@ -5,9 +5,10 @@ import CodePreview from './CodePreview';
 
 interface TabsComponentProps {
   code: string;
+  treeData: object;
 }
 
-const TabsComponent = ({ code }: TabsComponentProps) => {
+const TabsComponent = ({ code, treeData }: TabsComponentProps) => {
   const [value, setValue] = useState<JSX.Element | string>('1');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -25,7 +26,7 @@ const TabsComponent = ({ code }: TabsComponentProps) => {
           </TabList>
         </Box>
         <TabPanel value='1'>
-          <CodePreview code={code} />
+          <CodePreview code={code} treeData={treeData} />
         </TabPanel>
         <TabPanel value='2'>Item Two</TabPanel>
         <TabPanel value='3'>Item Three</TabPanel>

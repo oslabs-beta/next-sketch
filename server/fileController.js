@@ -50,6 +50,7 @@ const fileController = {
   // },
 
   postFolder: function (req, res, next) {
+    console.log('inside postFolder');
     if (req.body.name) {
       const dir = 'server/ExportFolder/nextsketch/src/app/';
       fs.mkdirSync(path.join(dir, req.body.name));
@@ -60,6 +61,7 @@ const fileController = {
       const fileDir =
         'server/ExportFolder/nextsketch/src/app/' + req.body.folderName;
       fs.writeFileSync(path.join(fileDir, req.body.fileName), '');
+
       return next();
     }
   },
@@ -102,6 +104,15 @@ const fileController = {
       return;
     }
     recall(folderDir);
+    return next();
+  },
+
+  updateCode: function (req, res, next) {
+    console.log('inside update controller');
+    console.log(req.body);
+    const fileDir =
+      'server/ExportFolder/nextsketch/src/app/' + req.body.folderName;
+    fs.writeFileSync(path.join(fileDir, req.body.fileName), req.body.code);
     return next();
   },
 

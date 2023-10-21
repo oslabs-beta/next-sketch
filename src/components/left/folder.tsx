@@ -4,7 +4,8 @@ import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { faFolderClosed } from '@fortawesome/free-solid-svg-icons';
 import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
+import { CodeContext, CodeSnippetContext } from '../../App';
 
 interface Input {
   visible: boolean | undefined;
@@ -12,18 +13,13 @@ interface Input {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Folder({
-  handleInsertNode,
-  handleDeleteNode,
-  explorer,
-  code,
-  setCode,
-}: any) {
+function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
   const [expand, setExpand] = useState<boolean>(false);
   const [folderIcon, setFolderIcon] = useState<string>('▶');
   const [folderLogo, setFolderLogo] = useState(
     <FontAwesomeIcon icon={faFolderClosed} />
   );
+  const [componentName, setComponentName] = useContext(CodeContext);
 
   const [showInput, setShowInput] = useState<Input>({
     visible: false,
@@ -50,6 +46,13 @@ function Folder({
     }
   };
 
+  const handleCode = (code) => {
+    //changes the codeSnippet when the div is clicked
+    setComponentName(code.name);
+    console.log(explorer);
+    console.log(code.id);
+  };
+
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
     e?.stopPropagation();
     handleDeleteNode(explorer.id);
@@ -63,16 +66,6 @@ function Folder({
     });
 
     setShowInput({ ...showInput, visible: false });
-  };
-
-  useEffect(() => {
-    console.log('inside folder', code);
-  }, [code]);
-
-  const handleCodeFile = (property: string) => {
-    // Use the specific property from the page to set the code
-    console.log(property);
-    setCode(property);
   };
 
   if (explorer.isFolder) {
@@ -136,7 +129,6 @@ function Folder({
                 handleInsertNode={handleInsertNode}
                 handleDeleteNode={handleDeleteNode}
                 explorer={exp}
-                setCode={setCode}
                 key={exp.id}
               />
             );
@@ -146,7 +138,7 @@ function Folder({
     );
   } else {
     return (
-      <div className='folder' onClick={() => handleCodeFile(explorer.code)}>
+      <div className='folder' onClick={() => handleCode(explorer)}>
         📄 {explorer.name}{' '}
         <button onClick={(e) => handleDeleteFolder(e, false)}>
           {' '}

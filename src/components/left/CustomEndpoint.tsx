@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
-import { CodeSnippetContext } from '../../App';
+import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
 
 interface modalLayout {
@@ -40,7 +40,8 @@ const CustomEndpoint = ({
 }: any) => {
   const [inputValue, setInputValue] = useState('');
   const [open, setOpen] = useState(false);
-  // const [componentName, setComponentName] = useContext(CodeContext);
+  const [componentName, setComponentName] = useContext(CodeContext);
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
   const handleClose = () => {
     setOpen(false);
@@ -60,6 +61,13 @@ const CustomEndpoint = ({
     setInputValue(e.target.value);
   }
 
+  useEffect(() => {
+    // This effect runs whenever componentName changes
+    console.log('componentName has been updated to:', componentName);
+    console.log('codeSnippet has been updated to:', codeSnippet);
+    handleUpdateCode(inputValue, componentName, codeSnippet);
+  }, [codeSnippet]);
+
   async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
     setSelectedItems({
@@ -71,9 +79,16 @@ const CustomEndpoint = ({
     const fileName = e.target.name;
     const folderName = inputValue;
 
-    handleInputBoilerFiles(explorer.id, fileName, folderName);
+    //passing the name of the component to codePreview
+    setComponentName(fileName);
 
-    const body = { fileName: fileName, folderName: folderName };
+    handleInputBoilerFiles(explorer.id, fileName, folderName, codeSnippet);
+
+    const body = {
+      fileName: fileName,
+      folderName: folderName,
+      codeSnippet: codeSnippet,
+    };
 
     await fetch('http://localhost:3000/', {
       method: 'POST',
@@ -83,6 +98,43 @@ const CustomEndpoint = ({
       body: JSON.stringify(body),
     });
   }
+
+  const handleUpdateCode = async (
+    folderName: string,
+    fileName: string,
+    code: string
+  ) => {
+    const data = {
+      folderName,
+      fileName,
+      code,
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        // Handle a successful PUT request
+        const updatedData = await response.json();
+        console.log('Resource updated:', updatedData);
+      } else {
+        // Handle PUT request failure
+        console.error(
+          'PUT request failed:',
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -175,11 +227,11 @@ const CustomEndpoint = ({
 
           <div>
             <Checkbox
-              name='not-found.tsx'
+              name='notFound.tsx'
               checked={selectedItems.notFound}
               onChange={handleModalChange}
             />
-            not-found.tsx
+            notFound.tsx
           </div>
 
           <div>

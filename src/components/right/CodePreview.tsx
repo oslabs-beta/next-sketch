@@ -7,7 +7,11 @@ import 'prismjs/components/prism-javascript';
 import { useContext, useEffect, useState } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
 
-const CodePreview = () => {
+interface CodePreviewProps {
+  treeData: object;
+}
+
+const CodePreview = ({ treeData: CodePreviewProps }) => {
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext); // Use state to store the code
 
@@ -15,12 +19,17 @@ const CodePreview = () => {
     // Generate the code snippet
     Prism.highlightAll();
     renderCode(componentName);
-    handleCodeChange(codeSnippet);
+    // handleCodeChange(codeSnippet);
     // setCodeSnippet(newCodeSnippet); // Update the state with the new code snippet
     //handleCodeChange(newCodeSnippet); // Send the new code snippet to the server
   }, [componentName, codeSnippet]); // Re-render and update the code when componentName changes
 
   function renderCode(title: string) {
+    console.log('inside of renderCode function', componentName);
+    //Check if it has end .tsx
+    if (title.slice(-4) === '.tsx') {
+      title = title.slice(0, -4);
+    }
     // Capitalize the component name
     title = title.charAt(0).toUpperCase() + title.slice(1);
 
@@ -56,21 +65,6 @@ const CodePreview = () => {
   `;
     }
     setCodeSnippet(codeSnippet);
-    return codeSnippet;
-  }
-
-  async function handleCodeChange(code: string) {
-    console.log('passing to fetch', JSON.stringify(code));
-    if (componentName) {
-      console.log('inside of the if statement');
-      const response = await fetch('http://localhost:3000/code', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(code), // Use the newCodeSnippet from state
-      });
-    }
   }
 
   return (
