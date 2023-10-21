@@ -109,12 +109,6 @@ const CustomEndpoint = ({handleCreateCustomEndpoint, handleInputBoilerFiles, exp
             else {
                 alert('Please enter a file name')
             }
-
-
-
-
-
-
     };
     return (
         <div className='cursor'>

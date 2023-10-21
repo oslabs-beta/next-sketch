@@ -42,10 +42,26 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer, folderExpanded, 
         })
     };
 
-    const onAddFolder = (e?: React.KeyboardEvent<HTMLInputElement>) => {
+    const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
         if (e?.key === 'Enter' && e?.currentTarget.value) {
             handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder)
 
+            console.log('inaddfolder', e.currentTarget.value)
+
+            let isFolder = showInput.isFolder
+
+
+            const body ={"fileName": e.currentTarget.value, "folderName": explorer.name, "isFolder": isFolder}
+
+            await fetch('http://localhost:3000/',
+            {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            })
+        
             setShowInput({ ...showInput, visible: false })
 
         }

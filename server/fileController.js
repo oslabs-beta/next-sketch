@@ -59,7 +59,19 @@ const fileController = {
 
     if (req.body.fileName) {
       const fileDir = "server/ExportFolder/nextsketch/src/app/" + req.body.folderName;
-      fs.writeFileSync(path.join(fileDir, req.body.fileName), "");
+
+
+
+      if(req.body.isFolder){
+        console.log('in middleware', req.body.isFolder)
+
+        fs.mkdirSync(path.join(fileDir, req.body.fileName))
+      }
+
+      else fs.writeFileSync(path.join(fileDir, req.body.fileName), "");
+
+
+      
       return next();
     }
   },
