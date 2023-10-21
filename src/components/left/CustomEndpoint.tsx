@@ -39,6 +39,7 @@ const CustomEndpoint = ({handleCreateCustomEndpoint, handleInputBoilerFiles, exp
   const handleClose = () => {
     setOpen(false);
     setInputValue('');
+    setSelectedItems({})
   };
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
     default: false,
