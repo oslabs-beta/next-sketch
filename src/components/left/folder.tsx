@@ -16,9 +16,11 @@ interface Input {
 import React, { useEffect, useState } from "react"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
+function Folder({ handleInsertNode, handleDeleteNode, explorer, folderExpanded, setFolderExpanded }: any) {
     
-    const [expand, setExpand] = useState<boolean>(false);
+    // const [expand, setExpand] = useState<boolean>(false);
+    const [expand, setExpand] = useState<boolean>(folderExpanded);
+
     const [folderIcon, setFolderIcon] = useState<string>('▶');
     const [folderLogo, setFolderLogo] = useState(<FontAwesomeIcon icon={faFolderClosed}/>);
 
@@ -47,6 +49,12 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
             setShowInput({ ...showInput, visible: false })
 
         }
+
+
+
+
+
+
     }
 
     const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {

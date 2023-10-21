@@ -23,6 +23,10 @@ export const CodeContext = React.createContext<ComponentNameType | undefined>(
 );
 
 const App = () => {
+
+  const [folderExpanded,setFolderExpanded] = useState(false);
+  const [open,setOpen] = useState(false);
+
   const [elements, setElements] = useState<Tag[]>([
     { id: generateId(), name: 'div' },
     {
@@ -128,11 +132,15 @@ const App = () => {
                   handleCreateCustomEndpoint={handleCreateCustomEndpoint}
                   handleInputBoilerFiles={handleInputBoilerFiles}
                   explorer={explorerData}
+                  open = {open}
+                  setOpen ={setOpen}
                 />
                 <Folder
                   handleInsertNode={handleInsertNode}
                   handleDeleteNode={handleDeleteNode}
                   explorer={explorerData}
+                  folderExpanded={folderExpanded}
+                  setFolderExpanded={setFolderExpanded}
                 />
               </Grid>
 
