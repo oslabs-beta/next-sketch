@@ -9,7 +9,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
 import { modalLayout } from '../../utils/interfaces';
 
@@ -59,6 +59,7 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ex
 
 
 
+
   const [showInput, setShowInput] = useState<Input>({
     visible: false,
     isFolder: null,
@@ -82,44 +83,51 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ex
 
   };
 
-  const handleCode = async (e?: React.SyntheticEvent) => {
-    console.log(explorer.preview)
-    console.log('helloooooo', e?.target.parentNode)
-    setCodeSnippet(explorer.preview)
-  }
 
-   const handleModalChange = (e?: any) =>  {
+  // useEffect(() => {
+  //   // This effect runs whenever componentName changes
+  //   console.log('useEffect in customEndPoint');
+  //   handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
+  // }, [codeSnippet]);
+
+
+  // const handleCode = async (e?: React.SyntheticEvent) => {
+  //   console.log(explorer.preview)
+  //   setCodeSnippet(explorer.preview)
+  // }
+
+   const handleModalChange = async (e?: any) =>  {
     const name = e.target.name.slice(0, -4);
     
-    // setSelectedItems({
-    //   ...selectedItems,
-    //   [name]: true
-    // });
+    setSelectedItems({
+      ...selectedItems,
+      [name]: true
+    });
 
 
     const fileName = e.target.name;
     const folderName = folder;
 
-    console.log('hehe', fileName, folderName)
-
+   
+    setComponentName(fileName);
 
 
 handleInputBoilerFiles(explorer.id, fileName, folderName);
 
-    // const body = {
-    //   fileName: fileName,
-    //   folderName: folderName,
-    //   codeSnippet: codeSnippet,
-    // };
+    const body = {
+      fileName: fileName,
+      folderName: folderName,
+      codeSnippet: codeSnippet,
+    };
         
           
-    // await fetch('http://localhost:3000/', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // });
+    await fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
   }
 
     const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
@@ -322,6 +330,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
               <Folder
                 handleInsertNode={handleInsertNode}
                 handleDeleteNode={handleDeleteNode}
+                handleInputBoilerFiles={handleInputBoilerFiles}
                 explorer={exp}
                 key={exp.id}
               />
@@ -332,7 +341,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
     );
   } else {
     return (
-      <div className='folder' onClick={handleCode}>
+      <div className='folder'>
         📄 {explorer.name}
         <button onClick={(e) => handleDeleteFolder(e, false)}>
           <FontAwesomeIcon icon={faTrash} />

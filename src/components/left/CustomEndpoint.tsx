@@ -111,32 +111,32 @@ const CustomEndpoint = ({
       code,
     };
 
-    try {
-      const response = await fetch('http://localhost:3000/', {
-        method: 'PUT',
+    // try {
+    //   const response = await fetch('http://localhost:3000/', {
+    //     method: 'PUT',
 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(data),
+    //   });
 
-      if (response.ok) {
-        // Handle a successful PUT request
-        const updatedData = await response.json();
-      } else {
-        // Handle PUT request failure
-        console.error(
-          'PUT request failed:',
-          response.status,
-          response.statusText
-        );
-      }
+    //   if (response.ok) {
+    //     // Handle a successful PUT request
+    //     const updatedData = await response.json();
+    //   } else {
+    //     // Handle PUT request failure
+    //     console.error(
+    //       'PUT request failed:',
+    //       response.status,
+    //       response.statusText
+    //     );
+    //   }
 
-    }
-    catch (error) {
-      console.log(error);
-    }
+    // }
+    // catch (error) {
+    //   console.log(error);
+    // }
   
   }
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {

@@ -57,6 +57,9 @@ const fileController = {
 
     const folderDir = 'server/ExportFolder/nextsketch/src/'
 
+    console.log(req.body)
+
+
     if (req.body.name) {
       const dir = 'server/ExportFolder/nextsketch/src/app/';
       fs.mkdirSync(path.join(dir, req.body.name));
@@ -72,6 +75,7 @@ const fileController = {
       // Create the full path of the file/directory by concatenating the passed directory and file/directory name
       for (const file of fileList) {
         const name = `${folderDir}/${file}`;
+        console.log(name)
 
         //skip reading over all the files inside node_modules for efficiency
         if (file === 'node_modules') {
@@ -80,7 +84,7 @@ const fileController = {
 
         if (file === req.body.folderName) { 
           if (req.body.isFolder) fs.mkdirSync(path.join(name, req.body.fileName))
-          else fs.writeFileSync(path.join(name, req.body.fileName), '')
+          else fs.writeFileSync(path.join(name, req.body.fileName), req.body.codeSnippet)
           return;
         }
 
