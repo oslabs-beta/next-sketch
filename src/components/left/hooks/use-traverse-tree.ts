@@ -87,7 +87,7 @@ const useTraverseTree = () => {
             return tree;
         }
       }
-    
+
 
     let latestNode = [];
     latestNode = tree.items.map((ob: object) => {
@@ -97,6 +97,9 @@ const useTraverseTree = () => {
     return { ...tree, items: latestNode };
   
 }
+  };
+
+
   // const retrieveCode =
 
   const insertBoilerFiles = (
@@ -122,12 +125,10 @@ const useTraverseTree = () => {
     });
 
     return { ...tree, items: latestNode };
-}
 
-
-
+  };
 
   return { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles };
-}
+};
 
 export default useTraverseTree;
