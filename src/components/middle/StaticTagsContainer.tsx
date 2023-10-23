@@ -11,43 +11,45 @@ const StaticTagsContainer = (): JSX.Element => {
     {
       id: generateId(),
       name: 'div',
-      children: [],
+      container: true,
     },
     {
       id: generateId(),
       name: 'img',
-      children: [],
+      container: false,
     },
     {
       id: generateId(),
       name: 'p',
-      children: [],
+      container: false,
     },
     {
       id: generateId(),
       name: 'form',
-      children: [],
+      container: true,
     },
     {
       id: generateId(),
       name: 'button',
-      children: [],
+      container: false,
     },
     {
       id: generateId(),
       name: 'link',
-      children: [],
+      container: false,
     },
   ];
 
   const [tags, setTags] = useState<Tag[]>([]);
 
+  console.log('initial state tags', tags);
+
   const addTagToDisplay = (event: DragEndEvent) => {
     const { active } = event;
     const newTag: Tag = {
       id: active.id,
-      name: active.data.current?.title,
-      children: [{ id: generateId(), name: 'div', children: [] }],
+      name: active.data.current?.name,
+      container: active.data.current?.container,
     };
     setTags([...tags, newTag]);
   };
@@ -96,7 +98,7 @@ const StaticTagsContainer = (): JSX.Element => {
                 key={`${staticTag.name}-${staticTag.id}`}
                 id={staticTag.id}
               >
-                {staticTag.name}
+                {staticTag}
               </DraggableItem>
             ))}
           </Box>

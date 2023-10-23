@@ -17,7 +17,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
 
   useEffect(() => {
     // Generate the code snippet
-    console.log('useEffect in codepreview');
+    // console.log('useEffect in codepreview');
     Prism.highlightAll();
     renderCode(componentName);
 

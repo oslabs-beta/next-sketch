@@ -2,6 +2,7 @@ import { UniqueIdentifier } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { Box } from '@mui/material';
 import { CSS } from '@dnd-kit/utilities';
+import { ReactNode } from 'react';
 
 interface TestItemProps {
   name: string;
@@ -9,14 +10,29 @@ interface TestItemProps {
 
 interface TestSortableItemProps {
   id: UniqueIdentifier;
-  name: string;
+  children: ReactNode;
 }
 
-const TestItem = ({ name }: TestItemProps) => {
-  return <Box>{name}</Box>;
+export const TestItem = ({ name }: TestItemProps) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: 'grey',
+        color: 'white',
+        margin: 2,
+        height: 40,
+        borderRadius: 2,
+      }}
+    >
+      {name}
+    </Box>
+  );
 };
 
-const TestSortableItem = ({ id, name }: TestSortableItemProps) => {
+const TestSortableItem = ({ id, children }: TestSortableItemProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: id,
@@ -29,7 +45,7 @@ const TestSortableItem = ({ id, name }: TestSortableItemProps) => {
   };
   return (
     <Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <TestItem name={name} />
+      {children}
     </Box>
   );
 };
