@@ -1,119 +1,108 @@
+import {
+  DndContext,
+  DragStartEvent,
+  DragOverEvent,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useDroppable,
+  useSensor,
+  useSensors,
+  UniqueIdentifier,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { Box } from '@mui/material';
 import { useState } from 'react';
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
-import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
-import { Box, Typography } from '@mui/material';
-import { generateId } from '../../utils/generateId';
-import DisplayContainer from '../right/DisplayContainer';
+import DraggableTagItem from './DraggableTagItem';
+import TagItemContainer from './TagItemContainer';
+import { SortableTagItem } from './SortableTagItem';
+import { TagItem } from './TagItem';
 
-const TagsContainer = (): JSX.Element => {
-  const staticTags: Tag[] = [
-    {
-      id: generateId(),
-      name: 'div',
-    },
-    {
-      id: generateId(),
-      name: 'img',
-    },
-    {
-      id: generateId(),
-      name: 'p',
-    },
-    {
-      id: generateId(),
-      name: 'form',
-    },
-    {
-      id: generateId(),
-      name: 'button',
-    },
-    {
-      id: generateId(),
-      name: 'link',
-    },
-    {
-      id: generateId(),
-      name: 'a',
-    },
-    {
-      id: generateId(),
-      name: 'span',
-    },
-    {
-      id: generateId(),
-      name: 'h1',
-    },
-    {
-      id: generateId(),
-      name: 'main',
-    },
-  ];
+interface TagsContainerProps {
+  tags: Tag[];
+}
 
-  const [tags, setTags] = useState<Tag[]>([]);
+export const TagsContainer = ({ tags }: TagsContainerProps) => {
+  const { setNodeRef } = useDroppable({
+    id: 'droppable-1',
+    data: {
+      accepts: ['type1'],
+    },
+  });
 
-  const addTagToBox = (event: DragEndEvent) => {
-    const { active } = event;
-    const newTag = {
-      id: active.id,
-      name: active.data.current?.title,
-    };
-    setTags([...tags, newTag]);
+  const [activeId, setActiveId] = useState();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const getTags = (id?: UniqueIdentifier) => {
+    return tags.filter((tag) => {
+      if (!id) {
+        return !tag.id;
+      }
+      return tag.id === id;
+    });
   };
 
+  //   <DndContext
+  //   sensors={sensors}
+  //   onDragStart={handleDragStart}
+  //   onDragOver={handleDragOver}
+  //   onDragEnd={handleDragEnd}
+  // >
+  // </DndContext>
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        height: '510px',
-        boxShadow: 20,
-        borderTopLeftRadius: '20px',
-        borderTopRightRadius: '20px',
-        borderBottomRightRadius: '20px',
-        borderBottomLeftRadius: '20px',
-      }}
+    <SortableContext
+      id='root'
+      items={tags}
+      strategy={verticalListSortingStrategy}
     >
-      <DndContext onDragEnd={addTagToBox}>
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            borderTopLeftRadius: '20px',
-          }}
-        >
-          <Box
-            sx={{
-              bgcolor: 'rgba(191, 196, 248, 0.8)',
-              color: 'black',
-              textAlign: 'center',
-              borderTopLeftRadius: '20px',
-            }}
-          >
-            <Typography variant='h6'>HTML Tags</Typography>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: 1.2,
-            }}
-          >
-            {staticTags.map((staticTag) => (
-              <DraggableItem
-                key={`${staticTag.name}-${staticTag.id}`}
-                id={staticTag.id}
-              >
-                {staticTag.name}
-              </DraggableItem>
-            ))}
-          </Box>
-        </Box>
-        <DisplayContainer tags={tags} setTags={setTags} />
-      </DndContext>
-    </Box>
+      <Box
+        ref={setNodeRef}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: 1.2,
+          // bgcolor: 'red',
+        }}
+      >
+        {tags.map((tag, index) => {
+          if (tag.children) {
+            <DraggableTagItem key={`${tag.name}-${tag.id}`} id={tag.id}>
+              {tag.children.map((child, index) => {
+                return (
+                  <SortableTagItem key={`${child}-${index}`} id={child.id}>
+                    <TagItem tag={child} />
+                  </SortableTagItem>
+                );
+              })}
+            </DraggableTagItem>;
+          }
+          return (
+            <DraggableTagItem key={`${tag.name}-${tag.id}`} id={tag.id}>
+              <SortableTagItem key={`${tag}-${index}`} id={tag.id}>
+                <TagItem tag={tag} />
+              </SortableTagItem>
+            </DraggableTagItem>
+          );
+        })}
+      </Box>
+    </SortableContext>
   );
 };
 
-export default TagsContainer;
+// {/* <TagItemContainer
+//   key={`${tag.name}-${tag.id}`}
+//   childrenTags={tag.children}
+// /> */}

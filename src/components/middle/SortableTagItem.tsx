@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { DndContext } from '@dnd-kit/core';
 
 interface SortableTagItemProps {

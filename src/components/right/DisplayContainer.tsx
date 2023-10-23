@@ -1,12 +1,9 @@
 import { Box, Typography } from '@mui/material';
-import { DroppableSection } from '../middle/DroppableSection.1';
-import {
-  DndContext,
-  DragEndEvent,
-  closestCenter,
-} from '@dnd-kit/core';
+import { TagsContainer } from '../middle/TagsContainer';
+import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { Tag } from '../../utils/interfaces';
+import TestContainer from '../middle/TestContainer';
 
 interface DisplayContainerProps {
   tags: Tag[];
@@ -15,7 +12,6 @@ interface DisplayContainerProps {
 
 const DisplayContainer = ({ tags, setTags }: DisplayContainerProps) => {
   const handleDragEnd = (event: DragEndEvent) => {
-    // console.log('drag end');
     const { active, over } = event;
     if (active.id !== over?.id) {
       setTags((tags) => {
@@ -26,14 +22,12 @@ const DisplayContainer = ({ tags, setTags }: DisplayContainerProps) => {
     }
   };
 
+  // console.log(tags);
+
   return (
-    <DndContext
-      onDragEnd={handleDragEnd}
-      collisionDetection={closestCenter}
-    >
+    <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
       <Box
         sx={{
-          // bgcolor: '#FFF0D5',
           borderBottomRightRadius: '20px',
           borderTopRightRadius: '20px',
           borderBottomLefttRadius: '20px',
@@ -44,16 +38,19 @@ const DisplayContainer = ({ tags, setTags }: DisplayContainerProps) => {
         <Box
           sx={{
             bgcolor: 'rgba(191, 196, 248, 0.8)',
+            // bgcolor: 'blue',
             color: 'black',
             textAlign: 'center',
             borderTopRightRadius: '20px',
           }}
           position={'sticky'}
         >
-          <Typography variant='h6'>Box</Typography>
+          <Typography variant='h6'>Display Container</Typography>
         </Box>
-
-        <DroppableSection tags={tags} />
+        {/* <TagsContainer tags={tags} /> */}
+        {tags.map((tag) => {
+          return <TestContainer key={tag.id} tag={tag} />;
+        })}
       </Box>
     </DndContext>
   );

@@ -5,6 +5,7 @@ interface TagItemProps {
   tag: Tag;
 }
 
+
 export const TagItem = ({ tag }: TagItemProps): JSX.Element => {
   return (
     <Typography variant='h6' sx={{ textAlign: 'center' }}>
@@ -12,3 +13,4 @@ export const TagItem = ({ tag }: TagItemProps): JSX.Element => {
     </Typography>
   );
 };
+

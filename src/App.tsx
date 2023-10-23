@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import TagsContainer from './components/middle/TagsContainer';
+import StaticTagsContainer from './components/middle/StaticTagsContainer';
 import './App.css';
 import CreateComponentBtn from './components/middle/CreateComponentBtn';
 import explorer from './components/left/data/folderData';
@@ -137,10 +137,10 @@ const App = () => {
               </Grid>
 
               <Grid item xs={4} sx={{ display: 'flex' }}>
-                <Grid alignSelf={'flex-start'}>
+                {/* <Grid alignSelf={'flex-start'}>
                   <CreateComponentBtn />
-                </Grid>
-                <TagsContainer />
+                </Grid> */}
+                <StaticTagsContainer />
               </Grid>
 
               <Grid item xs={4} sx={{ height: '500px' }}>
