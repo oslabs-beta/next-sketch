@@ -32,7 +32,7 @@ const style = {
 };
 //MUI styling fior modal
 //-----------------
-const cacheModal:string[]=[];
+const cacheModal: string[] = [];
 
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
@@ -47,7 +47,7 @@ const CustomEndpoint = ({
   const handleClose = () => {
     setOpen(false);
     setFolder('');
-    setSelectedItems({})
+    setSelectedItems({});
   };
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
     default: false,
@@ -75,10 +75,16 @@ const CustomEndpoint = ({
     setSelectedItems({
       ...selectedItems,
       // [name]: e.target.checked,
-      [name]: true
+      [name]: true,
     });
+
     const fileName = e.target.name;
     const folderName = folder;
+
+    //     if(!cacheModal.includes(fileName)){
+    //       cacheModal.push(fileName)
+    //       handleInputBoilerFiles(explorer.id, fileName, folderName)
+    // }
 
     //passing the name of the component to codePreview
     setComponentName(fileName);
@@ -88,11 +94,6 @@ const CustomEndpoint = ({
       folderName: folderName,
       codeSnippet: codeSnippet,
     };
-        
-          if(!cacheModal.includes(fileName)){
-    handleInputBoilerFiles(explorer.id, fileName, folderName)
-      cacheModal.push(fileName)
-    }
 
     await fetch('http://localhost:3000/', {
       method: 'POST',
@@ -117,6 +118,7 @@ const CustomEndpoint = ({
     try {
       const response = await fetch('http://localhost:3000/', {
         method: 'PUT',
+
         headers: {
           'Content-Type': 'application/json',
         },
@@ -138,7 +140,6 @@ const CustomEndpoint = ({
       console.log(error);
     }
   };
-
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     e?.preventDefault();
@@ -262,9 +263,6 @@ const CustomEndpoint = ({
       </Modal>
     </div>
   );
-
-    };
- 
-
+};
 
 export default CustomEndpoint;

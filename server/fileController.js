@@ -51,7 +51,6 @@ const fileController = {
   // },
 
   postFolder: function (req, res, next) {
-    console.log('inside postFolder');
     if (req.body.name) {
       const dir = 'server/ExportFolder/nextsketch/src/app/';
       fs.mkdirSync(path.join(dir, req.body.name));
@@ -59,12 +58,22 @@ const fileController = {
     }
 
     if (req.body.fileName) {
-      const fileDir =
-        'server/ExportFolder/nextsketch/src/app/' + req.body.folderName;
-      fs.writeFileSync(path.join(fileDir, req.body.fileName), '');
+      const fileDir = "server/ExportFolder/nextsketch/src/app/" + req.body.folderName;
+      if(req.body.isFolder){
+        console.log('in middleware', req.body.isFolder)
 
+        fs.mkdirSync(path.join(fileDir, req.body.fileName))
+      }
+      else fs.writeFileSync(path.join(fileDir, req.body.fileName), "");
       return next();
     }
+  },
+
+  postNestedFolder: function(req, res, next){
+    console.log('inside postFolder');
+
+    console.log
+
   },
 
   deleteFolder: function (req, res, next) {
@@ -145,7 +154,7 @@ const fileController = {
         console.log('Directory and its contents copied successfully.');
 
       }
-    );
+  });
 
 
     return next();
