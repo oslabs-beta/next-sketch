@@ -17,5 +17,6 @@ export interface modalLayout {
     notFound: boolean;
     route: boolean;
     template: boolean;
+    page: boolean
   }
   

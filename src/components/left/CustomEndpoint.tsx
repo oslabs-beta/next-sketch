@@ -42,6 +42,10 @@ const CustomEndpoint = ({
     setFolder('');
     setSelectedItems({})
   };
+
+
+
+
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
     default: false,
     error: false,
@@ -50,6 +54,7 @@ const CustomEndpoint = ({
     notFound: false,
     route: false,
     template: false,
+    page: true
   });
 
   function handleChange(e?: any) {
@@ -191,6 +196,17 @@ const CustomEndpoint = ({
           >
             Choose Your Template Files
           </Typography>
+
+
+          {/* <div>
+            <Checkbox
+              name='page.tsx'
+              checked={selectedItems.page}
+              onChange={handleModalChange}
+            />
+            layout.tsx
+          </div> */}
+
 
           <div>
             <Checkbox

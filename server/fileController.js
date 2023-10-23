@@ -55,9 +55,8 @@ const fileController = {
 
   postFolder: function (req, res, next) {
 
-    const folderDir = 'server/ExportFolder/nextsketch/src/'
+    const folderDir = 'server/ExportFolder/nextsketch/src'
 
-    console.log(req.body)
 
 
     if (req.body.name) {
@@ -77,7 +76,6 @@ const fileController = {
       for (const file of fileList) {
         // Create the full path of the file/directory by concatenating the passed directory and file/directory name
         const name = `${folderDir}/${file}`;
-        console.log(name)
 
         //skip reading over all the files inside node_modules for efficiency
         if (file === 'node_modules') {
@@ -85,7 +83,11 @@ const fileController = {
         }
 
         if (file === req.body.folderName) { 
-          if (req.body.isFolder) fs.mkdirSync(path.join(name, req.body.fileName))
+          if (req.body.isFolder) {
+            fs.mkdirSync(path.join(name, req.body.fileName))
+            console.log('in add folder thing', name+ '/' + req.body.fileName)
+            fs.writeFileSync(path.join(name + '/' + req.body.fileName, 'page.tsx'), '')
+          }
           else if(req.body.codeSnippet) fs.writeFileSync(path.join(name, req.body.fileName), req.body.codeSnippet)
           else  fs.writeFileSync(path.join(name, req.body.fileName), '')
           return;

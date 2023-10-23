@@ -33,6 +33,9 @@ export const CodeSnippetContext = React.createContext<
 
 const App = () => {
 
+  let appFolder = explorer.items[2].items[0].items;
+
+
   const [folderExpanded,setFolderExpanded] = useState(false);
   const [open,setOpen] = useState(false);
 
@@ -168,7 +171,8 @@ const App = () => {
                   <Folder
                     handleInsertNode={handleInsertNode}
                     handleDeleteNode={handleDeleteNode}
-                    handleInputBoilerFiles={handleInputBoilerFiles}                    
+                    handleInputBoilerFiles={handleInputBoilerFiles}    
+                    appFolder = {appFolder}                
                     explorer={explorerData}
                     code={code}
                     setCode={setCode}

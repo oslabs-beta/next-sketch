@@ -1,9 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolderPlus, faStrikethrough } from '@fortawesome/free-solid-svg-icons';
-import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import { faFolderClosed } from '@fortawesome/free-solid-svg-icons';
-import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faFolderPlus, faFolderClosed, faFolderOpen, faTrash, faFileCirclePlus, faAtom, faN} from '@fortawesome/free-solid-svg-icons';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
@@ -11,6 +7,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import React, { useContext, useEffect, useState } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
+import { FaReact } from "react-icons/fa";
+
 import { modalLayout } from '../../utils/interfaces';
 
 
@@ -20,7 +18,7 @@ interface Input {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, explorer }: any) {
+function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, appFolder, explorer }: any) {
   const [expand, setExpand] = useState<boolean>(false);
   const [folderIcon, setFolderIcon] = useState<string>('▶');
   const [folderLogo, setFolderLogo] = useState(
@@ -33,6 +31,7 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ex
   const [folder, setFolder] = useState('');
 
 
+  console.log(explorer.name.slice(-3))
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -139,6 +138,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
             setFolder(e.currentTarget.value)
             const isFolder = showInput.isFolder
 
+            appFolder.push(explorer.name)
 
             const body ={"fileName": e.currentTarget.value, "folderName": explorer.name, "isFolder": isFolder}
 
@@ -152,7 +152,17 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
             })
         
             setShowInput({ ...showInput, visible: false })
-            if(explorer.name === 'app') setOpen(true)
+            // if(explorer.name === 'app') setOpen(true)
+
+
+            console.log('app', appFolder, explorer)
+
+
+            for(const files of appFolder){
+              
+              // console.log('explorer', explorer.name)
+              if(files === explorer.name || explorer.name === 'app') setOpen(true)
+            }
 
         }
 
@@ -280,7 +290,6 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
           <div>
             <button onClick={(e) => {
               handleNewFolder(e, true)
-              console.log(explorer)
               //loop through all the folders/files inside 'app' and if we click a button that belongs to a folder/file inside app, make the modal pop up
 
 
@@ -308,7 +317,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
         <div style={{ display: expand ? 'block' : 'none', paddingLeft: 25 }}>
           {showInput.visible && (
             <div className='inputContainer'>
-              <span>{showInput.isFolder ? ' 📁' : '📄'}</span>
+              <span>{showInput.isFolder ? ' 📁' : '📄'} </span>
               <input
                 type='text'
                 onKeyDown={onAddFolder}
@@ -331,6 +340,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
                 handleInsertNode={handleInsertNode}
                 handleDeleteNode={handleDeleteNode}
                 handleInputBoilerFiles={handleInputBoilerFiles}
+                appFolder = {appFolder}
                 explorer={exp}
                 key={exp.id}
               />
@@ -342,7 +352,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
   } else {
     return (
       <div className='folder'>
-        📄 {explorer.name}
+        {explorer.name.slice(-3) === 'tsx' ? <FontAwesomeIcon icon={faAtom}/>: '📄' }{explorer.name} 
         <button onClick={(e) => handleDeleteFolder(e, false)}>
           <FontAwesomeIcon icon={faTrash} />
         </button>
