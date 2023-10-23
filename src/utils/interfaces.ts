@@ -10,3 +10,15 @@ export interface Tag  {
 export interface Elements {
     [key: string]: Tag;
 }
+
+export interface modalLayout {
+    default: boolean;
+    error: boolean;
+    layout: boolean;
+    loading: boolean;
+    notFound: boolean;
+    route: boolean;
+    template: boolean;
+    page: boolean
+  }
+  
