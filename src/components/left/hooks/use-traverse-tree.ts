@@ -88,16 +88,6 @@ const useTraverseTree = () => {
         }
       }
 
-      if (fileAlreadyExists === false) {
-        tree.items.unshift({
-          id: new Date().getTime(),
-          name: item,
-          isFolder: true,
-          items: [],
-        });
-        return tree;
-      }
-    }
 
     let latestNode = [];
     latestNode = tree.items.map((ob: object) => {
@@ -105,7 +95,10 @@ const useTraverseTree = () => {
     });
 
     return { ...tree, items: latestNode };
+  
+}
   };
+
 
   // const retrieveCode =
 
@@ -132,6 +125,7 @@ const useTraverseTree = () => {
     });
 
     return { ...tree, items: latestNode };
+
   };
 
   return { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles };

@@ -19,6 +19,8 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
   const [folderLogo, setFolderLogo] = useState(
     <FontAwesomeIcon icon={faFolderClosed} />
   );
+//   const [componentName, setComponentName] = useContext(CodeContext);
+
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
@@ -39,6 +41,36 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
     });
   };
 
+  const handleCode = async () => {
+    console.log(explorer.preview)
+    setCodeSnippet(explorer.preview)
+  }
+
+    const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e?.key === 'Enter' && e?.currentTarget.value) {
+            handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder)
+
+            console.log('inaddfolder', e.currentTarget.value)
+
+            let isFolder = showInput.isFolder
+
+
+            const body ={"fileName": e.currentTarget.value, "folderName": explorer.name, "isFolder": isFolder}
+
+            await fetch('http://localhost:3000/',
+            {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            })
+        
+            setShowInput({ ...showInput, visible: false })
+
+        }
+
+    }
   const onAddFolder = (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
@@ -135,6 +167,7 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
             );
           })}
         </div>
+
       </div>
     );
   } else {
