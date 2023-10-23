@@ -1,7 +1,7 @@
 
   import React from 'react';
   
-  const Loading = () => {
+  const App = () => {
     return (
       <>
         {/* Your page content goes here */}
@@ -9,5 +9,5 @@
     );
   };
   
-  export default Loading;
+  export default App;
   

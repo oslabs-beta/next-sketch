@@ -24,7 +24,6 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
   const [folderLogo, setFolderLogo] = useState(
     <FontAwesomeIcon icon={faFolderClosed} />
   );
-//   const [componentName, setComponentName] = useContext(CodeContext);
 
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
@@ -83,19 +82,63 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
 
   };
 
-  const handleCode = async () => {
-    console.log(explorer.preview)
-    setCodeSnippet(explorer.preview)
+
+  // useEffect(() => {
+  //   // This effect runs whenever componentName changes
+  //   console.log('useEffect in customEndPoint');
+  //   handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
+  // }, [codeSnippet]);
+
+
+  // const handleCode = async (e?: React.SyntheticEvent) => {
+  //   console.log(explorer.preview)
+  //   setCodeSnippet(explorer.preview)
+  // }
+
+   const handleModalChange = async (e?: any) =>  {
+    const name = e.target.name.slice(0, -4);
+    
+    setSelectedItems({
+      ...selectedItems,
+      [name]: true
+    });
+
+
+    const fileName = e.target.name;
+    const folderName = folder;
+
+   
+    setComponentName(fileName);
+
+
+handleInputBoilerFiles(explorer.id, fileName, folderName);
+
+    const body = {
+      fileName: fileName,
+      folderName: folderName,
+      codeSnippet: codeSnippet,
+    };
+        
+          
+    await fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
   }
 
     const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
+
         if (e?.key === 'Enter' && e?.currentTarget.value) {
             handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder)
 
-            console.log('inaddfolder', e.currentTarget.value)
+            // console.log('inaddfolder', e.currentTarget.value)
+            setFolder(e.currentTarget.value)
+            const isFolder = showInput.isFolder
 
-            let isFolder = showInput.isFolder
-
+            appFolder.push(explorer.name)
 
             const body ={"fileName": e.currentTarget.value, "folderName": explorer.name, "isFolder": isFolder}
 
@@ -109,24 +152,22 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
             })
         
             setShowInput({ ...showInput, visible: false })
+            // if(explorer.name === 'app') setOpen(true)
+
+
+            console.log('app', appFolder, explorer)
+
+
+            for(const files of appFolder){
+              
+              // console.log('explorer', explorer.name)
+              if(files === explorer.name || explorer.name === 'app') setOpen(true)
+            }
 
         }
 
+        
     }
-  const onAddFolder = (e?: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e?.key === 'Enter' && e?.currentTarget.value) {
-      handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
-
-      setShowInput({ ...showInput, visible: false });
-
-    }
-  };
-
-  const handleCode = async () => {
-    //changes the codeSnippet when the div is clicked
-    console.log(explorer.preview);
-    setCodeSnippet(explorer.preview);
-  };
 
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
     e?.stopPropagation();

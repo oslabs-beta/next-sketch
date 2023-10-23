@@ -54,7 +54,11 @@ const fileController = {
   // },
 
   postFolder: function (req, res, next) {
-    console.log('inside postFolder');
+
+    const folderDir = 'server/ExportFolder/nextsketch/src'
+
+
+
     if (req.body.name) {
       const dir = 'server/ExportFolder/nextsketch/src/app/';
       fs.mkdirSync(path.join(dir, req.body.name));
@@ -62,27 +66,48 @@ const fileController = {
     }
 
     if (req.body.fileName) {
-      const fileDir = "server/ExportFolder/nextsketch/src/app/" + req.body.folderName;
-      if(req.body.isFolder){
-        console.log('in middleware', req.body.isFolder)
+    
+    function recall(folderDir) {
+      // Get an array of all files and directories in the passed directory using fs.readdirSync
+      const fileList = fs.readdirSync(folderDir);
 
-        fs.mkdirSync(path.join(fileDir, req.body.fileName))
+
+
+      for (const file of fileList) {
+        // Create the full path of the file/directory by concatenating the passed directory and file/directory name
+        const name = `${folderDir}/${file}`;
+
+        //skip reading over all the files inside node_modules for efficiency
+        if (file === 'node_modules') {
+          continue;
+        }
+
+        if (file === req.body.folderName) { 
+          if (req.body.isFolder) {
+            fs.mkdirSync(path.join(name, req.body.fileName))
+            console.log('in add folder thing', name+ '/' + req.body.fileName)
+            fs.writeFileSync(path.join(name + '/' + req.body.fileName, 'page.tsx'), '')
+          }
+          else if(req.body.codeSnippet) fs.writeFileSync(path.join(name, req.body.fileName), req.body.codeSnippet)
+          else  fs.writeFileSync(path.join(name, req.body.fileName), '')
+          return;
+        }
+
+        // Check if the current file/directory is a directory using fs.statSync
+        if (fs.statSync(name).isDirectory()) {
+          // If it is a directory, recursively call the getFiles function with the directory path and the files array
+
+          recall(name);
+        }
       }
-      else fs.writeFileSync(path.join(fileDir, req.body.fileName), "");
-      const fileDir =
-        'server/ExportFolder/nextsketch/src/app/' + req.body.folderName;
-      fs.writeFileSync(path.join(fileDir, req.body.fileName), '');
-
-      return next();
+      return;
     }
+    recall(folderDir);
+    return next()
+  }
   },
 
-  postNestedFolder: function(req, res, next){
-    console.log('inside postFolder');
 
-    console.log
-
-  },
 
   deleteFolder: function (req, res, next) {
     const folderDir = 'server/ExportFolder/nextsketch';
@@ -163,7 +188,28 @@ const fileController = {
 
       }
   });
-    );
+    
+
+  // async function copyFilesAndDirectories(source, target) {
+  //   fs.ensureDirSync(target);
+  
+  //   const filesAndDirectories = glob.sync('**/*', { cwd: source, nodir: true });
+  
+  //   for (const item of filesAndDirectories) {
+  //     const sourcePath = path.join(source, item);
+  //     const targetPath = path.join(target, item);
+  
+  //     fs.ensureDirSync(path.dirname(targetPath));
+  //     fs.copyFileSync(sourcePath, targetPath);
+  //   }
+  // }
+  
+  // try {
+  //   copyFilesAndDirectories(sourceDir, path.join(targetDir, 'nextsketch'));
+  //   console.log('Directory and its contents copied successfully.');
+  // } catch (err) {
+  //   console.error(`Error copying directory: ${err}`);
+  // }
 
 
     return next();
