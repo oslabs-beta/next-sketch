@@ -18,11 +18,24 @@ interface ComponentNameType {
   setComponentName: Dispatch<SetStateAction<string>>;
 }
 
+interface CodeSnippetType {
+  codeSnippet: string;
+  setCodeSnippet: Dispatch<SetStateAction<string>>;
+}
+
 export const CodeContext = React.createContext<ComponentNameType | undefined>(
   undefined
 );
 
+export const CodeSnippetContext = React.createContext<
+  CodeSnippetType | undefined
+>(undefined);
+
 const App = () => {
+
+  const [folderExpanded,setFolderExpanded] = useState(false);
+  const [open,setOpen] = useState(false);
+
   const [elements, setElements] = useState<Tag[]>([
     { id: generateId(), name: 'div' },
     {
@@ -49,6 +62,11 @@ const App = () => {
 
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
+  //Check what this setCode is doing??
+  const [code, setCode] = useState<string>('Hello'); // Use state to store the code
+  const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
+    undefined
+  );
 
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
     useTraverseTree();
@@ -56,9 +74,16 @@ const App = () => {
   const handleInsertNode = (
     folderId: number,
     item: string,
-    isFolder: boolean
+    isFolder: boolean,
+    preview: string
   ) => {
-    const finalTree: any = insertNode(explorerData, folderId, item, isFolder);
+    const finalTree: any = insertNode(
+      explorerData,
+      folderId,
+      item,
+      isFolder,
+      preview
+    );
 
     setExplorerData(finalTree);
   };
@@ -73,14 +98,21 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
-  const handleInputBoilerFiles = (folderId: number, item: string, folderName: string) => {
+  const handleInputBoilerFiles = (
+    folderId: number,
+    item: string,
+    folderName: string,
+    preview: string
+  ) => {
     const finalTree: any = insertBoilerFiles(
       explorerData,
       folderId,
       item,
-      folderName
+      folderName,
+      preview
     );
-  
+
+
     setExplorerData(finalTree);
   };
 
@@ -137,18 +169,23 @@ const App = () => {
               </Grid>
 
               <Grid item xs={4} sx={{ display: 'flex' }}>
-                {/* <Grid alignSelf={'flex-start'}>
+                <Grid alignSelf={'flex-start'}>
                   <CreateComponentBtn />
                 </Grid> */}
                 <StaticTagsContainer />
               </Grid>
 
-              <Grid item xs={4} sx={{ height: '500px' }}>
-                <TabsComponent />
-                {/* <DisplayContainer /> */}
+                <Grid item xs={4} sx={{ height: '500px' }}>
+                  <TabsComponent
+                    code={code}
+                    setCode={setCode}
+                    treeData={explorerData}
+                  />
+                  {/* <DisplayContainer /> */}
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
+            </Box>
+          </CodeSnippetContext.Provider>
         </CodeContext.Provider>
       </Box>
     </Box>

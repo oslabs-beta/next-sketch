@@ -1,18 +1,18 @@
-const path = require("path");
-const fs = require("fs");
-const express = require("express");
+const path = require('path');
+const fs = require('fs');
+const express = require('express');
 
 const app = express();
-const cors = require("cors");
+const cors = require('cors');
 const PORT = 3000;
 app.use(cors());
-const fileController = require("./fileController.js");
+const fileController = require('./fileController.js');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get(
-  "/",
+  '/',
   fileController.deleteExport,
   fileController.createExport,
   (req, res) => {
@@ -20,19 +20,23 @@ app.get(
   }
 );
 
-app.post("/", fileController.postFolder, (req, res) => {
+app.put('/', fileController.updateCode, (req, res) => {
+res.status(200).send()
+});
+
+app.post('/', fileController.postFolder, (req, res) => {
   return res.status(200).send();
 });
 
-app.delete("/", fileController.deleteFolder, (req, res) => {
+app.delete('/', fileController.deleteFolder, (req, res) => {
   return res.status(200).send();
 });
 
 app.use((err, req, res, next) => {
   const defaultErr = {
-    log: "Express error handler caught unknown middleware error",
+    log: 'Express error handler caught unknown middleware error',
     status: 500,
-    message: { err: "An error occurred" },
+    message: { err: 'An error occurred' },
   };
   const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.log);
