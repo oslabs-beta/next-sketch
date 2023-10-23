@@ -7,6 +7,18 @@ const useTraverseTree = () => {
     preview: string
   ) => {
     if (tree.id === folderId && tree.isFolder) {
+
+      const appFolder = tree.items
+      for(const files of appFolder){
+        if(files.name === item) {
+          alert('Folder name already exists!')
+          return a();
+        }
+      }
+
+
+
+
       tree.items.unshift({
         id: new Date().getTime(),
         name: item,
@@ -39,29 +51,6 @@ const useTraverseTree = () => {
 
     const createCustomEndpoint = (tree: any, folderId: number, item: string, isFolder: boolean ) => {
        let fileAlreadyExists = false;
-
-
-       //loop through files of source folder and make sure there are not 2 folders with the same name
-        // for(const folder of tree.items) {
-        //     if(folder.name === 'src') {
-
-        //         for(const files of folder.items){
-        //             if(files.name === item) {
-        //                 alert('Folder name already exists!')
-        //                 fileAlreadyExists = true
-        //         }
-        //     }
-
-        //     if(fileAlreadyExists === false){
-        //         folder.items.unshift({
-        //             id: new Date().getTime(),
-        //             name: item,
-        //             isFolder: true,
-        //             items: []})
-                
-        //         }
-        //     }
-        // }
 
         if (tree.name === 'app') {
 
