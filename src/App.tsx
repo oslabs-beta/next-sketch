@@ -32,33 +32,8 @@ export const CodeSnippetContext = React.createContext<
 >(undefined);
 
 const App = () => {
-
-  const [folderExpanded,setFolderExpanded] = useState(false);
-  const [open,setOpen] = useState(false);
-
-  const [elements, setElements] = useState<Tag[]>([
-    { id: generateId(), name: 'div' },
-    {
-      id: generateId(),
-      name: 'img',
-    },
-    {
-      id: generateId(),
-      name: 'p',
-    },
-    {
-      id: generateId(),
-      name: 'form',
-    },
-    {
-      id: generateId(),
-      name: 'button',
-    },
-    {
-      id: generateId(),
-      name: 'link',
-    },
-  ]);
+  const [folderExpanded, setFolderExpanded] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
@@ -112,7 +87,6 @@ const App = () => {
       preview
     );
 
-
     setExplorerData(finalTree);
   };
 
@@ -149,31 +123,39 @@ const App = () => {
         }}
       >
         <CodeContext.Provider value={[componentName, setComponentName]}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid
-              container
-              justifyContent={'space-between'}
-              sx={{ height: '85vh' }}
-            >
-              <Grid item xs={3.5}>
-                <CustomEndpoint
-                  handleCreateCustomEndpoint={handleCreateCustomEndpoint}
-                  handleInputBoilerFiles={handleInputBoilerFiles}
-                  explorer={explorerData}
-                />
-                <Folder
-                  handleInsertNode={handleInsertNode}
-                  handleDeleteNode={handleDeleteNode}
-                  explorer={explorerData}
-                />
-              </Grid>
+          <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid
+                container
+                justifyContent={'space-between'}
+                sx={{ height: '85vh' }}
+              >
+                <Grid item xs={3.5}>
+                  <CustomEndpoint
+                    handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+                    handleInputBoilerFiles={handleInputBoilerFiles}
+                    explorer={explorerData}
+                    code={code}
+                    open={open}
+                    setOpen={setOpen}
+                  />
+                  <Folder
+                    handleInsertNode={handleInsertNode}
+                    handleDeleteNode={handleDeleteNode}
+                    explorer={explorerData}
+                    code={code}
+                    setCode={setCode}
+                    folderExpanded={folderExpanded}
+                    setFolderExpanded={setFolderExpanded}
+                  />
+                </Grid>
 
-              <Grid item xs={4} sx={{ display: 'flex' }}>
-                <Grid alignSelf={'flex-start'}>
+                <Grid item xs={4} sx={{ display: 'flex' }}>
+                  {/* <Grid alignSelf={'flex-start'}>
                   <CreateComponentBtn />
                 </Grid> */}
-                <StaticTagsContainer />
-              </Grid>
+                  <StaticTagsContainer />
+                </Grid>
 
                 <Grid item xs={4} sx={{ height: '500px' }}>
                   <TabsComponent
