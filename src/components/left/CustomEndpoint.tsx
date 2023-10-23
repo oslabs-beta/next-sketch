@@ -149,7 +149,7 @@ const CustomEndpoint = ({
     e?.stopPropagation();
     e?.preventDefault();
 
-    const body = { name: folder};
+    const body = { name: folder };
 
     await fetch('http://localhost:3000/', {
       method: 'POST',
@@ -168,7 +168,6 @@ const CustomEndpoint = ({
   };
   return (
     <div className='cursor'>
-      <div className='input-container'>
       <form>
         <input
           type='text'
@@ -176,15 +175,12 @@ const CustomEndpoint = ({
           placeholder=' New Endpoint'
           onChange={handleChange}
           value={folder}
-          id='searchInput'
         />
 
         <button type='submit' onClick={handleCreateCustomFolder}>
           Submit
         </button>
       </form>
-      <div className='text-cursor'></div>
-      </div>
 
       <Modal
         open={open}
