@@ -52,6 +52,7 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
 
             let isFolder = showInput.isFolder
 
+            console.log(explorer.name)
 
             const body ={"fileName": e.currentTarget.value, "folderName": explorer.name, "isFolder": isFolder}
 
