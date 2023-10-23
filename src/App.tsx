@@ -168,6 +168,7 @@ const App = () => {
                   <Folder
                     handleInsertNode={handleInsertNode}
                     handleDeleteNode={handleDeleteNode}
+                    handleInputBoilerFiles={handleInputBoilerFiles}                    
                     explorer={explorerData}
                     code={code}
                     setCode={setCode}

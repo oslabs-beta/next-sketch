@@ -6,16 +6,9 @@ import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
 import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
+import { modalLayout } from '../../utils/interfaces';
 
-interface modalLayout {
-  default: boolean;
-  error: boolean;
-  layout: boolean;
-  loading: boolean;
-  notFound: boolean;
-  route: boolean;
-  template: boolean;
-}
+
 
 //----------------
 const style = {
@@ -72,14 +65,15 @@ const CustomEndpoint = ({
 
   async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
+
     setSelectedItems({
       ...selectedItems,
-      // [name]: e.target.checked,
       [name]: true
     });
 
     const fileName = e.target.name;
     const folderName = folder;
+
 
 //     if(!cacheModal.includes(fileName)){
 //       cacheModal.push(fileName)
