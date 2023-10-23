@@ -72,8 +72,10 @@ const fileController = {
       // Get an array of all files and directories in the passed directory using fs.readdirSync
       const fileList = fs.readdirSync(folderDir);
 
-      // Create the full path of the file/directory by concatenating the passed directory and file/directory name
+
+
       for (const file of fileList) {
+        // Create the full path of the file/directory by concatenating the passed directory and file/directory name
         const name = `${folderDir}/${file}`;
         console.log(name)
 
@@ -84,7 +86,8 @@ const fileController = {
 
         if (file === req.body.folderName) { 
           if (req.body.isFolder) fs.mkdirSync(path.join(name, req.body.fileName))
-          else fs.writeFileSync(path.join(name, req.body.fileName), req.body.codeSnippet)
+          else if(req.body.codeSnippet) fs.writeFileSync(path.join(name, req.body.fileName), req.body.codeSnippet)
+          else  fs.writeFileSync(path.join(name, req.body.fileName), '')
           return;
         }
 
