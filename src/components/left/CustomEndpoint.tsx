@@ -79,29 +79,17 @@ const CustomEndpoint = ({
     //       handleInputBoilerFiles(explorer.id, fileName, folderName)
     // }
     setComponentName(fileName);
-
-    // const body = {
-    //   fileName: fileName,
-    //   folderName: folderName,
-    //   codeSnippet: codeSnippet,
-    // };
-    // console.log('after setting the componentName');
-    // console.log('2', codeSnippet);
-
-    // await fetch('http://localhost:3000/', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // });
   }
 
-  const handlePostingFiles = async (folderName, fileName, code) => {
+  const handlePostingFiles = async (
+    folderName: string,
+    fileName: string,
+    code: string
+  ) => {
     const body = {
       fileName: fileName,
       folderName: folderName,
-      codeSnippet: codeSnippet,
+      codeSnippet: code,
     };
     await fetch('http://localhost:3000/', {
       method: 'POST',

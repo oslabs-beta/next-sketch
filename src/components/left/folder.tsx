@@ -111,6 +111,11 @@ function Folder({
     const fileName = e.target.name;
     const folderName = folder;
 
+    if(!cacheModal.includes(fileName)){
+      cacheModal.push(fileName)
+      handleInputBoilerFiles(explorer.id, fileName, folderName)
+      }
+
     setComponentName(fileName);
     console.log(componentName);
 
