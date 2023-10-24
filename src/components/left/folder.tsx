@@ -16,7 +16,7 @@ interface Input {
   visible: boolean | undefined;
   isFolder: boolean | null | undefined;
 }
-
+const cacheModal: string[] = []
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, appFolder, explorer }: any) {
   const [expand, setExpand] = useState<boolean>(false);
@@ -109,12 +109,17 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
 
     const fileName = e.target.name;
     const folderName = folder;
+    console.log('in handle modal', folder)
 
+    
    
     setComponentName(fileName);
 
+if(!cacheModal.includes(fileName)){
+  cacheModal.push(fileName)
+  if(explorer.name) handleInputBoilerFiles(explorer.id, fileName, folderName);
 
-handleInputBoilerFiles(explorer.id, fileName, folderName);
+}
 
     const body = {
       fileName: fileName,
@@ -140,7 +145,6 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
             setFolder(e.currentTarget.value)
             const isFolder = showInput.isFolder
 
-            console.log('appfolder', appFolder)
              appFolder.push(explorer.name)
 
             const body ={"fileName": e.currentTarget.value, "folderName": explorer.name, "isFolder": isFolder}
@@ -295,14 +299,20 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
             {folderIcon} {folderLogo} {explorer.name}
           </span>
           <div>
+
+          {explorer.name !== 'app' && explorer.name !== 'src' ? 
+
             <button onClick={(e) => {
               handleNewFolder(e, true);
             }}>
               <FontAwesomeIcon icon={faFolderPlus} />
-            </button>
+            </button> : ''}
+
+            {explorer.name !== 'src' ? 
+
             <button onClick={(e) => handleNewFolder(e, false)}>
               <FontAwesomeIcon icon={faFileCirclePlus} />
-            </button>
+            </button> : ''}
 
             <button onClick={(e) => handleDeleteFolder(e, false)}>
               <FontAwesomeIcon icon={faTrash} />
@@ -346,10 +356,10 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
         </div>
       </div>
     );
-  } else {
+  } else if(explorer.name) {
     return (
       <div className='folder'>
-        {explorer.name.slice(-3) === 'tsx' ? <FontAwesomeIcon icon={faAtom}/>: '📄' }{explorer.name} 
+        {explorer.name.slice(-3) === 'tsx' ? <FontAwesomeIcon icon={faAtom}/> : '📄' }{explorer.name} 
         {explorer.name === 'page.tsx' ? '' : 
 
         <button onClick={(e) => handleDeleteFolder(e, false)}>

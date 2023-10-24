@@ -8,7 +8,7 @@ div {
     background-color: white;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     padding: 5px;
     width: 75%;
     cursor: pointer;
@@ -72,6 +72,7 @@ input {
   flex: 1;
   padding: 10px;
   /* border: 1px solid #ccc; */
+  width: 80%;
   border-radius: 5px;
   font-size: 16px;
   margin-right: 5px;
@@ -88,7 +89,7 @@ button[type="submit"] {
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-left: 10px;
+  margin-left: 20px;
   box-sizing: border-box; /* Include padding and border in the width */
 }
 
