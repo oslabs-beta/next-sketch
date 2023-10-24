@@ -107,7 +107,9 @@ button[type="submit"]:disabled {
  
  
   
- /* Styles for the input container */
+/* YourComponent.css */
+
+/* Styles for the input container */
 .input-container {
   position: relative;
 }
@@ -118,21 +120,26 @@ button[type="submit"]:disabled {
   outline: none; /* Remove the default input focus outline */
   padding: 0; /* Remove any padding or margins */
   width: 100%;
+  
+  
 }
 
 /* Styles for the blinking cursor (initially hidden) */
 .text-cursor {
   position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 2px; /* Adjust the width as needed */
-  animation: none; /* Initially, no blinking */
+  animation: none; /* Blinking animation */
 }
 
 @keyframes cursor-blink {
   0%, 100% {
     background: transparent; /* Make the cursor disappear */
   }
- 
+  50% {
+  }
 }
 
 #searchInput::placeholder {
@@ -140,7 +147,8 @@ button[type="submit"]:disabled {
 }
 
 #searchInput:focus + .text-cursor {
-  animation: cursor-blink 1s infinite; /* Start the blinking animation when focused */
+  animation: cursor-blink 1s infinite; /* Start blinking animation when focused */
 }
+
 
   

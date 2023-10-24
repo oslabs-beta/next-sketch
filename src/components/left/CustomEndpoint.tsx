@@ -168,18 +168,22 @@ const CustomEndpoint = ({
   return (
     <div className='cursor'>
       <form>
+      <div className="input-container">
         <input
           type='text'
           autoFocus
-          placeholder=' New Endpoint'
+          placeholder='New Endpoint'
           onChange={handleChange}
           value={folder}
+          id="searchInput"
         />
+        <div className="text-cursor"></div>
+      </div>
 
-        <button type='submit' onClick={handleCreateCustomFolder}>
-          Submit
-        </button>
-      </form>
+      <button type='submit' onClick={handleCreateCustomFolder}>
+        Submit
+      </button>
+    </form>
 
       <Modal
         open={open}
