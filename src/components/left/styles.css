@@ -8,13 +8,14 @@ div {
     background-color: white;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: left;
     padding: 5px;
     width: 75%;
     cursor: pointer;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 3px;
+    
   }
   
   /* Styling for the folder text and buttons */
@@ -23,6 +24,7 @@ div {
     font-size: 16px;
     font-weight: normal;
     color: #333;
+    
   }
   
   /* Styling for the buttons inside the folder */
@@ -55,7 +57,7 @@ form {
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   padding: 10px;
-  width: 100%; /* Set to 75% width */
+  width: 75%; /* Set to 75% width */
   max-width: 600px;
   box-sizing: border-box; /* Include padding and border in the width */
   
@@ -151,4 +153,7 @@ button[type="submit"]:disabled {
 }
 
 
-  
+  /* YourComponent.css */
+
+/* Styles for the blinking cursor */
+

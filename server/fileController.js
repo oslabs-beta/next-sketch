@@ -55,18 +55,18 @@ const fileController = {
 
   postFolder: function (req, res, next) {
 
-    const folderDir = 'server/ExportFolder/nextsketch/src'
-
-
+    const folderDir = 'server/ExportFolder/'
 
     if (req.body.name) {
-      const dir = 'server/ExportFolder/nextsketch/src/app/';
+      const dir = 'server/ExportFolder/NextSketch/src/app/';
       fs.mkdirSync(path.join(dir, req.body.name));
+      fs.writeFileSync(path.join(dir + req.body.name, 'page.tsx'), '')
       return next();
     }
 
     if (req.body.fileName) {
     
+      console.log(req.body)
     function recall(folderDir) {
       // Get an array of all files and directories in the passed directory using fs.readdirSync
       const fileList = fs.readdirSync(folderDir);
@@ -85,7 +85,6 @@ const fileController = {
         if (file === req.body.folderName) { 
           if (req.body.isFolder) {
             fs.mkdirSync(path.join(name, req.body.fileName))
-            console.log('in add folder thing', name+ '/' + req.body.fileName)
             fs.writeFileSync(path.join(name + '/' + req.body.fileName, 'page.tsx'), '')
           }
           else if(req.body.codeSnippet) fs.writeFileSync(path.join(name, req.body.fileName), req.body.codeSnippet)
@@ -110,7 +109,7 @@ const fileController = {
 
 
   deleteFolder: function (req, res, next) {
-    const folderDir = 'server/ExportFolder/nextsketch';
+    const folderDir = 'server/ExportFolder';
 
     //helper function to recursively get deeper into nested folders and files
     function recall(folderDir) {
@@ -152,13 +151,13 @@ const fileController = {
 
   updateCode: function (req, res, next) {
     const fileDir =
-      'server/ExportFolder/nextsketch/src/app/' + req.body.folderName;
+      'server/ExportFolder/NextSketch/src/app/' + req.body.folderName;
     fs.writeFileSync(path.join(fileDir, req.body.fileName), req.body.code);
     return next();
   },
 
   deleteExport: function (req, res, next) {
-    const folderDir = 'server/ExportFolder/nextsketch';
+    const folderDir = 'server/ExportFolder/NextSketch';
     fs.rmSync(folderDir, { recursive: true });
     // const output = execSync('npx create-next-app my-nextjs-app', { encoding: 'utf-8' });  // the default is 'buffer'
     // console.log('Output was:\n', output);
@@ -168,7 +167,7 @@ const fileController = {
 
   createExport: function (req, res, next) {
     const targetDir = 'server/ExportFolder';
-    const sourceDir = 'server/nextsketch';
+    const sourceDir = 'server/NextSketch';
 
     // process.chdir(dir);
     // const output = execSync('npx create-next-app nextsketch --example with-typescript', { encoding: 'utf-8' });  // the default is 'buffer'
@@ -180,7 +179,7 @@ const fileController = {
     // });
 
 
-    fs.copy(sourceDir, path.join(targetDir, 'nextsketch'), { recursive: true }, (err) => {
+    fs.copy(sourceDir, path.join(targetDir, 'NextSketch'), { recursive: true }, (err) => {
       if (err) {
         console.error(`Error copying directory: ${err}`);
       } else {
