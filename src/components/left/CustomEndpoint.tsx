@@ -62,7 +62,7 @@ const CustomEndpoint = ({
     handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
   }, [codeSnippet]);
 
-  async function handleModalChange(e?: any) {
+  function handleModalChange(e?: any) {
     console.log('customendpoint modal change');
     const name = e.target.name.slice(0, -4);
 
@@ -74,10 +74,6 @@ const CustomEndpoint = ({
     const fileName = e.target.name;
     setFile(fileName);
 
-    //     if(!cacheModal.includes(fileName)){
-    //       cacheModal.push(fileName)
-    //       handleInputBoilerFiles(explorer.id, fileName, folderName)
-    // }
     setComponentName(fileName);
   }
 
