@@ -66,7 +66,7 @@ const useTraverseTree = () => {
                     if(files.name.toLowerCase() === item.toLowerCase()) {
                             alert('Folder name already exists!')
                                 fileAlreadyExists = true
-                                return a();
+                                return laura();
                         }
                     }
 

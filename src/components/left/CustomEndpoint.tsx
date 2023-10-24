@@ -39,7 +39,17 @@ const CustomEndpoint = ({
   const handleClose = () => {
     setOpen(false);
     setFolder('');
-    setSelectedItems({});
+    setSelectedItems({
+      default: false,
+      error: false,
+      layout: false,
+      loading: false,
+      notFound: false,
+      route: false,
+      template: false,      
+      page:true
+    })
+
   };
 
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
@@ -57,15 +67,22 @@ const CustomEndpoint = ({
     setFolder(e.target.value);
   }
 
+  // useEffect(() => {
+  //   // This effect runs whenever componentName changes
+  //   // console.log('useEffect in customEndPoint');
+  //   handleUpdateCode(folder, componentName, codeSnippet);
+  //   handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
+  // }, [codeSnippet]);
   useEffect(() => {
     handlePostingFiles(folder, componentName, codeSnippet);
     handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
   }, [codeSnippet]);
 
+
   async function handleModalChange(e?: any) {
     console.log('customendpoint modal change');
     const name = e.target.name.slice(0, -4);
-
+    console.log('laura rlly sucks')
     setSelectedItems({
       ...selectedItems,
       [name]: true,
@@ -80,21 +97,13 @@ const CustomEndpoint = ({
     // }
     setComponentName(fileName);
 
-    // const body = {
-    //   fileName: fileName,
-    //   folderName: folderName,
-    //   codeSnippet: codeSnippet,
-    // };
-    // console.log('after setting the componentName');
-    // console.log('2', codeSnippet);
+if(!cacheModal.includes(fileName)){
+  cacheModal.push(fileName)
+  if(explorer.name) handleInputBoilerFiles(explorer.id, fileName, folderName);
 
-    // await fetch('http://localhost:3000/', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // });
+}
+
+
   }
 
   const handlePostingFiles = async (folderName, fileName, code) => {
@@ -110,8 +119,50 @@ const CustomEndpoint = ({
       },
       body: JSON.stringify(body),
     });
+  }
+
+  // const handleUpdateCode = async (
+  //   folderName: string,
+  //   fileName: string,
+  //   code: string
+  // ) => {
+  //   const data = {
+  //     folderName,
+  //     fileName,
+  //     code,
+  //   };
+
+  //   // try {
+  //   //   const response = await fetch('http://localhost:3000/', {
+  //   //     method: 'PUT',
+
+  //   //     headers: {
+  //   //       'Content-Type': 'application/json',
+  //   //     },
+  //   //     body: JSON.stringify(data),
+  //   //   });
+
+  //   //   if (response.ok) {
+  //   //     // Handle a successful PUT request
+  //   //     const updatedData = await response.json();
+  //   //   } else {
+  //   //     // Handle PUT request failure
+  //   //     console.error(
+  //   //       'PUT request failed:',
+  //   //       response.status,
+  //   //       response.statusText
+  //   //     );
+  //   //   }
+
+  //   // }
+  //   // catch (error) {
+  //   //   console.log(error);
+  //   // }
+  
+  // }
   };
 
+ 
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     e?.preventDefault();
@@ -134,22 +185,23 @@ const CustomEndpoint = ({
   return (
     <div className='cursor'>
       <form>
-        <div className='input-container'>
-          <input
-            type='text'
-            autoFocus
-            placeholder='New Endpoint'
-            onChange={handleChange}
-            value={folder}
-            id='searchInput'
-          />
-          <div className='text-cursor'></div>
-        </div>
+      <div className="input-container">
+        <input
+          type='text'
+          autoFocus
+          placeholder='New Endpoint in src/app'
+          onChange={handleChange}
+          value={folder}
+          id="searchInput"
+        />
+        <div className="text-cursor"></div>
+      </div>
 
-        <button type='submit' onClick={handleCreateCustomFolder}>
-          Submit
-        </button>
-      </form>
+      <button type='submit' onClick={handleCreateCustomFolder}>
+        Submit
+      </button>
+    </form>
+
 
       <Modal
         open={open}

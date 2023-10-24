@@ -23,7 +23,7 @@ interface Input {
   visible: boolean | undefined;
   isFolder: boolean | null | undefined;
 }
-
+const cacheModal: string[] = []
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Folder({
   handleInsertNode,
@@ -37,6 +37,7 @@ function Folder({
   const [folderLogo, setFolderLogo] = useState(
     <FontAwesomeIcon icon={faFolderClosed} />
   );
+
 
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
@@ -74,6 +75,7 @@ function Folder({
 
   const handleClose = () => {
     setOpen(false);
+
   };
 
   const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
@@ -110,11 +112,18 @@ function Folder({
 
     const fileName = e.target.name;
     const folderName = folder;
+    console.log('in handle modal', folder)
+
 
     setComponentName(fileName);
     console.log(componentName);
 
-    handleInputBoilerFiles(explorer.id, fileName, folderName);
+if(!cacheModal.includes(fileName)){
+  cacheModal.push(fileName)
+  if(explorer.name) handleInputBoilerFiles(explorer.id, fileName, folderName);
+
+}
+
 
     const body = {
       fileName: fileName,
@@ -287,16 +296,21 @@ function Folder({
             {folderIcon} {folderLogo} {explorer.name}
           </span>
           <div>
-            <button
-              onClick={(e) => {
-                handleNewFolder(e, true);
-              }}
-            >
+
+          {explorer.name !== 'app' && explorer.name !== 'src' ? 
+
+            <button onClick={(e) => {
+              handleNewFolder(e, true);
+            }}>
+
               <FontAwesomeIcon icon={faFolderPlus} />
-            </button>
+            </button> : ''}
+
+            {explorer.name !== 'src' ? 
+
             <button onClick={(e) => handleNewFolder(e, false)}>
               <FontAwesomeIcon icon={faFileCirclePlus} />
-            </button>
+            </button> : ''}
 
             <button onClick={(e) => handleDeleteFolder(e, false)}>
               <FontAwesomeIcon icon={faTrash} />
@@ -338,22 +352,17 @@ function Folder({
         </div>
       </div>
     );
-  } else {
+  } else if(explorer.name) {
     return (
       <div className='folder'>
-        {explorer.name.slice(-3) === 'tsx' ? (
-          <FontAwesomeIcon icon={faAtom} />
-        ) : (
-          '📄'
-        )}
-        {explorer.name}
-        {explorer.name === 'page.tsx' ? (
-          ''
-        ) : (
-          <button onClick={(e) => handleDeleteFolder(e, false)}>
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
-        )}
+        {explorer.name.slice(-3) === 'tsx' ? <FontAwesomeIcon icon={faAtom}/> : '📄' }{explorer.name} 
+        {explorer.name === 'page.tsx' ? '' : 
+
+        <button onClick={(e) => handleDeleteFolder(e, false)}>
+          <FontAwesomeIcon icon={faTrash} />
+        </button> 
+  }
+
       </div>
     );
   }
