@@ -26,7 +26,6 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
   );
 
 
-  console.log(explorer.name)
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
@@ -69,6 +68,7 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
 
   const handleClose = () => {
     setOpen(false);
+
   };
 
   const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
@@ -140,6 +140,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
             setFolder(e.currentTarget.value)
             const isFolder = showInput.isFolder
 
+            console.log('appfolder', appFolder)
              appFolder.push(explorer.name)
 
             const body ={"fileName": e.currentTarget.value, "folderName": explorer.name, "isFolder": isFolder}

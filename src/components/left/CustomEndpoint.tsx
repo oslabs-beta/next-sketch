@@ -40,7 +40,16 @@ const CustomEndpoint = ({
   const handleClose = () => {
     setOpen(false);
     setFolder('');
-    setSelectedItems({})
+    setSelectedItems({
+      default: false,
+      error: false,
+      layout: false,
+      loading: false,
+      notFound: false,
+      route: false,
+      template: false,      
+      page:true
+    })
   };
 
 

@@ -69,8 +69,8 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
-  const handleCreateCustomEndpoint = (folderId: number, item: string) => {
-    const finalTree: any = createCustomEndpoint(explorerData, folderId, item);
+  const handleCreateCustomEndpoint = (folderId: number, item: string, isFolder: boolean) => {
+    const finalTree: any = createCustomEndpoint(explorerData, folderId, item, isFolder);
     setExplorerData(finalTree);
   };
 
