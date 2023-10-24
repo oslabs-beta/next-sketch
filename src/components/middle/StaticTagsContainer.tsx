@@ -1,74 +1,55 @@
 import { useState } from 'react';
-import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
-import { DroppableSection } from './DroppableSection';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
 import { generateId } from '../../utils/generateId';
+import DisplayContainer from '../right/DisplayContainer';
 
-const TagsContainer = (): JSX.Element => {
+const StaticTagsContainer = (): JSX.Element => {
   const staticTags: Tag[] = [
     {
       id: generateId(),
       name: 'div',
+      container: true,
     },
     {
       id: generateId(),
       name: 'img',
+      container: false,
     },
     {
       id: generateId(),
       name: 'p',
+      container: false,
     },
     {
       id: generateId(),
       name: 'form',
+      container: true,
     },
     {
       id: generateId(),
       name: 'button',
+      container: false,
     },
     {
       id: generateId(),
       name: 'link',
-    },
-    {
-      id: generateId(),
-      name: 'a',
-    },
-    {
-      id: generateId(),
-      name: 'span',
-    },
-    {
-      id: generateId(),
-      name: 'h1',
-    },
-    {
-      id: generateId(),
-      name: 'main',
+      container: false,
     },
   ];
 
   const [tags, setTags] = useState<Tag[]>([]);
 
-  const handleSortDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (active.id !== over?.id) {
-      setTags((tags) => {
-        const activeIndex = tags.findIndex((tag) => tag.id === active.id);
-        const overIndex = tags.findIndex((tag) => tag.id === over?.id);
-        return arrayMove(tags, activeIndex, overIndex);
-      });
-    }
-  };
+  console.log('initial state tags', tags);
 
-  const addTagToBox = (event: DragEndEvent) => {
+  const addTagToDisplay = (event: DragEndEvent) => {
     const { active } = event;
-    const newTag = {
+    const newTag: Tag = {
       id: active.id,
-      name: active.data.current?.title,
+      name: active.data.current?.name,
+      container: active.data.current?.container,
     };
     setTags([...tags, newTag]);
   };
@@ -86,7 +67,7 @@ const TagsContainer = (): JSX.Element => {
         borderBottomLeftRadius: '20px',
       }}
     >
-      <DndContext onDragEnd={addTagToBox}>
+      <DndContext onDragEnd={addTagToDisplay}>
         <Box
           sx={{
             width: '100%',
@@ -117,43 +98,15 @@ const TagsContainer = (): JSX.Element => {
                 key={`${staticTag.name}-${staticTag.id}`}
                 id={staticTag.id}
               >
-                {staticTag.name}
+                {staticTag}
               </DraggableItem>
             ))}
           </Box>
         </Box>
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={handleSortDragEnd}
-        >
-          <Box
-            sx={{
-              // bgcolor: '#FFF0D5',
-              borderBottomRightRadius: '20px',
-              borderTopRightRadius: '20px',
-              borderBottomLefttRadius: '20px',
-              width: '100%',
-              overflowY: 'auto',
-            }}
-          >
-            <Box
-              sx={{
-                bgcolor: 'rgba(191, 196, 248, 0.8)',
-                color: 'black',
-                textAlign: 'center',
-                borderTopRightRadius: '20px',
-              }}
-              position={'sticky'}
-            >
-              <Typography variant='h6'>Box</Typography>
-            </Box>
-
-            <DroppableSection tags={tags} />
-          </Box>
-        </DndContext>
+        <DisplayContainer tags={tags} setTags={setTags} />
       </DndContext>
     </Box>
   );
 };
 
-export default TagsContainer;
+export default StaticTagsContainer;

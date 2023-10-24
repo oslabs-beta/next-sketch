@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import TagsContainer from './components/middle/TagsContainer';
+import StaticTagsContainer from './components/middle/StaticTagsContainer';
 import './App.css';
 import CreateComponentBtn from './components/middle/CreateComponentBtn';
 import explorer from './components/left/data/folderData';
@@ -32,36 +32,9 @@ export const CodeSnippetContext = React.createContext<
 >(undefined);
 
 const App = () => {
-
   let appFolder = explorer.items[2].items[0].items;
-
-
-  const [folderExpanded,setFolderExpanded] = useState(false);
-  const [open,setOpen] = useState(false);
-
-  const [elements, setElements] = useState<Tag[]>([
-    { id: generateId(), name: 'div' },
-    {
-      id: generateId(),
-      name: 'img',
-    },
-    {
-      id: generateId(),
-      name: 'p',
-    },
-    {
-      id: generateId(),
-      name: 'form',
-    },
-    {
-      id: generateId(),
-      name: 'button',
-    },
-    {
-      id: generateId(),
-      name: 'link',
-    },
-  ]);
+  const [folderExpanded, setFolderExpanded] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
@@ -115,7 +88,6 @@ const App = () => {
       preview
     );
 
-
     setExplorerData(finalTree);
   };
 
@@ -165,8 +137,8 @@ const App = () => {
                     handleInputBoilerFiles={handleInputBoilerFiles}
                     explorer={explorerData}
                     code={code}
-                     open = {open}
-                  setOpen ={setOpen}
+                    open={open}
+                    setOpen={setOpen}
                   />
                   <Folder
                     handleInsertNode={handleInsertNode}
@@ -176,17 +148,16 @@ const App = () => {
                     explorer={explorerData}
                     code={code}
                     setCode={setCode}
-                     folderExpanded={folderExpanded}
-                  setFolderExpanded={setFolderExpanded}
+                    folderExpanded={folderExpanded}
+                    setFolderExpanded={setFolderExpanded}
                   />
                 </Grid>
-
 
                 <Grid item xs={4} sx={{ display: 'flex' }}>
                   {/* <Grid alignSelf={'flex-start'}>
                   <CreateComponentBtn />
                 </Grid> */}
-                  <TagsContainer />
+                  <StaticTagsContainer />
                 </Grid>
 
                 <Grid item xs={4} sx={{ height: '500px' }}>

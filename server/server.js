@@ -21,7 +21,7 @@ app.get(
 );
 
 app.put('/', fileController.updateCode, (req, res) => {
-res.status(200).send()
+  res.status(200).send();
 });
 
 app.post('/', fileController.postFolder, (req, res) => {
