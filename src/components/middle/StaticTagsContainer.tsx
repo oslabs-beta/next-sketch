@@ -42,8 +42,6 @@ const StaticTagsContainer = (): JSX.Element => {
 
   const [tags, setTags] = useState<Tag[]>([]);
 
-  console.log('initial state tags', tags);
-
   const addTagToDisplay = (event: DragEndEvent) => {
     const { active } = event;
     const newTag: Tag = {

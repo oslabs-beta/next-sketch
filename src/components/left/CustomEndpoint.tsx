@@ -8,8 +8,6 @@ import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
 import { modalLayout } from '../../utils/interfaces';
 
-
-
 //----------------
 const style = {
   position: 'absolute' as 'absolute',
@@ -25,7 +23,7 @@ const style = {
 };
 //MUI styling fior modal
 //-----------------
-const cacheModal:string[]=[];
+const cacheModal: string[] = [];
 
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
@@ -33,6 +31,7 @@ const CustomEndpoint = ({
   explorer,
 }: any) => {
   const [folder, setFolder] = useState('');
+  const [file, setFile] = useState('');
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
@@ -40,11 +39,8 @@ const CustomEndpoint = ({
   const handleClose = () => {
     setOpen(false);
     setFolder('');
-    setSelectedItems({})
+    setSelectedItems({});
   };
-
-
-
 
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
     default: false,
@@ -54,7 +50,7 @@ const CustomEndpoint = ({
     notFound: false,
     route: false,
     template: false,
-    page: true
+    page: true,
   });
 
   function handleChange(e?: any) {
@@ -62,40 +58,51 @@ const CustomEndpoint = ({
   }
 
   useEffect(() => {
-    // This effect runs whenever componentName changes
-    // console.log('useEffect in customEndPoint');
-    handleUpdateCode(folder, componentName, codeSnippet);
+    handlePostingFiles(folder, componentName, codeSnippet);
     handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
   }, [codeSnippet]);
 
   async function handleModalChange(e?: any) {
+    console.log('customendpoint modal change');
     const name = e.target.name.slice(0, -4);
 
     setSelectedItems({
       ...selectedItems,
-      [name]: true
+      [name]: true,
     });
 
     const fileName = e.target.name;
-    const folderName = folder;
+    setFile(fileName);
 
-
-//     if(!cacheModal.includes(fileName)){
-//       cacheModal.push(fileName)
-//       handleInputBoilerFiles(explorer.id, fileName, folderName)
-// }
-
-
-    //passing the name of the component to codePreview
+    //     if(!cacheModal.includes(fileName)){
+    //       cacheModal.push(fileName)
+    //       handleInputBoilerFiles(explorer.id, fileName, folderName)
+    // }
     setComponentName(fileName);
 
+    // const body = {
+    //   fileName: fileName,
+    //   folderName: folderName,
+    //   codeSnippet: codeSnippet,
+    // };
+    // console.log('after setting the componentName');
+    // console.log('2', codeSnippet);
+
+    // await fetch('http://localhost:3000/', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(body),
+    // });
+  }
+
+  const handlePostingFiles = async (folderName, fileName, code) => {
     const body = {
       fileName: fileName,
       folderName: folderName,
       codeSnippet: codeSnippet,
     };
-        
-          
     await fetch('http://localhost:3000/', {
       method: 'POST',
       headers: {
@@ -103,47 +110,8 @@ const CustomEndpoint = ({
       },
       body: JSON.stringify(body),
     });
-  }
+  };
 
-  const handleUpdateCode = async (
-    folderName: string,
-    fileName: string,
-    code: string
-  ) => {
-    const data = {
-      folderName,
-      fileName,
-      code,
-    };
-
-    // try {
-    //   const response = await fetch('http://localhost:3000/', {
-    //     method: 'PUT',
-
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
-
-    //   if (response.ok) {
-    //     // Handle a successful PUT request
-    //     const updatedData = await response.json();
-    //   } else {
-    //     // Handle PUT request failure
-    //     console.error(
-    //       'PUT request failed:',
-    //       response.status,
-    //       response.statusText
-    //     );
-    //   }
-
-    // }
-    // catch (error) {
-    //   console.log(error);
-    // }
-  
-  }
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     e?.preventDefault();
@@ -161,27 +129,27 @@ const CustomEndpoint = ({
     if (folder) {
       handleCreateCustomEndpoint(explorer.id, folder);
       setOpen(true);
-    } 
+    }
   };
   return (
     <div className='cursor'>
       <form>
-      <div className="input-container">
-        <input
-          type='text'
-          autoFocus
-          placeholder='New Endpoint'
-          onChange={handleChange}
-          value={folder}
-          id="searchInput"
-        />
-        <div className="text-cursor"></div>
-      </div>
+        <div className='input-container'>
+          <input
+            type='text'
+            autoFocus
+            placeholder='New Endpoint'
+            onChange={handleChange}
+            value={folder}
+            id='searchInput'
+          />
+          <div className='text-cursor'></div>
+        </div>
 
-      <button type='submit' onClick={handleCreateCustomFolder}>
-        Submit
-      </button>
-    </form>
+        <button type='submit' onClick={handleCreateCustomFolder}>
+          Submit
+        </button>
+      </form>
 
       <Modal
         open={open}
@@ -199,15 +167,10 @@ const CustomEndpoint = ({
             Choose Your Template Files
           </Typography>
 
-
           <div>
-            <Checkbox
-              name='page.tsx'
-              checked={selectedItems.page}
-            />
+            <Checkbox name='page.tsx' checked={selectedItems.page} />
             page.tsx
           </div>
-
 
           <div>
             <Checkbox
@@ -279,9 +242,6 @@ const CustomEndpoint = ({
       </Modal>
     </div>
   );
-
-    };
- 
-
+};
 
 export default CustomEndpoint;
