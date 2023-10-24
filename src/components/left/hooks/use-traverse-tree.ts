@@ -10,7 +10,7 @@ const useTraverseTree = () => {
 
       const appFolder = tree.items
       for(const files of appFolder){
-        if(files.name === item) {
+        if(files.name.toLowerCase() === item.toLowerCase()) {
           alert('Folder name already exists!')
           return a();
         }
@@ -23,7 +23,14 @@ const useTraverseTree = () => {
         id: new Date().getTime(),
         name: item,
         isFolder,
-        items: [],
+        items: [
+          {
+            id: new Date().getTime(),
+            name: 'page.tsx',
+            isFolder: false,
+            items: []
+          }
+        ],
         preview: '',
       });
       return tree;
@@ -54,10 +61,9 @@ const useTraverseTree = () => {
 
         if (tree.name === 'app') {
 
-            console.log(tree.items)
 
             for(const files of tree.items){
-                    if(files.name === item) {
+                    if(files.name.toLowerCase() === item.toLowerCase()) {
                             alert('Folder name already exists!')
                                 fileAlreadyExists = true
                                 return a();
@@ -70,7 +76,12 @@ const useTraverseTree = () => {
                 id: new Date().getTime(),
                 name: item,
                 isFolder: true,
-                items: []
+                items: [{
+                  id: new Date().getTime(),
+                  name: 'page.tsx',
+                  isFolder: false,
+                  items: []
+                }]
 
             });
             return tree;

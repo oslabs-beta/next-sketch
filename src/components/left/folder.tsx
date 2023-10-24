@@ -25,20 +25,21 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
+
+  console.log(explorer.name)
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
   const [folder, setFolder] = useState('');
 
 
-  console.log(explorer.name.slice(-3))
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 500,
-    height: 500,
+    height: 'fit-content',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -54,6 +55,7 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
     notFound: false,
     route: false,
     template: false,
+    page: true,
   });
 
 
@@ -79,6 +81,7 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
       visible: true,
       isFolder: arg,
     });
+
 
   };
 
@@ -134,11 +137,10 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
         if (e?.key === 'Enter' && e?.currentTarget.value) {
             handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder)
 
-            // console.log('inaddfolder', e.currentTarget.value)
             setFolder(e.currentTarget.value)
             const isFolder = showInput.isFolder
 
-            appFolder.push(explorer.name)
+             appFolder.push(explorer.name)
 
             const body ={"fileName": e.currentTarget.value, "folderName": explorer.name, "isFolder": isFolder}
 
@@ -152,16 +154,11 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
             })
         
             setShowInput({ ...showInput, visible: false })
-            // if(explorer.name === 'app') setOpen(true)
-
-
-            console.log('app', appFolder, explorer)
 
 
             for(const files of appFolder){
-              
-              // console.log('explorer', explorer.name)
-              if(files === explorer.name || explorer.name === 'app') setOpen(true)
+               if(files === explorer.name || explorer.name === 'app')
+                if(showInput.isFolder) setOpen(true)
             }
 
         }
@@ -202,6 +199,16 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
           >
             Choose Your Template Files
           </Typography>
+
+
+          <div>
+            <Checkbox
+              name='page.tsx'
+              checked={selectedItems.page}
+            />
+            page.tsx
+          </div>
+
           <div>
             <Checkbox
               name='default.tsx'
@@ -286,34 +293,22 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
           <span>
             {folderIcon} {folderLogo} {explorer.name}
           </span>
-
           <div>
             <button onClick={(e) => {
-              handleNewFolder(e, true)
-              //loop through all the folders/files inside 'app' and if we click a button that belongs to a folder/file inside app, make the modal pop up
-
-
-
-
-              // if(explorer.name === 'app') {
-                
-              //       setOpen(true);
-              //       setShowInput({ ...showInput, visible: true });
-                  
-              //   }
-              
+              handleNewFolder(e, true);
             }}>
-              <FontAwesomeIcon icon={faFolderPlus} />{' '}
+              <FontAwesomeIcon icon={faFolderPlus} />
             </button>
             <button onClick={(e) => handleNewFolder(e, false)}>
-              <FontAwesomeIcon icon={faFileCirclePlus} />{' '}
+              <FontAwesomeIcon icon={faFileCirclePlus} />
             </button>
+
             <button onClick={(e) => handleDeleteFolder(e, false)}>
-              <FontAwesomeIcon icon={faTrash} />{' '}
-            </button>
+              <FontAwesomeIcon icon={faTrash} />
+            </button> 
           </div>
         </div>
-
+          
         <div style={{ display: expand ? 'block' : 'none', paddingLeft: 25 }}>
           {showInput.visible && (
             <div className='inputContainer'>
@@ -321,7 +316,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
               <input
                 type='text'
                 onKeyDown={onAddFolder}
-                className='inputContainer__input'
+                className='inputContainer__input cursor-blink' 
                 autoFocus
                 onBlur={() => {
                   
@@ -331,6 +326,7 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
                   setExpand(false);
                 }}
               />
+              
             </div>
           )}
 
@@ -353,9 +349,12 @@ handleInputBoilerFiles(explorer.id, fileName, folderName);
     return (
       <div className='folder'>
         {explorer.name.slice(-3) === 'tsx' ? <FontAwesomeIcon icon={faAtom}/>: '📄' }{explorer.name} 
+        {explorer.name === 'page.tsx' ? '' : 
+
         <button onClick={(e) => handleDeleteFolder(e, false)}>
           <FontAwesomeIcon icon={faTrash} />
-        </button>
+        </button> 
+  }
       </div>
     );
   }

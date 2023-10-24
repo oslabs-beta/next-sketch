@@ -17,7 +17,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 500,
-  height: 500,
+  height: 'fit-content',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -161,9 +161,7 @@ const CustomEndpoint = ({
     if (folder) {
       handleCreateCustomEndpoint(explorer.id, folder);
       setOpen(true);
-    } else {
-      alert('Please enter a file name');
-    }
+    } 
   };
   return (
     <div className='cursor'>
@@ -202,14 +200,13 @@ const CustomEndpoint = ({
           </Typography>
 
 
-          {/* <div>
+          <div>
             <Checkbox
               name='page.tsx'
               checked={selectedItems.page}
-              onChange={handleModalChange}
             />
-            layout.tsx
-          </div> */}
+            page.tsx
+          </div>
 
 
           <div>
