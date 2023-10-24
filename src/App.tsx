@@ -37,8 +37,8 @@ const App = () => {
   const [open, setOpen] = useState(false);
 
   const [explorerData, setExplorerData] = useState(explorer);
-  const [componentName, setComponentName] = useState<string>('App');
-  //Check what this setCode is doing??
+  const [componentName, setComponentName] = useState('App');
+  //this code is for the component button might delete
   const [code, setCode] = useState<string>('Hello'); // Use state to store the code
   const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
     undefined
@@ -80,6 +80,7 @@ const App = () => {
     folderName: string,
     preview: string
   ) => {
+    // if (item === '') return;
     const finalTree: any = insertBoilerFiles(
       explorerData,
       folderId,
@@ -143,8 +144,8 @@ const App = () => {
                   <Folder
                     handleInsertNode={handleInsertNode}
                     handleDeleteNode={handleDeleteNode}
-                    handleInputBoilerFiles={handleInputBoilerFiles}    
-                    appFolder = {appFolder}                
+                    handleInputBoilerFiles={handleInputBoilerFiles}
+                    appFolder={appFolder}
                     explorer={explorerData}
                     code={code}
                     setCode={setCode}

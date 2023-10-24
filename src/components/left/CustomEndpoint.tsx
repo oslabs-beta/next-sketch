@@ -8,8 +8,6 @@ import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
 import { modalLayout } from '../../utils/interfaces';
 
-
-
 //----------------
 const style = {
   position: 'absolute' as 'absolute',
@@ -25,7 +23,7 @@ const style = {
 };
 //MUI styling fior modal
 //-----------------
-const cacheModal:string[]=[];
+const cacheModal: string[] = [];
 
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
@@ -33,6 +31,7 @@ const CustomEndpoint = ({
   explorer,
 }: any) => {
   const [folder, setFolder] = useState('');
+  const [file, setFile] = useState('');
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
@@ -50,10 +49,8 @@ const CustomEndpoint = ({
       template: false,      
       page:true
     })
+
   };
-
-
-
 
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
     default: false,
@@ -63,7 +60,7 @@ const CustomEndpoint = ({
     notFound: false,
     route: false,
     template: false,
-    page: true
+    page: true,
   });
 
   function handleChange(e?: any) {
@@ -76,26 +73,28 @@ const CustomEndpoint = ({
   //   handleUpdateCode(folder, componentName, codeSnippet);
   //   handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
   // }, [codeSnippet]);
+  useEffect(() => {
+    handlePostingFiles(folder, componentName, codeSnippet);
+    handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
+  }, [codeSnippet]);
+
 
   async function handleModalChange(e?: any) {
+    console.log('customendpoint modal change');
     const name = e.target.name.slice(0, -4);
     console.log('laura rlly sucks')
     setSelectedItems({
       ...selectedItems,
-      [name]: true
+      [name]: true,
     });
 
     const fileName = e.target.name;
-    const folderName = folder;
+    setFile(fileName);
 
-
-//     if(!cacheModal.includes(fileName)){
-//       cacheModal.push(fileName)
-//       handleInputBoilerFiles(explorer.id, fileName, folderName)
-// }
-
-
-    //passing the name of the component to codePreview
+    //     if(!cacheModal.includes(fileName)){
+    //       cacheModal.push(fileName)
+    //       handleInputBoilerFiles(explorer.id, fileName, folderName)
+    // }
     setComponentName(fileName);
 
 if(!cacheModal.includes(fileName)){
@@ -104,13 +103,15 @@ if(!cacheModal.includes(fileName)){
 
 }
 
+
+  }
+
+  const handlePostingFiles = async (folderName, fileName, code) => {
     const body = {
       fileName: fileName,
       folderName: folderName,
       codeSnippet: codeSnippet,
     };
-        
-          
     await fetch('http://localhost:3000/', {
       method: 'POST',
       headers: {
@@ -159,6 +160,9 @@ if(!cacheModal.includes(fileName)){
   //   // }
   
   // }
+  };
+
+ 
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     e?.preventDefault();
@@ -176,7 +180,7 @@ if(!cacheModal.includes(fileName)){
     if (folder) {
       handleCreateCustomEndpoint(explorer.id, folder);
       setOpen(true);
-    } 
+    }
   };
   return (
     <div className='cursor'>
@@ -198,6 +202,7 @@ if(!cacheModal.includes(fileName)){
       </button>
     </form>
 
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -214,15 +219,10 @@ if(!cacheModal.includes(fileName)){
             Choose Your Template Files
           </Typography>
 
-
           <div>
-            <Checkbox
-              name='page.tsx'
-              checked={selectedItems.page}
-            />
+            <Checkbox name='page.tsx' checked={selectedItems.page} />
             page.tsx
           </div>
-
 
           <div>
             <Checkbox
@@ -294,9 +294,6 @@ if(!cacheModal.includes(fileName)){
       </Modal>
     </div>
   );
-
-    };
- 
-
+};
 
 export default CustomEndpoint;

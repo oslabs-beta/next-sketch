@@ -2,149 +2,89 @@ const fs = require('fs-extra');
 const path = require('path');
 const { emitWarning } = require('process');
 const execSync = require('child_process').execSync;
-const ncp=require('ncp').ncp
+const ncp = require('ncp').ncp;
 const glob = require('glob');
 
-
 const fileController = {
-  // Recursive function to get files
-  // postFiles: function (req, res, next) {
-  //   console.log("hello");
-  //   const dir = "src/components/left/NextBoiler/nextsketch";
-  //   function recall(dir, files = []) {
-  //     console.log("in recall");
-
-  //     // Get an array of all files and directories in the passed directory using fs.readdirSync
-  //     const fileList = fs.readdirSync(dir);
-  //     console.log('filelist', fileList)
-  //     // Create the full path of the file/directory by concatenating the passed directory and file/directory name
-  //     for (const file of fileList) {
-  //       const name = `${dir}/${file}`;
-
-  //       if (file === "node_modules") {
-  //         files.push([`${dir}/${file}`]);
-  //         continue;
-  //       }
-
-  //       // Check if the current file/directory is a directory using fs.statSync
-  //       if (fs.statSync(name).isDirectory()) {
-  //         // If it is a directory, recursively call the getFiles function with the directory path and the files array
-  //         files.push([name])
-
-  //         recall(name, files);
-
-  //       } else {
-  //         // If it is a file, push the full path to the files array
-  //         files.push(name);
-  //       }
-
-  //       if (name === `${dir}/${fileList[fileList.length - 1]}`) {
-  //         // console.log("in basecase");
-  //         console.log("files", files);
-
-  //         res.locals.files = files;
-  //         return;
-  //       }
-
-  //     }
-  //     return files;
-  //   }
-  //   recall(dir);
-  //   return next();
-  // },
-
   postFolder: function (req, res, next) {
-
-    const folderDir = 'server/ExportFolder/'
+    const folderDir = 'server/ExportFolder/';
 
     if (req.body.name) {
       const dir = 'server/ExportFolder/NextSketch/src/app/';
       fs.mkdirSync(path.join(dir, req.body.name));
-      fs.writeFileSync(path.join(dir + req.body.name, 'page.tsx'), '')
+      fs.writeFileSync(path.join(dir + req.body.name, 'page.tsx'), '');
       return next();
     }
 
     if (req.body.fileName) {
-    
-      console.log(req.body)
-    function recall(folderDir) {
-      // Get an array of all files and directories in the passed directory using fs.readdirSync
-      const fileList = fs.readdirSync(folderDir);
+      console.log(req.body);
 
+      function recall(folderDir) {
+        const fileList = fs.readdirSync(folderDir);
 
-
-      for (const file of fileList) {
-        // Create the full path of the file/directory by concatenating the passed directory and file/directory name
-        const name = `${folderDir}/${file}`;
-
-        //skip reading over all the files inside node_modules for efficiency
-        if (file === 'node_modules') {
-          continue;
-        }
-
-        if (file === req.body.folderName) { 
-          if (req.body.isFolder) {
-            fs.mkdirSync(path.join(name, req.body.fileName))
-            fs.writeFileSync(path.join(name + '/' + req.body.fileName, 'page.tsx'), '')
+        for (const file of fileList) {
+          const name = `${folderDir}/${file}`;
+          if (file === 'node_modules') {
+            continue;
           }
-          else if(req.body.codeSnippet) fs.writeFileSync(path.join(name, req.body.fileName), req.body.codeSnippet)
-          else  fs.writeFileSync(path.join(name, req.body.fileName), '')
-          return;
+          if (file === req.body.folderName) {
+            if (req.body.isFolder) {
+              fs.mkdirSync(path.join(name, req.body.fileName));
+              fs.writeFileSync(
+                path.join(name + '/' + req.body.fileName, 'page.tsx'),
+                ''
+              );
+            } else if (req.body.codeSnippet) {
+              fs.writeFileSync(
+                path.join(name, req.body.fileName),
+                req.body.codeSnippet
+              );
+            } else {
+              fs.writeFileSync(path.join(name, req.body.fileName), '');
+            }
+            return;
+          }
+          if (fs.statSync(name).isDirectory()) {
+            recall(name);
+          }
         }
-
-        // Check if the current file/directory is a directory using fs.statSync
-        if (fs.statSync(name).isDirectory()) {
-          // If it is a directory, recursively call the getFiles function with the directory path and the files array
-
-          recall(name);
-        }
+        return;
       }
-      return;
+
+      recall(folderDir);
+      return next();
     }
-    recall(folderDir);
-    return next()
-  }
   },
-
-
 
   deleteFolder: function (req, res, next) {
     const folderDir = 'server/ExportFolder';
 
-    //helper function to recursively get deeper into nested folders and files
     function recall(folderDir) {
-      // Get an array of all files and directories in the passed directory using fs.readdirSync
       const fileList = fs.readdirSync(folderDir);
 
-      // Create the full path of the file/directory by concatenating the passed directory and file/directory name
       for (const file of fileList) {
         const name = `${folderDir}/${file}`;
-
-        //skip reading over all the files inside node_modules for efficiency
         if (name === 'node_modules') {
-          //but if we click to delete it, delete it
-          if(req.body.name === 'node_modules') fs.rmSync(name, { recursive: true });
+          if (req.body.name === 'node_modules') {
+            fs.rmSync(name, { recursive: true });
+          }
           continue;
         }
-
-        //if the file is the same name as the one we clicked delete on, remove it from the directory
         if (file === req.body.name) {
-          //condition to check if what we want to delete is either a folder or a file
-          if (fs.lstatSync(name).isDirectory())
+          if (fs.lstatSync(name).isDirectory()) {
             fs.rmSync(name, { recursive: true });
-          else fs.rmSync(name);
+          } else {
+            fs.rmSync(name);
+          }
           return;
         }
-
-        // Check if the current file/directory is a directory using fs.statSync
         if (fs.statSync(name).isDirectory()) {
-          // If it is a directory, recursively call the getFiles function with the directory path and the files array
-
           recall(name);
         }
       }
       return;
     }
+
     recall(folderDir);
     return next();
   },
@@ -159,9 +99,6 @@ const fileController = {
   deleteExport: function (req, res, next) {
     const folderDir = 'server/ExportFolder/NextSketch';
     fs.rmSync(folderDir, { recursive: true });
-    // const output = execSync('npx create-next-app my-nextjs-app', { encoding: 'utf-8' });  // the default is 'buffer'
-    // console.log('Output was:\n', output);
-
     return next();
   },
 
@@ -169,47 +106,18 @@ const fileController = {
     const targetDir = 'server/ExportFolder';
     const sourceDir = 'server/NextSketch';
 
-    // process.chdir(dir);
-    // const output = execSync('npx create-next-app nextsketch --example with-typescript', { encoding: 'utf-8' });  // the default is 'buffer'
-    // fs.copySync(sourceDir, path.join(targetDir, 'nextsketch'), {
-    //   filter: (src, dest) => {
-    //     // Include all files and directories.
-    //     return true;
-    //   }
-    // });
-
-
-    fs.copy(sourceDir, path.join(targetDir, 'NextSketch'), { recursive: true }, (err) => {
-      if (err) {
-        console.error(`Error copying directory: ${err}`);
-      } else {
-        console.log('Directory and its contents copied successfully.');
-
+    fs.copy(
+      sourceDir,
+      path.join(targetDir, 'NextSketch'),
+      { recursive: true },
+      (err) => {
+        if (err) {
+          console.error(`Error copying directory: ${err}`);
+        } else {
+          console.log('Directory and its contents copied successfully.');
+        }
       }
-  });
-    
-
-  // async function copyFilesAndDirectories(source, target) {
-  //   fs.ensureDirSync(target);
-  
-  //   const filesAndDirectories = glob.sync('**/*', { cwd: source, nodir: true });
-  
-  //   for (const item of filesAndDirectories) {
-  //     const sourcePath = path.join(source, item);
-  //     const targetPath = path.join(target, item);
-  
-  //     fs.ensureDirSync(path.dirname(targetPath));
-  //     fs.copyFileSync(sourcePath, targetPath);
-  //   }
-  // }
-  
-  // try {
-  //   copyFilesAndDirectories(sourceDir, path.join(targetDir, 'nextsketch'));
-  //   console.log('Directory and its contents copied successfully.');
-  // } catch (err) {
-  //   console.error(`Error copying directory: ${err}`);
-  // }
-
+    );
 
     return next();
   },
