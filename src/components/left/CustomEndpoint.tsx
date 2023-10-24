@@ -63,7 +63,7 @@ const CustomEndpoint = ({
 
   useEffect(() => {
     // This effect runs whenever componentName changes
-    console.log('useEffect in customEndPoint');
+    // console.log('useEffect in customEndPoint');
     handleUpdateCode(folder, componentName, codeSnippet);
     handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
   }, [codeSnippet]);

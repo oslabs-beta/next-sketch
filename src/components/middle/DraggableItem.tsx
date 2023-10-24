@@ -1,16 +1,19 @@
-import { useDraggable } from '@dnd-kit/core';
+import { UniqueIdentifier, useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@mui/material';
+import { Tag } from '../../utils/interfaces';
 
 interface DraggableItemProps {
-  id: string | number;
-  children: string;
+  id: UniqueIdentifier;
+  children: Tag;
 }
 
 export const DraggableItem = ({ id, children }: DraggableItemProps) => {
+
+  const { name, container } = children;
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
-    data: { title: children },
+    data: { name: name, container: container, type: 'type1' },
   });
 
   const style = {
@@ -42,7 +45,7 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
         },
       }}
     >
-      {children}
+      {children.name}
     </Button>
   );
 };
