@@ -67,41 +67,32 @@ const CustomEndpoint = ({
     setFolder(e.target.value);
   }
 
-  // useEffect(() => {
-  //   // This effect runs whenever componentName changes
-  //   // console.log('useEffect in customEndPoint');
-  //   handleUpdateCode(folder, componentName, codeSnippet);
-  //   handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
-  // }, [codeSnippet]);
+ 
   useEffect(() => {
     handlePostingFiles(folder, componentName, codeSnippet);
     handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
   }, [codeSnippet]);
 
 
-  async function handleModalChange(e?: any) {
-    console.log('customendpoint modal change');
+  function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
-    console.log('laura rlly sucks')
     setSelectedItems({
       ...selectedItems,
       [name]: true,
     });
 
     const fileName = e.target.name;
+    const folderName = folder
     setFile(fileName);
 
-    //     if(!cacheModal.includes(fileName)){
-    //       cacheModal.push(fileName)
-    //       handleInputBoilerFiles(explorer.id, fileName, folderName)
-    // }
+   
     setComponentName(fileName);
 
-if(!cacheModal.includes(fileName)){
-  cacheModal.push(fileName)
-  if(explorer.name) handleInputBoilerFiles(explorer.id, fileName, folderName);
+// if(!cacheModal.includes(fileName)){
+//   cacheModal.push(fileName)
+//   handleInputBoilerFiles(explorer.id, fileName, folderName);
 
-}
+// }
 
 
   }
@@ -120,47 +111,6 @@ if(!cacheModal.includes(fileName)){
       body: JSON.stringify(body),
     });
   }
-
-  // const handleUpdateCode = async (
-  //   folderName: string,
-  //   fileName: string,
-  //   code: string
-  // ) => {
-  //   const data = {
-  //     folderName,
-  //     fileName,
-  //     code,
-  //   };
-
-  //   // try {
-  //   //   const response = await fetch('http://localhost:3000/', {
-  //   //     method: 'PUT',
-
-  //   //     headers: {
-  //   //       'Content-Type': 'application/json',
-  //   //     },
-  //   //     body: JSON.stringify(data),
-  //   //   });
-
-  //   //   if (response.ok) {
-  //   //     // Handle a successful PUT request
-  //   //     const updatedData = await response.json();
-  //   //   } else {
-  //   //     // Handle PUT request failure
-  //   //     console.error(
-  //   //       'PUT request failed:',
-  //   //       response.status,
-  //   //       response.statusText
-  //   //     );
-  //   //   }
-
-  //   // }
-  //   // catch (error) {
-  //   //   console.log(error);
-  //   // }
-  
-  // }
-  };
 
  
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {

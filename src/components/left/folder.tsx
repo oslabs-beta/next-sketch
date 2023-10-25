@@ -312,9 +312,12 @@ if(!cacheModal.includes(fileName)){
               <FontAwesomeIcon icon={faFileCirclePlus} />
             </button> : ''}
 
+            {explorer.name !== 'app' && explorer.name !== 'src' ? 
+
             <button onClick={(e) => handleDeleteFolder(e, false)}>
               <FontAwesomeIcon icon={faTrash} />
-            </button>
+            </button>: ''
+          }
           </div>
         </div>
 
@@ -358,6 +361,8 @@ if(!cacheModal.includes(fileName)){
         {explorer.name.slice(-3) === 'tsx' ? <FontAwesomeIcon icon={faAtom}/> : '📄' }{explorer.name} 
         {explorer.name === 'page.tsx' ? '' : 
 
+
+      
         <button onClick={(e) => handleDeleteFolder(e, false)}>
           <FontAwesomeIcon icon={faTrash} />
         </button> 
