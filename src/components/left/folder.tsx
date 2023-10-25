@@ -116,13 +116,13 @@ function Folder({
 
 
     setComponentName(fileName);
-    console.log(componentName);
+    console.log('treeid', explorer);
 
-if(!cacheModal.includes(fileName)){
-  cacheModal.push(fileName)
-  if(explorer.name) handleInputBoilerFiles(explorer.id, fileName, folderName);
+    
 
-}
+  handleInputBoilerFiles(explorer.id, fileName, folderName);
+
+
 
 
     const body = {
@@ -312,9 +312,12 @@ if(!cacheModal.includes(fileName)){
               <FontAwesomeIcon icon={faFileCirclePlus} />
             </button> : ''}
 
+            {explorer.name !== 'app' && explorer.name !== 'src' ? 
+
             <button onClick={(e) => handleDeleteFolder(e, false)}>
               <FontAwesomeIcon icon={faTrash} />
-            </button>
+            </button>: ''
+          }
           </div>
         </div>
 
@@ -358,6 +361,8 @@ if(!cacheModal.includes(fileName)){
         {explorer.name.slice(-3) === 'tsx' ? <FontAwesomeIcon icon={faAtom}/> : '📄' }{explorer.name} 
         {explorer.name === 'page.tsx' ? '' : 
 
+
+      
         <button onClick={(e) => handleDeleteFolder(e, false)}>
           <FontAwesomeIcon icon={faTrash} />
         </button> 
