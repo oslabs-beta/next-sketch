@@ -8,10 +8,17 @@ const useTraverseTree = () => {
   ) => {
     if (tree.id === folderId && tree.isFolder) {
 
-      const appFolder = tree.items
-      for(const files of appFolder){
-        if(files.name.toLowerCase() === item.toLowerCase()) {
-          alert('Folder name already exists!')
+      for(const files of tree.items){
+        console.log('filesname', item, tree.name, tree)
+
+        if(files.name.toLowerCase() === item.toLowerCase() ) {
+          alert('Folder name already exists')
+          return a();
+        }
+
+
+        if(tree.name.toLowerCase() === item.toLowerCase() ) {
+          alert('A nested endpoint should not have the same name as its parent')
           return a();
         }
       }
@@ -106,6 +113,7 @@ const useTraverseTree = () => {
     folderName: string,
     preview: string
   ) => {
+
     if (tree.name === folderName) {
       tree.items.unshift({
         id: new Date().getTime(),
@@ -115,6 +123,7 @@ const useTraverseTree = () => {
       });
       return tree;
     }
+
 
     let latestNode = [];
     latestNode = tree.items.map((ob: object) => {

@@ -12,6 +12,7 @@ import DisplayContainer from './components/right/DisplayContainer';
 import { Tag, Elements } from './utils/interfaces';
 import { generateId } from './utils/generateId';
 import WebFont from 'webfontloader';
+import ExportButton from './components/right/ExportButton';
 
 interface ComponentNameType {
   componentName: string;
@@ -32,7 +33,7 @@ export const CodeSnippetContext = React.createContext<
 >(undefined);
 
 const App = () => {
-  let appFolder = explorer.items[2].items[0].items;
+  let appFolder = []
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -101,7 +102,31 @@ const App = () => {
   }, []);
 
   return (
+    
     <Box>
+
+
+<Box>
+
+<Grid
+sx={{ display: 'flex',
+    right: 0,
+    
+
+
+
+}}
+
+
+>
+
+  <ExportButton/>
+</Grid>
+
+
+    </Box>
+
+
       <Typography
         variant='h1'
         fontSize={'3em'}
@@ -114,7 +139,9 @@ const App = () => {
         }}
       >
         NextSketch
+
       </Typography>
+
       <Box
         sx={{
           margin: 2,
@@ -152,6 +179,7 @@ const App = () => {
                     folderExpanded={folderExpanded}
                     setFolderExpanded={setFolderExpanded}
                   />
+                  
                 </Grid>
 
                 <Grid item xs={4} sx={{ display: 'flex' }}>

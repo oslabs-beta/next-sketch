@@ -116,13 +116,13 @@ function Folder({
 
 
     setComponentName(fileName);
-    console.log(componentName);
+    console.log('treeid', explorer);
 
-if(!cacheModal.includes(fileName)){
-  cacheModal.push(fileName)
-  if(explorer.name) handleInputBoilerFiles(explorer.id, fileName, folderName);
+    
 
-}
+  handleInputBoilerFiles(explorer.id, fileName, folderName);
+
+
 
 
     const body = {
