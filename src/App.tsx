@@ -21,6 +21,7 @@ import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
 import AppContext from './context/AppContext';
 
+
 interface ComponentNameType {
   componentName: string;
   setComponentName: Dispatch<SetStateAction<string>>;
@@ -44,12 +45,15 @@ const App = () => {
   const [open, setOpen] = useState(false);
   const [appFolder, setappFolder] = useState(explorer);
   const [explorerData, setExplorerData] = useState(explorer);
-  const [componentName, setComponentName] = useState('App');
+  const [componentName, setComponentName] = useState('Page');
   //this code is for the component button might delete
   const [code, setCode] = useState<string>('Hello'); // Use state to store the code
   const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
     undefined
   );
+  const [folder, setFolder] = useState('');
+  const [file, setFile] = useState('');
+  const [postData, setPostData] = useState<boolean>(false);
 
   // tags context
   const [tags, setTags] = useState<Tag[]>([]);
@@ -113,14 +117,6 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
-  useEffect(() => {
-    WebFont.load({
-      google: {
-        families: ['Titillium Web'],
-      },
-    });
-  }, []);
-
   return (
     <Box>
       <ExportButton />
@@ -148,6 +144,7 @@ const App = () => {
           boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
         }}
       >
+
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider value={{ tags, setTags }}>
@@ -165,6 +162,12 @@ const App = () => {
                       code={code}
                       open={open}
                       setOpen={setOpen}
+                      setFolder={setFolder}
+                      folder={folder}
+                      setFile={setFile}
+                      file={file}
+                      setPostData={setPostData}
+                      postData={postData}
                     />
                     <Folder
                       handleInsertNode={handleInsertNode}
@@ -176,13 +179,17 @@ const App = () => {
                       setCode={setCode}
                       folderExpanded={folderExpanded}
                       setFolderExpanded={setFolderExpanded}
+                      setFolder={setFolder}
+                      folder={folder}
+                      setFile={setFile}
+                      file={file}
+                      setPostData={setPostData}
+                      postData={postData}
                     />
                   </Grid>
 
                   <Grid item xs={4} sx={{ display: 'flex' }}>
-                    {/* <Grid alignSelf={'flex-start'}>
-                  <CreateComponentBtn />
-                </Grid> */}
+                
                     <StaticTagsContainer />
                   </Grid>
 
@@ -199,6 +206,7 @@ const App = () => {
             </AppContext.Provider>
           </CodeSnippetContext.Provider>
         </CodeContext.Provider>
+      
       </Box>
     </Box>
   );

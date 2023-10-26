@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import React, { useContext, useEffect, useState } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
+import { useCode } from '../../utils/reducer/CodeContext';
 
 import { modalLayout } from '../../utils/interfaces';
 import { app } from 'electron';
@@ -33,6 +34,12 @@ function Folder({
   handleInputBoilerFiles,
   appFolder,
   explorer,
+  setFolder,
+  folder,
+  setFile,
+  file,
+  setPostData,
+  postData,
 }: any) {
   const [expand, setExpand] = useState<boolean>(false);
   const [folderIcon, setFolderIcon] = useState<string>('▶');
@@ -44,7 +51,8 @@ function Folder({
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
-  const [folder, setFolder] = useState('');
+  // const [folder, setFolder] = useState('');
+  // const { componentName, updateComponent } = useCode();
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -93,6 +101,7 @@ function Folder({
 
   const handleModalChange = async (e?: any) => {
     const name = e.target.name.slice(0, -4);
+    setPostData(true);
 
     setSelectedItems({
       ...selectedItems,
@@ -100,25 +109,16 @@ function Folder({
     });
 
     const fileName = e.target.name;
+    setFile(fileName);
     const folderName = folder;
 
     setComponentName(fileName);
 
-    handleInputBoilerFiles(explorer.id, fileName, folderName);
+  };
 
-    const body = {
-      fileName: fileName,
-      folderName: folderName,
-      codeSnippet: codeSnippet,
-    };
-
-    await fetch('http://localhost:3000/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
+  const retrieveCode = (e?: React.SyntheticEvent) => {
+    setPostData(false);
+    setCodeSnippet(explorer.preview);
   };
   let AllFilesInApp = appFolder.items[2].items[0];
 
@@ -346,6 +346,12 @@ function Folder({
                 appFolder={appFolder}
                 explorer={exp}
                 key={exp.id}
+                setFolder={setFolder}
+                folder={folder}
+                setFile={setFile}
+                file={file}
+                setPostData={setPostData}
+                postData={postData}
               />
             );
           })}
@@ -354,7 +360,7 @@ function Folder({
     );
   } else if (explorer.name) {
     return (
-      <div className='folder'>
+      <div className='folder' onClick={retrieveCode}>
         {explorer.name.slice(-3) === 'tsx' ? (
           <FontAwesomeIcon icon={faAtom} />
         ) : (
