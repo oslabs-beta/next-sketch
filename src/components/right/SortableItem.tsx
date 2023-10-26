@@ -4,16 +4,21 @@ import { Box } from '@mui/material';
 import { CSS } from '@dnd-kit/utilities';
 import { ReactNode } from 'react';
 
-interface TestItemProps {
+/**
+ * @description - creates a sortable item named after a tag element
+ * @parent - SortableContainer.tsx
+ */
+
+interface ItemProps {
   name: string;
 }
 
-interface TestSortableItemProps {
+interface SortableItemProps {
   id: UniqueIdentifier;
   children: ReactNode;
 }
 
-export const TestItem = ({ name }: TestItemProps) => {
+export const Item = ({ name }: ItemProps) => {
   return (
     <Box
       sx={{
@@ -32,7 +37,7 @@ export const TestItem = ({ name }: TestItemProps) => {
   );
 };
 
-const TestSortableItem = ({ id, children }: TestSortableItemProps) => {
+const SortableItem = ({ id, children }: SortableItemProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: id,
@@ -50,4 +55,4 @@ const TestSortableItem = ({ id, children }: TestSortableItemProps) => {
   );
 };
 
-export default TestSortableItem;
+export default SortableItem;

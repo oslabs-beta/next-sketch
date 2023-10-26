@@ -31,7 +31,7 @@ function Folder({ handleInsertNode, handleDeleteNode, handleInputBoilerFiles, ap
   const [folder, setFolder] = useState('');
 
 
-  console.log(explorer.name.slice(-3))
+  // console.log(explorer.name.slice(-3))
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
