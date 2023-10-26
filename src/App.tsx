@@ -33,10 +33,9 @@ export const CodeSnippetContext = React.createContext<
 >(undefined);
 
 const App = () => {
-  let appFolder = []
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
-
+const [appFolder, setappFolder] = useState(explorer)
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState('App');
   //this code is for the component button might delete
@@ -63,6 +62,8 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
+    setappFolder(finalTree);
+
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -73,6 +74,8 @@ const App = () => {
   const handleCreateCustomEndpoint = (folderId: number, item: string, isFolder: boolean) => {
     const finalTree: any = createCustomEndpoint(explorerData, folderId, item, isFolder);
     setExplorerData(finalTree);
+    setappFolder(finalTree);
+
   };
 
   const handleInputBoilerFiles = (
@@ -106,25 +109,10 @@ const App = () => {
     <Box>
 
 
-<Box>
-
-<Grid
-sx={{ display: 'flex',
-    right: 0,
-    
-
-
-
-}}
-
-
->
 
   <ExportButton/>
-</Grid>
 
 
-    </Box>
 
 
       <Typography

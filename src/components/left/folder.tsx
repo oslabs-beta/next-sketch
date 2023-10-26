@@ -130,7 +130,11 @@ function Folder({
       setFolder(e.currentTarget.value);
       const isFolder = showInput.isFolder;
 
-      appFolder.push(explorer.name);
+
+
+      let AllFilesInApp = appFolder.items[2].items[0]
+      let fileName = e.currentTarget.value
+
 
       const body = {
         fileName: e.currentTarget.value,
@@ -148,10 +152,23 @@ function Folder({
 
       setShowInput({ ...showInput, visible: false });
 
-      for (const files of appFolder) {
-        if (files === explorer.name || explorer.name === 'app')
-          if (showInput.isFolder) setOpen(true);
+
+      //recursive helper function to make only files that are inside the app folder make the modal popup
+      function recall(tree: any, fileName: string){
+       
+
+        if(tree.name === fileName && showInput.isFolder){
+          setOpen(true)
+          return;
+        }
+
+
+          tree.items.map((obj) => {
+              return recall(obj, fileName)
+          })
       }
+
+      recall(AllFilesInApp, fileName)
     }
   };
 

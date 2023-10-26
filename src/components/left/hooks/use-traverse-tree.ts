@@ -9,7 +9,6 @@ const useTraverseTree = () => {
     if (tree.id === folderId && tree.isFolder) {
 
       for(const files of tree.items){
-        console.log('filesname', item, tree.name, tree)
 
         if(files.name.toLowerCase() === item.toLowerCase() ) {
           alert('Folder name already exists')
@@ -22,8 +21,6 @@ const useTraverseTree = () => {
           return a();
         }
       }
-
-
 
 
       tree.items.unshift({
