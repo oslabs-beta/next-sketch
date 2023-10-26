@@ -8,38 +8,6 @@ const archiver = require("archiver");
 const JSZip = require("jszip");
 
 const fileController = {
-  testFolder: function (req, res, next) {
-    console.log();
-    const folderPath = "server/ExportFolder/NextSketch"; // Replace with the actual folder path
-    const output = fs.createWriteStream("exported_folder.zip");
-    const archive = archiver("zip", {
-      zlib: { level: 9 }, // Maximum compression
-    });
-
-    archive.pipe(output);
-
-    // Recursively add all files and folders within the specified folder
-    function addFolderToZip(folderPath, folderName) {
-      const folderContents = fs.readdirSync(folderPath);
-      folderContents.forEach((item) => {
-        const itemPath = path.join(folderPath, item);
-        const itemStat = fs.statSync(itemPath);
-        if (itemStat.isDirectory()) {
-          addFolderToZip(itemPath, path.join(folderName, item));
-        } else {
-          archive.file(itemPath, { name: path.join(folderName, item) });
-        }
-      });
-    }
-
-    addFolderToZip(folderPath, "");
-
-    archive.finalize();
-    output.on("close", () => {
-      res.download("exported_folder.zip");
-      return next();
-    });
-  },
 
   postFolder: function (req, res, next) {
     const folderDir = "server/ExportFolder/";
@@ -52,7 +20,6 @@ const fileController = {
     }
 
     if (req.body.fileName) {
-      console.log(req.body);
 
       function recall(folderDir) {
         const fileList = fs.readdirSync(folderDir);
