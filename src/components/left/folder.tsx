@@ -176,6 +176,7 @@ let example = [];
     }
   };
 
+  
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
     e?.stopPropagation();
     handleDeleteNode(explorer.id);
