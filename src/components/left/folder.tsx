@@ -24,7 +24,6 @@ interface Input {
   isFolder: boolean | null | undefined;
 }
 const cacheModal: string[] = []
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Folder({
   handleInsertNode,
   handleDeleteNode,
@@ -90,19 +89,8 @@ function Folder({
     });
   };
 
-  // useEffect(() => {
-  //   // This effect runs whenever componentName changes
-  //   console.log('useEffect in customEndPoint');
-  //   handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
-  // }, [codeSnippet]);
-
-  // const handleCode = async (e?: React.SyntheticEvent) => {
-  //   console.log(explorer.preview)
-  //   setCodeSnippet(explorer.preview)
-  // }
 
   const handleModalChange = async (e?: any) => {
-    console.log('inside fodler modalchange');
     const name = e.target.name.slice(0, -4);
 
     setSelectedItems({
@@ -112,18 +100,13 @@ function Folder({
 
     const fileName = e.target.name;
     const folderName = folder;
-    console.log('in handle modal', folder)
 
 
     setComponentName(fileName);
-    console.log('treeid', explorer);
 
     
 
   handleInputBoilerFiles(explorer.id, fileName, folderName);
-
-
-
 
     const body = {
       fileName: fileName,
