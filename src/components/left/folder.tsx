@@ -18,6 +18,9 @@ import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
 
 import { modalLayout } from '../../utils/interfaces';
+import { app } from 'electron';
+import { file } from 'jszip';
+import Tree from '../right/Tree';
 
 interface Input {
   visible: boolean | undefined;
@@ -37,7 +40,7 @@ function Folder({
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
-
+let example = [];
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
@@ -122,7 +125,9 @@ function Folder({
       body: JSON.stringify(body),
     });
   };
+  let AllFilesInApp = appFolder.items[2].items[0]
 
+  console.log(AllFilesInApp.items)
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
@@ -132,7 +137,6 @@ function Folder({
 
 
 
-      let AllFilesInApp = appFolder.items[2].items[0]
       let fileName = e.currentTarget.value
 
 
@@ -290,6 +294,7 @@ function Folder({
               setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />);
             }
             setExpand(!expand);
+
           }}
         >
           <span>
