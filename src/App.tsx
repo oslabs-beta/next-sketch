@@ -42,7 +42,7 @@ export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
 const App = () => {
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
-const [appFolder, setappFolder] = useState(explorer)
+  const [appFolder, setappFolder] = useState(explorer);
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState('App');
   //this code is for the component button might delete
@@ -73,7 +73,6 @@ const [appFolder, setappFolder] = useState(explorer)
 
     setExplorerData(finalTree);
     setappFolder(finalTree);
-
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -81,11 +80,19 @@ const [appFolder, setappFolder] = useState(explorer)
     setExplorerData(finalTree);
   };
 
-  const handleCreateCustomEndpoint = (folderId: number, item: string, isFolder: boolean) => {
-    const finalTree: any = createCustomEndpoint(explorerData, folderId, item, isFolder);
+  const handleCreateCustomEndpoint = (
+    folderId: number,
+    item: string,
+    isFolder: boolean
+  ) => {
+    const finalTree: any = createCustomEndpoint(
+      explorerData,
+      folderId,
+      item,
+      isFolder
+    );
     setExplorerData(finalTree);
     setappFolder(finalTree);
-
   };
 
   const handleInputBoilerFiles = (
@@ -115,15 +122,8 @@ const [appFolder, setappFolder] = useState(explorer)
   }, []);
 
   return (
-    
     <Box>
-
-
-
-  <ExportButton/>
-
-
-
+      <ExportButton />
 
       <Typography
         variant='h1'
@@ -137,7 +137,6 @@ const [appFolder, setappFolder] = useState(explorer)
         }}
       >
         NextSketch
-
       </Typography>
 
       <Box
@@ -151,7 +150,7 @@ const [appFolder, setappFolder] = useState(explorer)
       >
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
-            <AppContext.Provider value={{tags, setTags}}>
+            <AppContext.Provider value={{ tags, setTags }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Grid
                   container
