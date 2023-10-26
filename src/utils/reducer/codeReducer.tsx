@@ -21,15 +21,15 @@ const codeReducer = (state: State, action: Action) => {
 
   switch (type) {
     case 'UPDATE_COMPONENT':
-      // console.log('UPDATE_COMPONENT', payload);
-      // if (payload === undefined) return;
-      // //Check if it has end .tsx
-      // if (newPayload.slice(-4) === '.tsx') {
-      //   newPayload = newPayload.slice(0, -4);
-      // }
-      // // Capitalize the component name
-      // newPayload = newPayload.charAt(0).toUpperCase() + newPayload.slice(1);
-      // console.log('modified payload', newPayload);
+      console.log('UPDATE_COMPONENT', payload);
+      if (payload === undefined) return;
+      //Check if it has end .tsx
+      if (newPayload.slice(-4) === '.tsx') {
+        newPayload = newPayload.slice(0, -4);
+      }
+      // Capitalize the component name
+      newPayload = newPayload.charAt(0).toUpperCase() + newPayload.slice(1);
+      console.log('modified payload', newPayload);
       return {
         ...state,
         componentName: payload,

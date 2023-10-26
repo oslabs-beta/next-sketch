@@ -43,6 +43,8 @@ const App = () => {
   // const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
   //   undefined
   // );
+  const [folder, setFolder] = useState('');
+  const [file, setFile] = useState('');
 
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
     useTraverseTree();
@@ -133,6 +135,10 @@ const App = () => {
                   code={code}
                   open={open}
                   setOpen={setOpen}
+                  setFolder={setFolder}
+                  folder={folder}
+                  setFile={setFile}
+                  file={file}
                 />
                 <Folder
                   handleInsertNode={handleInsertNode}
@@ -144,6 +150,10 @@ const App = () => {
                   setCode={setCode}
                   folderExpanded={folderExpanded}
                   setFolderExpanded={setFolderExpanded}
+                  setFolder={setFolder}
+                  folder={folder}
+                  setFile={setFile}
+                  file={file}
                 />
               </Grid>
 

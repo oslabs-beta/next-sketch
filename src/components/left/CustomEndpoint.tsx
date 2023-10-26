@@ -31,11 +31,14 @@ const CustomEndpoint = ({
   handleCreateCustomEndpoint,
   handleInputBoilerFiles,
   explorer,
+  setFolder,
+  folder,
+  setFile,
+  file,
 }: any) => {
-  const [folder, setFolder] = useState('');
-  const [file, setFile] = useState('');
+  // const [folder, setFolder] = useState('');
+  // const [file, setFile] = useState('');
   const [open, setOpen] = useState(false);
-  const [arrayfiles, setArrayFiles] = useState<string>([]);
   // const [componentName, setComponentName] = useContext(CodeContext);
   // const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   //deconstructing the reducer elements
@@ -63,7 +66,10 @@ const CustomEndpoint = ({
     setFolder(e.target.value);
   }
 
-  useEffect(() => {}, [componentName]);
+  useEffect(() => {
+    console.log('hitting useEffect customEndpoint');
+    handlePostingFiles(folder, componentName, componentName);
+  }, [componentName]);
 
   async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
@@ -79,12 +85,32 @@ const CustomEndpoint = ({
     updateComponent(fileName);
     console.log(componentName);
 
-    handleInputBoilerFiles(explorer.id, file, folder, componentName);
+    // handleInputBoilerFiles(explorer.id, file, folder, componentName);
 
+    // const body = {
+    //   fileName: fileName,
+    //   folderName: folder,
+    //   codeSnippet: componentName,
+    // };
+    // await fetch('http://localhost:3000/', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(body),
+    // });
+  }
+
+  const handlePostingFiles = async (
+    folderName: string,
+    fileName: string,
+    code: string
+  ) => {
+    handleInputBoilerFiles(explorer.id, file, folder, componentName);
     const body = {
       fileName: fileName,
-      folderName: folder,
-      codeSnippet: componentName,
+      folderName: folderName,
+      codeSnippet: code,
     };
     await fetch('http://localhost:3000/', {
       method: 'POST',
@@ -93,28 +119,7 @@ const CustomEndpoint = ({
       },
       body: JSON.stringify(body),
     });
-  }
-
-  // const handlePostingFiles = async (
-  //   folderName: string,
-  //   fileName: string,
-  //   code: string
-  // ) => {
-  //   console.log(code);
-  //   handleInputBoilerFiles(explorer.id, file, folder, componentName);
-  //   const body = {
-  //     fileName: fileName,
-  //     folderName: folderName,
-  //     codeSnippet: code,
-  //   };
-  //   await fetch('http://localhost:3000/', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(body),
-  //   });
-  // };
+  };
 
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();

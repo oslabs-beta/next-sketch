@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import React, { useContext, useEffect, useState } from 'react';
 // import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
+import { useCode } from '../../utils/reducer/CodeContext';
 
 import { modalLayout } from '../../utils/interfaces';
 
@@ -31,6 +32,10 @@ function Folder({
   handleInputBoilerFiles,
   appFolder,
   explorer,
+  setFolder,
+  folder,
+  setFile,
+  file,
 }: any) {
   const [expand, setExpand] = useState<boolean>(false);
   const [folderIcon, setFolderIcon] = useState<string>('▶');
@@ -41,7 +46,8 @@ function Folder({
   // const [componentName, setComponentName] = useContext(CodeContext);
   // const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
-  const [folder, setFolder] = useState('');
+  // const [folder, setFolder] = useState('');
+  const { componentName, updateComponent } = useCode();
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -109,7 +115,10 @@ function Folder({
     });
 
     const fileName = e.target.name;
+    setFile(fileName);
     const folderName = folder;
+
+    updateComponent(fileName);
 
     // if(!cacheModal.includes(fileName)){
     //   cacheModal.push(fileName)
@@ -119,21 +128,21 @@ function Folder({
     // await setComponentName(fileName);
     // console.log(componentName);
 
-    handleInputBoilerFiles(explorer.id, fileName, folderName);
+    // handleInputBoilerFiles(explorer.id, fileName, folderName);
 
-    const body = {
-      fileName: fileName,
-      folderName: folderName,
-      codeSnippet: 'codeSnippet',
-    };
+    // const body = {
+    //   fileName: fileName,
+    //   folderName: folderName,
+    //   codeSnippet: componentName,
+    // };
 
-    await fetch('http://localhost:3000/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
+    // await fetch('http://localhost:3000/', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(body),
+    // });
   };
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
@@ -141,6 +150,7 @@ function Folder({
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setFolder(e.currentTarget.value);
+      console.log('in onaddfolder', e.currentTarget.value);
       const isFolder = showInput.isFolder;
 
       appFolder.push(explorer.name);
@@ -337,6 +347,10 @@ function Folder({
                 appFolder={appFolder}
                 explorer={exp}
                 key={exp.id}
+                setFolder={setFolder}
+                folder={folder}
+                setFile={setFile}
+                file={file}
               />
             );
           })}
