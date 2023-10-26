@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
 import { generateId } from '../../utils/generateId';
-import DisplayContainer from '../right/DisplayContainer';
+import AppContext from '../../context/AppContext';
+
+/**
+ * @description - container for draggable HTML tag elements
+ * @parent - MiddleContainer.tsx (make this)
+ * @children - DraggableItem.tsx 
+ */
 
 const StaticTagsContainer = (): JSX.Element => {
   const staticTags: Tag[] = [
@@ -40,7 +46,9 @@ const StaticTagsContainer = (): JSX.Element => {
     },
   ];
 
-  const [tags, setTags] = useState<Tag[]>([]);
+  const { tags, setTags } = useContext(AppContext);
+
+  // console.log('initial state tags', tags);
 
   const addTagToDisplay = (event: DragEndEvent) => {
     const { active } = event;
@@ -57,7 +65,7 @@ const StaticTagsContainer = (): JSX.Element => {
       sx={{
         display: 'flex',
         width: '100%',
-        height: '510px',
+        height: '200px',
         boxShadow: 20,
         borderTopLeftRadius: '20px',
         borderTopRightRadius: '20px',
@@ -78,7 +86,6 @@ const StaticTagsContainer = (): JSX.Element => {
               bgcolor: 'rgba(191, 196, 248, 0.8)',
               color: 'black',
               textAlign: 'center',
-              borderTopLeftRadius: '20px',
             }}
           >
             <Typography variant='h6'>HTML Tags</Typography>
@@ -86,8 +93,9 @@ const StaticTagsContainer = (): JSX.Element => {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              flexWrap: 'wrap',
+              alignContent: 'flex-start',
+              justifyContent: 'center',
               marginTop: 1.2,
             }}
           >
@@ -101,7 +109,6 @@ const StaticTagsContainer = (): JSX.Element => {
             ))}
           </Box>
         </Box>
-        <DisplayContainer tags={tags} setTags={setTags} />
       </DndContext>
     </Box>
   );

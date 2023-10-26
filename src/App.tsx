@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useState,
+  useEffect,
+  createContext,
+} from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import StaticTagsContainer from './components/middle/StaticTagsContainer';
 import './App.css';
@@ -13,6 +19,7 @@ import { Tag, Elements } from './utils/interfaces';
 import { generateId } from './utils/generateId';
 import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
+import AppContext from './context/AppContext';
 
 interface ComponentNameType {
   componentName: string;
@@ -24,18 +31,18 @@ interface CodeSnippetType {
   setCodeSnippet: Dispatch<SetStateAction<string>>;
 }
 
-export const CodeContext = React.createContext<ComponentNameType | undefined>(
+export const CodeContext = createContext<ComponentNameType | undefined>(
   undefined
 );
 
-export const CodeSnippetContext = React.createContext<
-  CodeSnippetType | undefined
->(undefined);
+export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
+  undefined
+);
 
 const App = () => {
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
-const [appFolder, setappFolder] = useState(explorer)
+  const [appFolder, setappFolder] = useState(explorer);
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState('App');
   //this code is for the component button might delete
@@ -43,6 +50,9 @@ const [appFolder, setappFolder] = useState(explorer)
   const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
     undefined
   );
+
+  // tags context
+  const [tags, setTags] = useState<Tag[]>([]);
 
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
     useTraverseTree();
@@ -63,7 +73,6 @@ const [appFolder, setappFolder] = useState(explorer)
 
     setExplorerData(finalTree);
     setappFolder(finalTree);
-
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -71,11 +80,19 @@ const [appFolder, setappFolder] = useState(explorer)
     setExplorerData(finalTree);
   };
 
-  const handleCreateCustomEndpoint = (folderId: number, item: string, isFolder: boolean) => {
-    const finalTree: any = createCustomEndpoint(explorerData, folderId, item, isFolder);
+  const handleCreateCustomEndpoint = (
+    folderId: number,
+    item: string,
+    isFolder: boolean
+  ) => {
+    const finalTree: any = createCustomEndpoint(
+      explorerData,
+      folderId,
+      item,
+      isFolder
+    );
     setExplorerData(finalTree);
     setappFolder(finalTree);
-
   };
 
   const handleInputBoilerFiles = (
@@ -105,15 +122,8 @@ const [appFolder, setappFolder] = useState(explorer)
   }, []);
 
   return (
-    
     <Box>
-
-
-
-  <ExportButton/>
-
-
-
+      <ExportButton />
 
       <Typography
         variant='h1'
@@ -127,7 +137,6 @@ const [appFolder, setappFolder] = useState(explorer)
         }}
       >
         NextSketch
-
       </Typography>
 
       <Box
@@ -141,52 +150,53 @@ const [appFolder, setappFolder] = useState(explorer)
       >
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid
-                container
-                justifyContent={'space-between'}
-                sx={{ height: '85vh' }}
-              >
-                <Grid item xs={3.5}>
-                  <CustomEndpoint
-                    handleCreateCustomEndpoint={handleCreateCustomEndpoint}
-                    handleInputBoilerFiles={handleInputBoilerFiles}
-                    explorer={explorerData}
-                    code={code}
-                    open={open}
-                    setOpen={setOpen}
-                  />
-                  <Folder
-                    handleInsertNode={handleInsertNode}
-                    handleDeleteNode={handleDeleteNode}
-                    handleInputBoilerFiles={handleInputBoilerFiles}
-                    appFolder={appFolder}
-                    explorer={explorerData}
-                    code={code}
-                    setCode={setCode}
-                    folderExpanded={folderExpanded}
-                    setFolderExpanded={setFolderExpanded}
-                  />
-                  
-                </Grid>
+            <AppContext.Provider value={{ tags, setTags }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid
+                  container
+                  justifyContent={'space-between'}
+                  sx={{ height: '85vh' }}
+                >
+                  <Grid item xs={3.5}>
+                    <CustomEndpoint
+                      handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+                      handleInputBoilerFiles={handleInputBoilerFiles}
+                      explorer={explorerData}
+                      code={code}
+                      open={open}
+                      setOpen={setOpen}
+                    />
+                    <Folder
+                      handleInsertNode={handleInsertNode}
+                      handleDeleteNode={handleDeleteNode}
+                      handleInputBoilerFiles={handleInputBoilerFiles}
+                      appFolder={appFolder}
+                      explorer={explorerData}
+                      code={code}
+                      setCode={setCode}
+                      folderExpanded={folderExpanded}
+                      setFolderExpanded={setFolderExpanded}
+                    />
+                  </Grid>
 
-                <Grid item xs={4} sx={{ display: 'flex' }}>
-                  {/* <Grid alignSelf={'flex-start'}>
+                  <Grid item xs={4} sx={{ display: 'flex' }}>
+                    {/* <Grid alignSelf={'flex-start'}>
                   <CreateComponentBtn />
                 </Grid> */}
-                  <StaticTagsContainer />
-                </Grid>
+                    <StaticTagsContainer />
+                  </Grid>
 
-                <Grid item xs={4} sx={{ height: '500px' }}>
-                  <TabsComponent
-                    code={code}
-                    setCode={setCode}
-                    treeData={explorerData}
-                  />
-                  {/* <DisplayContainer /> */}
+                  <Grid item xs={4} sx={{ height: '500px' }}>
+                    <TabsComponent
+                      code={code}
+                      setCode={setCode}
+                      treeData={explorerData}
+                    />
+                    {/* <DisplayContainer /> */}
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Box>
+              </Box>
+            </AppContext.Provider>
           </CodeSnippetContext.Provider>
         </CodeContext.Provider>
       </Box>

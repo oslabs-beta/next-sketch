@@ -26,7 +26,7 @@ interface Input {
   visible: boolean | undefined;
   isFolder: boolean | null | undefined;
 }
-const cacheModal: string[] = []
+const cacheModal: string[] = [];
 function Folder({
   handleInsertNode,
   handleDeleteNode,
@@ -40,7 +40,7 @@ function Folder({
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
-let example = [];
+  let example = [];
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
@@ -77,7 +77,6 @@ let example = [];
 
   const handleClose = () => {
     setOpen(false);
-
   };
 
   const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
@@ -92,7 +91,6 @@ let example = [];
     });
   };
 
-
   const handleModalChange = async (e?: any) => {
     const name = e.target.name.slice(0, -4);
 
@@ -104,12 +102,9 @@ let example = [];
     const fileName = e.target.name;
     const folderName = folder;
 
-
     setComponentName(fileName);
 
-    
-
-  handleInputBoilerFiles(explorer.id, fileName, folderName);
+    handleInputBoilerFiles(explorer.id, fileName, folderName);
 
     const body = {
       fileName: fileName,
@@ -125,9 +120,9 @@ let example = [];
       body: JSON.stringify(body),
     });
   };
-  let AllFilesInApp = appFolder.items[2].items[0]
+  let AllFilesInApp = appFolder.items[2].items[0];
 
-  console.log(AllFilesInApp.items)
+  // console.log(AllFilesInApp.items);
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
@@ -135,10 +130,7 @@ let example = [];
       setFolder(e.currentTarget.value);
       const isFolder = showInput.isFolder;
 
-
-
-      let fileName = e.currentTarget.value
-
+      let fileName = e.currentTarget.value;
 
       const body = {
         fileName: e.currentTarget.value,
@@ -156,27 +148,22 @@ let example = [];
 
       setShowInput({ ...showInput, visible: false });
 
-
       //recursive helper function to make only files that are inside the app folder make the modal popup
-      function recall(tree: any, fileName: string){
-       
-
-        if(tree.name === fileName && showInput.isFolder){
-          setOpen(true)
+      function recall(tree: any, fileName: string) {
+        if (tree.name === fileName && showInput.isFolder) {
+          setOpen(true);
           return;
         }
 
-
-          tree.items.map((obj) => {
-              return recall(obj, fileName)
-          })
+        tree.items.map((obj) => {
+          return recall(obj, fileName);
+        });
       }
 
-      recall(AllFilesInApp, fileName)
+      recall(AllFilesInApp, fileName);
     }
   };
 
-  
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
     e?.stopPropagation();
     handleDeleteNode(explorer.id);
@@ -295,35 +282,39 @@ let example = [];
               setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />);
             }
             setExpand(!expand);
-
           }}
         >
           <span>
             {folderIcon} {folderLogo} {explorer.name}
           </span>
           <div>
+            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+              <button
+                onClick={(e) => {
+                  handleNewFolder(e, true);
+                }}
+              >
+                <FontAwesomeIcon icon={faFolderPlus} />
+              </button>
+            ) : (
+              ''
+            )}
 
-          {explorer.name !== 'app' && explorer.name !== 'src' ? 
+            {explorer.name !== 'src' ? (
+              <button onClick={(e) => handleNewFolder(e, false)}>
+                <FontAwesomeIcon icon={faFileCirclePlus} />
+              </button>
+            ) : (
+              ''
+            )}
 
-            <button onClick={(e) => {
-              handleNewFolder(e, true);
-            }}>
-
-              <FontAwesomeIcon icon={faFolderPlus} />
-            </button> : ''}
-
-            {explorer.name !== 'src' ? 
-
-            <button onClick={(e) => handleNewFolder(e, false)}>
-              <FontAwesomeIcon icon={faFileCirclePlus} />
-            </button> : ''}
-
-            {explorer.name !== 'app' && explorer.name !== 'src' ? 
-
-            <button onClick={(e) => handleDeleteFolder(e, false)}>
-              <FontAwesomeIcon icon={faTrash} />
-            </button>: ''
-          }
+            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+              <button onClick={(e) => handleDeleteFolder(e, false)}>
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            ) : (
+              ''
+            )}
           </div>
         </div>
 
@@ -361,19 +352,22 @@ let example = [];
         </div>
       </div>
     );
-  } else if(explorer.name) {
+  } else if (explorer.name) {
     return (
       <div className='folder'>
-        {explorer.name.slice(-3) === 'tsx' ? <FontAwesomeIcon icon={faAtom}/> : '📄' }{explorer.name} 
-        {explorer.name === 'page.tsx' ? '' : 
-
-
-      
-        <button onClick={(e) => handleDeleteFolder(e, false)}>
-          <FontAwesomeIcon icon={faTrash} />
-        </button> 
-  }
-
+        {explorer.name.slice(-3) === 'tsx' ? (
+          <FontAwesomeIcon icon={faAtom} />
+        ) : (
+          '📄'
+        )}
+        {explorer.name}
+        {explorer.name === 'page.tsx' ? (
+          ''
+        ) : (
+          <button onClick={(e) => handleDeleteFolder(e, false)}>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        )}
       </div>
     );
   }
