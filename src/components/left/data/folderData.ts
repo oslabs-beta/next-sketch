@@ -49,7 +49,19 @@ const explorer = {
               name: 'page.tsx',
               isFolder: false,
               items: [],
-              preview: '',
+              preview: `
+import React from 'react';
+  
+  const Page = () => {
+    return (
+      <>
+        {/* Your page content goes here */}
+      </>
+    );
+  };
+  
+  export default Page;
+              `,
             },
           ],
         },

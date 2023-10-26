@@ -1,14 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import Checkbox from '@mui/material/Checkbox';
-// import { CodeSnippetContext, CodeContext } from '../../App';
+import { Box, Button, Typography, Modal, Checkbox } from '@mui/material';
+import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
 import { modalLayout } from '../../utils/interfaces';
 //import custom hook, from the reducer
-import { useCode } from '../../utils/reducer/CodeContext'; /*================MODIFIED CODE====================*/
+// import { useCode } from '../../utils/reducer/CodeContext'; /*================MODIFIED CODE====================*/
 
 //----------------
 const style = {
@@ -35,19 +31,20 @@ const CustomEndpoint = ({
   folder,
   setFile,
   file,
+  setPostData,
+  postData,
 }: any) => {
   // const [folder, setFolder] = useState('');
   // const [file, setFile] = useState('');
   const [open, setOpen] = useState(false);
-  // const [componentName, setComponentName] = useContext(CodeContext);
-  // const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  const [componentName, setComponentName] = useContext(CodeContext);
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   //deconstructing the reducer elements
-  const { componentName, updateComponent } = useCode();
+  // const { componentName, updateComponent } = useCode();
 
   const handleClose = () => {
     setOpen(false);
     setFolder('');
-    console.log(selectedItems);
     setSelectedItems({});
   };
 
@@ -65,11 +62,12 @@ const CustomEndpoint = ({
   function handleChange(e?: any) {
     setFolder(e.target.value);
   }
-
   useEffect(() => {
-    console.log('hitting useEffect customEndpoint');
-    handlePostingFiles(folder, componentName, componentName);
-  }, [componentName]);
+    if (postData === true) {
+      console.log('posting data');
+      handlePostingFiles(folder, componentName, codeSnippet);
+    }
+  }, [codeSnippet]);
 
   async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
@@ -81,24 +79,8 @@ const CustomEndpoint = ({
 
     const fileName = e.target.name;
     setFile(fileName);
-
-    updateComponent(fileName);
-    console.log(componentName);
-
-    // handleInputBoilerFiles(explorer.id, file, folder, componentName);
-
-    // const body = {
-    //   fileName: fileName,
-    //   folderName: folder,
-    //   codeSnippet: componentName,
-    // };
-    // await fetch('http://localhost:3000/', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // });
+    setComponentName(fileName);
+    setPostData(true);
   }
 
   const handlePostingFiles = async (
@@ -106,7 +88,7 @@ const CustomEndpoint = ({
     fileName: string,
     code: string
   ) => {
-    handleInputBoilerFiles(explorer.id, file, folder, componentName);
+    handleInputBoilerFiles(explorer.id, file, folder, codeSnippet);
     const body = {
       fileName: fileName,
       folderName: folderName,
@@ -181,7 +163,7 @@ const CustomEndpoint = ({
             page.tsx
           </div>
 
-          <div>
+          <div className='option'>
             <Checkbox
               name='default.tsx'
               checked={selectedItems.default}

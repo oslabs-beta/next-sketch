@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import React, { useContext, useEffect, useState } from 'react';
-// import { CodeContext, CodeSnippetContext } from '../../App';
+import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
 import { useCode } from '../../utils/reducer/CodeContext';
 
@@ -36,6 +36,8 @@ function Folder({
   folder,
   setFile,
   file,
+  setPostData,
+  postData,
 }: any) {
   const [expand, setExpand] = useState<boolean>(false);
   const [folderIcon, setFolderIcon] = useState<string>('▶');
@@ -43,11 +45,11 @@ function Folder({
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
-  // const [componentName, setComponentName] = useContext(CodeContext);
-  // const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  const [componentName, setComponentName] = useContext(CodeContext);
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
   // const [folder, setFolder] = useState('');
-  const { componentName, updateComponent } = useCode();
+  // const { componentName, updateComponent } = useCode();
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -94,20 +96,9 @@ function Folder({
     });
   };
 
-  // useEffect(() => {
-  //   // This effect runs whenever componentName changes
-  //   console.log('useEffect in customEndPoint');
-  //   handleInputBoilerFiles(explorer.id, componentName, folder, codeSnippet);
-  // }, [codeSnippet]);
-
-  // const handleCode = async (e?: React.SyntheticEvent) => {
-  //   console.log(explorer.preview)
-  //   setCodeSnippet(explorer.preview)
-  // }
-
   const handleModalChange = async (e?: any) => {
-    console.log('inside fodler modalchange');
     const name = e.target.name.slice(0, -4);
+    setPostData(true);
 
     setSelectedItems({
       ...selectedItems,
@@ -118,31 +109,12 @@ function Folder({
     setFile(fileName);
     const folderName = folder;
 
-    updateComponent(fileName);
+    setComponentName(fileName);
+  };
 
-    // if(!cacheModal.includes(fileName)){
-    //   cacheModal.push(fileName)
-    //   handleInputBoilerFiles(explorer.id, fileName, folderName)
-    //   }
-
-    // await setComponentName(fileName);
-    // console.log(componentName);
-
-    // handleInputBoilerFiles(explorer.id, fileName, folderName);
-
-    // const body = {
-    //   fileName: fileName,
-    //   folderName: folderName,
-    //   codeSnippet: componentName,
-    // };
-
-    // await fetch('http://localhost:3000/', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // });
+  const retrieveCode = (e?: React.SyntheticEvent) => {
+    setPostData(false);
+    setCodeSnippet(explorer.preview);
   };
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
@@ -150,7 +122,6 @@ function Folder({
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setFolder(e.currentTarget.value);
-      console.log('in onaddfolder', e.currentTarget.value);
       const isFolder = showInput.isFolder;
 
       appFolder.push(explorer.name);
@@ -351,6 +322,8 @@ function Folder({
                 folder={folder}
                 setFile={setFile}
                 file={file}
+                setPostData={setPostData}
+                postData={postData}
               />
             );
           })}
@@ -359,7 +332,7 @@ function Folder({
     );
   } else {
     return (
-      <div className='folder'>
+      <div className='folder' onClick={retrieveCode}>
         {explorer.name.slice(-3) === 'tsx' ? (
           <FontAwesomeIcon icon={faAtom} />
         ) : (

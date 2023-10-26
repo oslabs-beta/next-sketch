@@ -116,6 +116,7 @@ const useTraverseTree = () => {
       return tree;
     }
 
+
     let latestNode = [];
     latestNode = tree.items.map((ob: object) => {
       return insertBoilerFiles(ob, folderId, item, folderName, preview);

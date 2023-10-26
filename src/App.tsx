@@ -11,25 +11,25 @@ import TabsComponent from './components/right/TabsComponent';
 import DisplayContainer from './components/right/DisplayContainer';
 import { Tag, Elements } from './utils/interfaces';
 import { generateId } from './utils/generateId';
-import CodeProvider from './utils/reducer/CodeContext';
+// import CodeProvider from './utils/reducer/CodeContext';
 
-// interface ComponentNameType {
-//   componentName: string;
-//   setComponentName: Dispatch<SetStateAction<string>>;
-// }
+interface ComponentNameType {
+  componentName: string;
+  setComponentName: Dispatch<SetStateAction<string>>;
+}
 
-// interface CodeSnippetType {
-//   codeSnippet: string;
-//   setCodeSnippet: Dispatch<SetStateAction<string>>;
-// }
+interface CodeSnippetType {
+  codeSnippet: string;
+  setCodeSnippet: Dispatch<SetStateAction<string>>;
+}
 
-// export const CodeContext = React.createContext<ComponentNameType | undefined>(
-//   undefined
-// );
+export const CodeContext = React.createContext<ComponentNameType | undefined>(
+  undefined
+);
 
-// export const CodeSnippetContext = React.createContext<
-//   CodeSnippetType | undefined
-// >(undefined);
+export const CodeSnippetContext = React.createContext<
+  CodeSnippetType | undefined
+>(undefined);
 
 const App = () => {
   let appFolder = explorer.items[2].items[0].items;
@@ -37,14 +37,15 @@ const App = () => {
   const [open, setOpen] = useState(false);
 
   const [explorerData, setExplorerData] = useState(explorer);
-  // const [componentName, setComponentName] = useState('App');
+  const [componentName, setComponentName] = useState('Page');
   //this code is for the component button might delete
   const [code, setCode] = useState<string>('Hello'); // Use state to store the code
-  // const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
-  //   undefined
-  // );
+  const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
+    undefined
+  );
   const [folder, setFolder] = useState('');
   const [file, setFile] = useState('');
+  const [postData, setPostData] = useState<boolean>(false);
 
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
     useTraverseTree();
@@ -118,65 +119,69 @@ const App = () => {
           boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
         }}
       >
-        <CodeProvider>
-          {/* <CodeContext.Provider value={[componentName, setComponentName]}>
-            <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}> */}
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid
-              container
-              justifyContent={'space-between'}
-              sx={{ height: '85vh' }}
-            >
-              <Grid item xs={3.5}>
-                <CustomEndpoint
-                  handleCreateCustomEndpoint={handleCreateCustomEndpoint}
-                  handleInputBoilerFiles={handleInputBoilerFiles}
-                  explorer={explorerData}
-                  code={code}
-                  open={open}
-                  setOpen={setOpen}
-                  setFolder={setFolder}
-                  folder={folder}
-                  setFile={setFile}
-                  file={file}
-                />
-                <Folder
-                  handleInsertNode={handleInsertNode}
-                  handleDeleteNode={handleDeleteNode}
-                  handleInputBoilerFiles={handleInputBoilerFiles}
-                  appFolder={appFolder}
-                  explorer={explorerData}
-                  code={code}
-                  setCode={setCode}
-                  folderExpanded={folderExpanded}
-                  setFolderExpanded={setFolderExpanded}
-                  setFolder={setFolder}
-                  folder={folder}
-                  setFile={setFile}
-                  file={file}
-                />
-              </Grid>
+        {/* <CodeProvider> */}
+        <CodeContext.Provider value={[componentName, setComponentName]}>
+          <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid
+                container
+                justifyContent={'space-between'}
+                sx={{ height: '85vh' }}
+              >
+                <Grid item xs={3.5}>
+                  <CustomEndpoint
+                    handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+                    handleInputBoilerFiles={handleInputBoilerFiles}
+                    explorer={explorerData}
+                    code={code}
+                    open={open}
+                    setOpen={setOpen}
+                    setFolder={setFolder}
+                    folder={folder}
+                    setFile={setFile}
+                    file={file}
+                    setPostData={setPostData}
+                    postData={postData}
+                  />
+                  <Folder
+                    handleInsertNode={handleInsertNode}
+                    handleDeleteNode={handleDeleteNode}
+                    handleInputBoilerFiles={handleInputBoilerFiles}
+                    appFolder={appFolder}
+                    explorer={explorerData}
+                    code={code}
+                    setCode={setCode}
+                    folderExpanded={folderExpanded}
+                    setFolderExpanded={setFolderExpanded}
+                    setFolder={setFolder}
+                    folder={folder}
+                    setFile={setFile}
+                    file={file}
+                    setPostData={setPostData}
+                    postData={postData}
+                  />
+                </Grid>
 
-              <Grid item xs={4} sx={{ display: 'flex' }}>
-                {/* <Grid alignSelf={'flex-start'}>
+                <Grid item xs={4} sx={{ display: 'flex' }}>
+                  {/* <Grid alignSelf={'flex-start'}>
                   <CreateComponentBtn />
                 </Grid> */}
-                <StaticTagsContainer />
-              </Grid>
+                  <StaticTagsContainer />
+                </Grid>
 
-              <Grid item xs={4} sx={{ height: '500px' }}>
-                <TabsComponent
-                  code={code}
-                  setCode={setCode}
-                  treeData={explorerData}
-                />
-                {/* <DisplayContainer /> */}
+                <Grid item xs={4} sx={{ height: '500px' }}>
+                  <TabsComponent
+                    code={code}
+                    setCode={setCode}
+                    treeData={explorerData}
+                  />
+                  {/* <DisplayContainer /> */}
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
-          {/* </CodeSnippetContext.Provider>
-          </CodeContext.Provider> */}
-        </CodeProvider>
+            </Box>
+          </CodeSnippetContext.Provider>
+        </CodeContext.Provider>
+        {/* </CodeProvider> */}
       </Box>
     </Box>
   );

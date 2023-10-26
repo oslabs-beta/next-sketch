@@ -4,27 +4,25 @@ import './prism/prism.css'; // Use the path to the actual Prism.css file
 import 'prismjs/themes/prism.css'; // Use the path to the actual Prism.css file
 import 'prismjs/themes/prism-okaidia.css'; //okadia theme
 import 'prismjs/components/prism-javascript';
-import { useContext, useEffect, useState } from 'react';
-// import { CodeContext, CodeSnippetContext } from '../../App';
-import { useCode } from '../../utils/reducer/CodeContext';
+import { useContext, useEffect } from 'react';
+import { CodeContext, CodeSnippetContext } from '../../App';
+// import { useCode } from '../../utils/reducer/CodeContext';
 
 interface CodePreviewProps {
   treeData: object;
 }
 
 const CodePreview = ({ treeData: CodePreviewProps }) => {
-  // const [componentName, setComponentName] = useContext(CodeContext);
-  // const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext); // Use state to store the code
-  const { componentName, updateName } = useCode();
+  const [componentName, setComponentName] = useContext(CodeContext);
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+
   useEffect(() => {
     // Generate the code snippet
-    console.log('useEffect in codepreview');
     Prism.highlightAll();
-    // renderCode(componentName);
-  }, []); // Re-render and update the code when componentName changes
+    renderCode(componentName);
+  }, [componentName]); // Re-render and update the code when componentName changes
 
   function renderCode(title: string) {
-    console.log('inside render code');
     if (title === undefined) return;
     //Check if it has end .tsx
     if (title.slice(-4) === '.tsx') {
@@ -64,14 +62,13 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   export default ${title};
   `;
     }
-    // setCodeSnippet(codeSnippet);
-    console.log(codeSnippet);
+    setCodeSnippet(codeSnippet);
   }
 
   return (
     <Box>
       <pre>
-        <code className='language-javascript'>{componentName}</code>
+        <code className='language-javascript'>{codeSnippet}</code>
       </pre>
     </Box>
   );
