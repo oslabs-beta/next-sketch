@@ -5,22 +5,23 @@ import 'prismjs/themes/prism.css'; // Use the path to the actual Prism.css file
 import 'prismjs/themes/prism-okaidia.css'; //okadia theme
 import 'prismjs/components/prism-javascript';
 import { useContext, useEffect, useState } from 'react';
-import { CodeContext, CodeSnippetContext } from '../../App';
+// import { CodeContext, CodeSnippetContext } from '../../App';
+import { useCode } from '../../utils/reducer/CodeContext';
 
 interface CodePreviewProps {
   treeData: object;
 }
 
 const CodePreview = ({ treeData: CodePreviewProps }) => {
-  const [componentName, setComponentName] = useContext(CodeContext);
-  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext); // Use state to store the code
-
+  // const [componentName, setComponentName] = useContext(CodeContext);
+  // const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext); // Use state to store the code
+  const { componentName, updateName } = useCode();
   useEffect(() => {
     // Generate the code snippet
     console.log('useEffect in codepreview');
     Prism.highlightAll();
-    renderCode(componentName);
-  }, [componentName, codeSnippet]); // Re-render and update the code when componentName changes
+    // renderCode(componentName);
+  }, []); // Re-render and update the code when componentName changes
 
   function renderCode(title: string) {
     console.log('inside render code');
@@ -63,13 +64,14 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   export default ${title};
   `;
     }
-    setCodeSnippet(codeSnippet);
+    // setCodeSnippet(codeSnippet);
+    console.log(codeSnippet);
   }
 
   return (
     <Box>
       <pre>
-        <code className='language-javascript'>{codeSnippet}</code>
+        <code className='language-javascript'>{componentName}</code>
       </pre>
     </Box>
   );

@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import React, { useContext, useEffect, useState } from 'react';
-import { CodeContext, CodeSnippetContext } from '../../App';
+// import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
 
 import { modalLayout } from '../../utils/interfaces';
@@ -38,8 +38,8 @@ function Folder({
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
-  const [componentName, setComponentName] = useContext(CodeContext);
-  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  // const [componentName, setComponentName] = useContext(CodeContext);
+  // const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
   const [folder, setFolder] = useState('');
 
@@ -111,20 +111,20 @@ function Folder({
     const fileName = e.target.name;
     const folderName = folder;
 
-    if(!cacheModal.includes(fileName)){
-      cacheModal.push(fileName)
-      handleInputBoilerFiles(explorer.id, fileName, folderName)
-      }
+    // if(!cacheModal.includes(fileName)){
+    //   cacheModal.push(fileName)
+    //   handleInputBoilerFiles(explorer.id, fileName, folderName)
+    //   }
 
-    setComponentName(fileName);
-    console.log(componentName);
+    // await setComponentName(fileName);
+    // console.log(componentName);
 
     handleInputBoilerFiles(explorer.id, fileName, folderName);
 
     const body = {
       fileName: fileName,
       folderName: folderName,
-      codeSnippet: codeSnippet,
+      codeSnippet: 'codeSnippet',
     };
 
     await fetch('http://localhost:3000/', {
