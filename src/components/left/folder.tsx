@@ -19,13 +19,15 @@ import { FaReact } from 'react-icons/fa';
 import { useCode } from '../../utils/reducer/CodeContext';
 
 import { modalLayout } from '../../utils/interfaces';
+import { app } from 'electron';
+import { file } from 'jszip';
+import Tree from '../right/Tree';
 
 interface Input {
   visible: boolean | undefined;
   isFolder: boolean | null | undefined;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const cacheModal: string[] = [];
 function Folder({
   handleInsertNode,
   handleDeleteNode,
@@ -45,6 +47,7 @@ function Folder({
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
+  let example = [];
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
@@ -110,13 +113,16 @@ function Folder({
     const folderName = folder;
 
     setComponentName(fileName);
+
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
     setPostData(false);
     setCodeSnippet(explorer.preview);
   };
+  let AllFilesInApp = appFolder.items[2].items[0];
 
+  // console.log(AllFilesInApp.items);
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
@@ -124,7 +130,7 @@ function Folder({
       setFolder(e.currentTarget.value);
       const isFolder = showInput.isFolder;
 
-      appFolder.push(explorer.name);
+      let fileName = e.currentTarget.value;
 
       const body = {
         fileName: e.currentTarget.value,
@@ -142,10 +148,19 @@ function Folder({
 
       setShowInput({ ...showInput, visible: false });
 
-      for (const files of appFolder) {
-        if (files === explorer.name || explorer.name === 'app')
-          if (showInput.isFolder) setOpen(true);
+      //recursive helper function to make only files that are inside the app folder make the modal popup
+      function recall(tree: any, fileName: string) {
+        if (tree.name === fileName && showInput.isFolder) {
+          setOpen(true);
+          return;
+        }
+
+        tree.items.map((obj) => {
+          return recall(obj, fileName);
+        });
       }
+
+      recall(AllFilesInApp, fileName);
     }
   };
 
@@ -273,20 +288,33 @@ function Folder({
             {folderIcon} {folderLogo} {explorer.name}
           </span>
           <div>
-            <button
-              onClick={(e) => {
-                handleNewFolder(e, true);
-              }}
-            >
-              <FontAwesomeIcon icon={faFolderPlus} />
-            </button>
-            <button onClick={(e) => handleNewFolder(e, false)}>
-              <FontAwesomeIcon icon={faFileCirclePlus} />
-            </button>
+            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+              <button
+                onClick={(e) => {
+                  handleNewFolder(e, true);
+                }}
+              >
+                <FontAwesomeIcon icon={faFolderPlus} />
+              </button>
+            ) : (
+              ''
+            )}
 
-            <button onClick={(e) => handleDeleteFolder(e, false)}>
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
+            {explorer.name !== 'src' ? (
+              <button onClick={(e) => handleNewFolder(e, false)}>
+                <FontAwesomeIcon icon={faFileCirclePlus} />
+              </button>
+            ) : (
+              ''
+            )}
+
+            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+              <button onClick={(e) => handleDeleteFolder(e, false)}>
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            ) : (
+              ''
+            )}
           </div>
         </div>
 
@@ -330,7 +358,7 @@ function Folder({
         </div>
       </div>
     );
-  } else {
+  } else if (explorer.name) {
     return (
       <div className='folder' onClick={retrieveCode}>
         {explorer.name.slice(-3) === 'tsx' ? (

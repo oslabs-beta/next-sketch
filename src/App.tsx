@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useState, useReducer } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useState,
+  useEffect,
+  createContext,
+} from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import StaticTagsContainer from './components/middle/StaticTagsContainer';
 import './App.css';
@@ -11,7 +17,10 @@ import TabsComponent from './components/right/TabsComponent';
 import DisplayContainer from './components/right/DisplayContainer';
 import { Tag, Elements } from './utils/interfaces';
 import { generateId } from './utils/generateId';
-// import CodeProvider from './utils/reducer/CodeContext';
+import WebFont from 'webfontloader';
+import ExportButton from './components/right/ExportButton';
+import AppContext from './context/AppContext';
+
 
 interface ComponentNameType {
   componentName: string;
@@ -23,19 +32,18 @@ interface CodeSnippetType {
   setCodeSnippet: Dispatch<SetStateAction<string>>;
 }
 
-export const CodeContext = React.createContext<ComponentNameType | undefined>(
+export const CodeContext = createContext<ComponentNameType | undefined>(
   undefined
 );
 
-export const CodeSnippetContext = React.createContext<
-  CodeSnippetType | undefined
->(undefined);
+export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
+  undefined
+);
 
 const App = () => {
-  let appFolder = explorer.items[2].items[0].items;
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const [appFolder, setappFolder] = useState(explorer);
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState('Page');
   //this code is for the component button might delete
@@ -46,6 +54,9 @@ const App = () => {
   const [folder, setFolder] = useState('');
   const [file, setFile] = useState('');
   const [postData, setPostData] = useState<boolean>(false);
+
+  // tags context
+  const [tags, setTags] = useState<Tag[]>([]);
 
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
     useTraverseTree();
@@ -65,6 +76,7 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
+    setappFolder(finalTree);
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -72,9 +84,19 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
-  const handleCreateCustomEndpoint = (folderId: number, item: string) => {
-    const finalTree: any = createCustomEndpoint(explorerData, folderId, item);
+  const handleCreateCustomEndpoint = (
+    folderId: number,
+    item: string,
+    isFolder: boolean
+  ) => {
+    const finalTree: any = createCustomEndpoint(
+      explorerData,
+      folderId,
+      item,
+      isFolder
+    );
     setExplorerData(finalTree);
+    setappFolder(finalTree);
   };
 
   const handleInputBoilerFiles = (
@@ -97,6 +119,8 @@ const App = () => {
 
   return (
     <Box>
+      <ExportButton />
+
       <Typography
         variant='h1'
         fontSize={'3em'}
@@ -110,6 +134,7 @@ const App = () => {
       >
         NextSketch
       </Typography>
+
       <Box
         sx={{
           margin: 2,
@@ -119,69 +144,69 @@ const App = () => {
           boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
         }}
       >
-        {/* <CodeProvider> */}
+
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid
-                container
-                justifyContent={'space-between'}
-                sx={{ height: '85vh' }}
-              >
-                <Grid item xs={3.5}>
-                  <CustomEndpoint
-                    handleCreateCustomEndpoint={handleCreateCustomEndpoint}
-                    handleInputBoilerFiles={handleInputBoilerFiles}
-                    explorer={explorerData}
-                    code={code}
-                    open={open}
-                    setOpen={setOpen}
-                    setFolder={setFolder}
-                    folder={folder}
-                    setFile={setFile}
-                    file={file}
-                    setPostData={setPostData}
-                    postData={postData}
-                  />
-                  <Folder
-                    handleInsertNode={handleInsertNode}
-                    handleDeleteNode={handleDeleteNode}
-                    handleInputBoilerFiles={handleInputBoilerFiles}
-                    appFolder={appFolder}
-                    explorer={explorerData}
-                    code={code}
-                    setCode={setCode}
-                    folderExpanded={folderExpanded}
-                    setFolderExpanded={setFolderExpanded}
-                    setFolder={setFolder}
-                    folder={folder}
-                    setFile={setFile}
-                    file={file}
-                    setPostData={setPostData}
-                    postData={postData}
-                  />
-                </Grid>
+            <AppContext.Provider value={{ tags, setTags }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid
+                  container
+                  justifyContent={'space-between'}
+                  sx={{ height: '85vh' }}
+                >
+                  <Grid item xs={3.5}>
+                    <CustomEndpoint
+                      handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+                      handleInputBoilerFiles={handleInputBoilerFiles}
+                      explorer={explorerData}
+                      code={code}
+                      open={open}
+                      setOpen={setOpen}
+                      setFolder={setFolder}
+                      folder={folder}
+                      setFile={setFile}
+                      file={file}
+                      setPostData={setPostData}
+                      postData={postData}
+                    />
+                    <Folder
+                      handleInsertNode={handleInsertNode}
+                      handleDeleteNode={handleDeleteNode}
+                      handleInputBoilerFiles={handleInputBoilerFiles}
+                      appFolder={appFolder}
+                      explorer={explorerData}
+                      code={code}
+                      setCode={setCode}
+                      folderExpanded={folderExpanded}
+                      setFolderExpanded={setFolderExpanded}
+                      setFolder={setFolder}
+                      folder={folder}
+                      setFile={setFile}
+                      file={file}
+                      setPostData={setPostData}
+                      postData={postData}
+                    />
+                  </Grid>
 
-                <Grid item xs={4} sx={{ display: 'flex' }}>
-                  {/* <Grid alignSelf={'flex-start'}>
-                  <CreateComponentBtn />
-                </Grid> */}
-                  <StaticTagsContainer />
-                </Grid>
+                  <Grid item xs={4} sx={{ display: 'flex' }}>
+                
+                    <StaticTagsContainer />
+                  </Grid>
 
-                <Grid item xs={4} sx={{ height: '500px' }}>
-                  <TabsComponent
-                    code={code}
-                    setCode={setCode}
-                    treeData={explorerData}
-                  />
-                  {/* <DisplayContainer /> */}
+                  <Grid item xs={4} sx={{ height: '500px' }}>
+                    <TabsComponent
+                      code={code}
+                      setCode={setCode}
+                      treeData={explorerData}
+                    />
+                    {/* <DisplayContainer /> */}
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Box>
+              </Box>
+            </AppContext.Provider>
           </CodeSnippetContext.Provider>
         </CodeContext.Provider>
-        {/* </CodeProvider> */}
+      
       </Box>
     </Box>
   );

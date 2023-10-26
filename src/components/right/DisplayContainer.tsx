@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   DndContext,
   DragEndEvent,
@@ -18,17 +18,19 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Tag } from '../../utils/interfaces';
-import TestContainer, { Container } from '../middle/TestContainer';
-import { useState } from 'react';
-import TestSortableItem, { TestItem } from '../middle/TestSortableItem';
+import SortableContainer, { Container } from './SortableContainer';
+import { useContext, useState } from 'react';
+import SortableItem, { Item } from './SortableItem';
+import AppContext from '../../context/AppContext';
 
-interface DisplayContainerProps {
-  tags: Tag[];
-  setTags: React.Dispatch<React.SetStateAction<Tag[]>>;
-}
+/**
+ * @description - container for displayed tag elements
+ * @parent - TabsComponent.tsx
+ * @children - SortableContainer.tsx, SortableItem.tsx
+ */
 
-const DisplayContainer = ({ tags, setTags }: DisplayContainerProps) => {
+const DisplayContainer = () => {
+  const { tags, setTags } = useContext(AppContext);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
   const sensors = useSensors(
@@ -72,12 +74,12 @@ const DisplayContainer = ({ tags, setTags }: DisplayContainerProps) => {
       return (
         <Container>
           {getTags(activeId).map((tag) => (
-            <TestItem key={tag.id} name={tag.name} />
+            <Item key={tag.id} name={tag.name} />
           ))}
         </Container>
       );
     }
-    return <TestItem name={name} />;
+    return <Item name={name} />;
   };
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -148,25 +150,15 @@ const DisplayContainer = ({ tags, setTags }: DisplayContainerProps) => {
   return (
     <Box
       sx={{
-        borderBottomRightRadius: '20px',
-        borderTopRightRadius: '20px',
-        borderBottomLefttRadius: '20px',
+        // borderBottomRightRadius: '20px',
+        // borderTopRightRadius: '20px',
+        // borderBottomLeftRadius: '20px',
         width: '100%',
         // overflowY: 'auto',
+        bgcolor: 'red',
+        height: '344px',
       }}
     >
-      <Box
-        sx={{
-          bgcolor: 'rgba(191, 196, 248, 0.8)',
-          // bgcolor: 'blue',
-          color: 'black',
-          textAlign: 'center',
-          borderTopRightRadius: '20px',
-        }}
-        position={'sticky'}
-      >
-        <Typography variant='h6'>Display Container</Typography>
-      </Box>
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}
@@ -183,13 +175,17 @@ const DisplayContainer = ({ tags, setTags }: DisplayContainerProps) => {
             {getTags().map((tag) => {
               if (tag.container) {
                 return (
-                  <TestContainer key={tag.id} id={tag.id} getTags={getTags} />
+                  <SortableContainer
+                    key={tag.id}
+                    id={tag.id}
+                    getTags={getTags}
+                  />
                 );
               }
               return (
-                <TestSortableItem key={tag.id} id={tag.id}>
-                  <TestItem name={tag.name} />
-                </TestSortableItem>
+                <SortableItem key={tag.id} id={tag.id}>
+                  <Item name={tag.name} />
+                </SortableItem>
               );
             })}
           </Box>

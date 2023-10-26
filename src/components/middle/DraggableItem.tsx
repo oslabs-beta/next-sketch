@@ -3,6 +3,11 @@ import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@mui/material';
 import { Tag } from '../../utils/interfaces';
 
+/**
+ * @description - creates a draggable item 
+ * @parent - StaticTagsContainer.tsx
+ */
+
 interface DraggableItemProps {
   id: UniqueIdentifier;
   children: Tag;
@@ -30,9 +35,9 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
       sx={{
         bgcolor: '#FEFCFB',
         color: '#0A0908',
+        border: 1,
         fontSize: 15,
-        marginTop: 1,
-        marginBottom: 1,
+        margin: 0.5,
         borderRadius: '7px',
         paddingRight: 5,
         paddingLeft: 5,
@@ -42,6 +47,7 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
         ':hover': {
           bgcolor: 'rgba(191, 196, 248, 0.8)',
           color: '#FEFCFB',
+          borderColor: 'black',
         },
       }}
     >
