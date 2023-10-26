@@ -17,16 +17,14 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
 
   useEffect(() => {
     // Generate the code snippet
-    // console.log('useEffect in codepreview');
+    console.log('useEffect in codepreview');
     Prism.highlightAll();
     renderCode(componentName);
-
-    // handleCodeChange(codeSnippet);
-    // setCodeSnippet(newCodeSnippet); // Update the state with the new code snippet
-    //handleCodeChange(newCodeSnippet); // Send the new code snippet to the server
   }, [componentName, codeSnippet]); // Re-render and update the code when componentName changes
 
   function renderCode(title: string) {
+    console.log('inside render code');
+    if (title === undefined) return;
     //Check if it has end .tsx
     if (title.slice(-4) === '.tsx') {
       title = title.slice(0, -4);

@@ -8,22 +8,33 @@ const useTraverseTree = () => {
   ) => {
     if (tree.id === folderId && tree.isFolder) {
 
-      const appFolder = tree.items
-      for(const files of appFolder){
-        if(files.name === item) {
-          alert('Folder name already exists!')
+      for(const files of tree.items){
+
+        if(files.name.toLowerCase() === item.toLowerCase() ) {
+          alert('Folder name already exists')
+          return a();
+        }
+
+
+        if(tree.name.toLowerCase() === item.toLowerCase() ) {
+          alert('A nested endpoint should not have the same name as its parent')
           return a();
         }
       }
-
-
 
 
       tree.items.unshift({
         id: new Date().getTime(),
         name: item,
         isFolder,
-        items: [],
+        items: [
+          {
+            id: new Date().getTime(),
+            name: 'page.tsx',
+            isFolder: false,
+            items: []
+          }
+        ],
         preview: '',
       });
       return tree;
@@ -54,13 +65,12 @@ const useTraverseTree = () => {
 
         if (tree.name === 'app') {
 
-            console.log(tree.items)
 
             for(const files of tree.items){
-                    if(files.name === item) {
+                    if(files.name.toLowerCase() === item.toLowerCase()) {
                             alert('Folder name already exists!')
                                 fileAlreadyExists = true
-                                return a();
+                                return laura();
                         }
                     }
 
@@ -70,7 +80,12 @@ const useTraverseTree = () => {
                 id: new Date().getTime(),
                 name: item,
                 isFolder: true,
-                items: []
+                items: [{
+                  id: new Date().getTime(),
+                  name: 'page.tsx',
+                  isFolder: false,
+                  items: []
+                }]
 
             });
             return tree;
@@ -95,6 +110,7 @@ const useTraverseTree = () => {
     folderName: string,
     preview: string
   ) => {
+
     if (tree.name === folderName) {
       tree.items.unshift({
         id: new Date().getTime(),
@@ -104,6 +120,7 @@ const useTraverseTree = () => {
       });
       return tree;
     }
+
 
     let latestNode = [];
     latestNode = tree.items.map((ob: object) => {

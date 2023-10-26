@@ -15,6 +15,7 @@ div {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 3px;
+    
   }
   
   /* Styling for the folder text and buttons */
@@ -23,6 +24,7 @@ div {
     font-size: 16px;
     font-weight: normal;
     color: #333;
+    
   }
   
   /* Styling for the buttons inside the folder */
@@ -55,7 +57,7 @@ form {
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   padding: 10px;
-  width: 100%; /* Set to 75% width */
+  width: 75%; /* Set to 75% width */
   max-width: 600px;
   box-sizing: border-box; /* Include padding and border in the width */
   
@@ -70,6 +72,7 @@ input {
   flex: 1;
   padding: 10px;
   /* border: 1px solid #ccc; */
+  width: 80%;
   border-radius: 5px;
   font-size: 16px;
   margin-right: 5px;
@@ -86,7 +89,7 @@ button[type="submit"] {
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-left: 10px;
+  margin-left: 20px;
   box-sizing: border-box; /* Include padding and border in the width */
 }
 
@@ -107,7 +110,9 @@ button[type="submit"]:disabled {
  
  
   
- /* Styles for the input container */
+/* YourComponent.css */
+
+/* Styles for the input container */
 .input-container {
   position: relative;
 }
@@ -118,21 +123,26 @@ button[type="submit"]:disabled {
   outline: none; /* Remove the default input focus outline */
   padding: 0; /* Remove any padding or margins */
   width: 100%;
+  
+  
 }
 
 /* Styles for the blinking cursor (initially hidden) */
 .text-cursor {
   position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 2px; /* Adjust the width as needed */
-  animation: none; /* Initially, no blinking */
+  animation: none; /* Blinking animation */
 }
 
 @keyframes cursor-blink {
   0%, 100% {
     background: transparent; /* Make the cursor disappear */
   }
- 
+  50% {
+  }
 }
 
 #searchInput::placeholder {
@@ -140,7 +150,11 @@ button[type="submit"]:disabled {
 }
 
 #searchInput:focus + .text-cursor {
-  animation: cursor-blink 1s infinite; /* Start the blinking animation when focused */
+  animation: cursor-blink 1s infinite; /* Start blinking animation when focused */
 }
 
-  
+
+  /* YourComponent.css */
+
+/* Styles for the blinking cursor */
+

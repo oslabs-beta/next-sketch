@@ -18,6 +18,7 @@ import DisplayContainer from './components/right/DisplayContainer';
 import { Tag, Elements } from './utils/interfaces';
 import { generateId } from './utils/generateId';
 import WebFont from 'webfontloader';
+import ExportButton from './components/right/ExportButton';
 import AppContext from './context/AppContext';
 
 interface ComponentNameType {
@@ -39,13 +40,12 @@ export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
 );
 
 const App = () => {
-  let appFolder = explorer.items[2].items[0].items;
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
-
+const [appFolder, setappFolder] = useState(explorer)
   const [explorerData, setExplorerData] = useState(explorer);
-  const [componentName, setComponentName] = useState<string>('App');
-  //Check what this setCode is doing??
+  const [componentName, setComponentName] = useState('App');
+  //this code is for the component button might delete
   const [code, setCode] = useState<string>('Hello'); // Use state to store the code
   const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
     undefined
@@ -72,6 +72,8 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
+    setappFolder(finalTree);
+
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -79,9 +81,11 @@ const App = () => {
     setExplorerData(finalTree);
   };
 
-  const handleCreateCustomEndpoint = (folderId: number, item: string) => {
-    const finalTree: any = createCustomEndpoint(explorerData, folderId, item);
+  const handleCreateCustomEndpoint = (folderId: number, item: string, isFolder: boolean) => {
+    const finalTree: any = createCustomEndpoint(explorerData, folderId, item, isFolder);
     setExplorerData(finalTree);
+    setappFolder(finalTree);
+
   };
 
   const handleInputBoilerFiles = (
@@ -90,6 +94,7 @@ const App = () => {
     folderName: string,
     preview: string
   ) => {
+    // if (item === '') return;
     const finalTree: any = insertBoilerFiles(
       explorerData,
       folderId,
@@ -110,7 +115,16 @@ const App = () => {
   }, []);
 
   return (
+    
     <Box>
+
+
+
+  <ExportButton/>
+
+
+
+
       <Typography
         variant='h1'
         fontSize={'3em'}
@@ -123,7 +137,9 @@ const App = () => {
         }}
       >
         NextSketch
+
       </Typography>
+
       <Box
         sx={{
           margin: 2,
