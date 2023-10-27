@@ -202,7 +202,6 @@ const App = () => {
                       setCode={setCode}
                       explorer={explorer}
                     />
-
                     {/* <DisplayContainer /> */}
                   </Grid>
 

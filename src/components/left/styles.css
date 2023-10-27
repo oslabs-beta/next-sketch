@@ -105,7 +105,15 @@ button[type="submit"]:disabled {
 }
 
 
-  
+  /* Example container styles */
+#tree-container {
+  width: 200%; /* Set the container width to 100% */
+  max-height: 1000px; /* Set a maximum height, adjust as needed */
+  overflow: auto; /* Add scrollbars if the content overflows */
+  position: relative; /* Ensure correct positioning */
+  /* Add other styles as needed */
+}
+
 
  
  

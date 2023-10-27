@@ -85,6 +85,17 @@ function Folder({
 
   const handleClose = () => {
     setOpen(false);
+    setFolder('');
+    setSelectedItems({
+      default: false,
+      error: false,
+      layout: false,
+      loading: false,
+      notFound: false,
+      route: false,
+      template: false,
+      page: true,
+    });
   };
 
   const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
@@ -163,6 +174,7 @@ function Folder({
 
       recall(AllFilesInApp, fileName);
     }
+
   };
 
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {

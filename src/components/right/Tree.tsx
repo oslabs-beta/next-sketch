@@ -3,9 +3,8 @@ import { select, tree, hierarchy, linkVertical } from 'd3';
 
 const Tree = ({ explorer }) => {
   const svgRef = useRef(null);
-  const [width, setWidth] = useState(500);
-  const [height, setHeight] = useState(500);
-  const zoomContainer = useRef(null);
+  const [width, setWidth] = useState('100%');
+  const [height, setHeight] = useState('100%');
 
   const createTree = (data) => {
     if (data.isFolder) {
@@ -18,23 +17,14 @@ const Tree = ({ explorer }) => {
     }
   };
 
-  const calculateTreeHeight = (node) => {
-    if (!node.children) return 1;
-    const childHeights = node.children.map(calculateTreeHeight);
-    return 1 + Math.max(...childHeights);
-  };
-
   useEffect(() => {
     const svg = select(svgRef.current);
     svg.selectAll("*").remove();
 
     const root = hierarchy(createTree(explorer.items[2].items[0]));
 
-    const treeHeight = calculateTreeHeight(root);
-    const newHeight = treeHeight * 100; // Adjust the factor to control the height
-
     const treeData = tree()
-      .size([width, newHeight])
+      .size([width, height])
       .separation(() => 1)(root);
 
     const pathGenerator = linkVertical()
@@ -47,7 +37,8 @@ const Tree = ({ explorer }) => {
       .enter()
       .append('path')
       .attr("stroke", '#000')
-      .attr('stroke-width', 1)
+      .attr('fill', 'none')
+      .attr('opacity', 1)
       .attr('d', pathGenerator);
 
     const nodes = g.selectAll("g")
@@ -57,35 +48,33 @@ const Tree = ({ explorer }) => {
       .attr("transform", (d) => `translate(${d.x},${d.y})`);
 
     nodes.append("circle")
-      .attr("r", 10);
+      .attr("r", 5);
 
     nodes.append("text")
       .text((d) => d.data.name)
       .attr("dy", 20)
       .attr("text-anchor", "middle")
-      .style("font-size", "0.75rem");
-
-    svg.attr('width', width).attr('height', newHeight);
-    setHeight(newHeight); // Update the state with the new height
-  }, [explorer, width]);
+      .style("font-size", "1.00rem");
+  }, [explorer, width, height]);
 
   useEffect(() => {
     const handleResize = () => {
       const maxWidth = window.innerWidth - 20;
+      const maxHeight = window.innerHeight - 20;
       const newWidth = Math.min(maxWidth, 500);
+      const newHeight = Math.min(maxHeight, 500);
       setWidth(newWidth);
+      setHeight(newHeight);
     };
 
     window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
-  }, [explorer, width]);
+  }, [explorer, width, height]);
 
   return (
     <div style={{ width, height }}>
-      <svg ref={svgRef}>
-        <g ref={zoomContainer}></g>
-      </svg>
+      <svg ref={svgRef} style={{ width: '100%', height: '100%' }}></svg>
     </div>
   );
 };
