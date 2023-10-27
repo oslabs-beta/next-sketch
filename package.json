@@ -70,8 +70,7 @@
     "vite-plugin-electron-renderer": "^0.14.5",
     "vite-tsconfig-paths": "^4.2.1"
   },
-  "main": "dist-electron/main.js"
-=======
+  "main": "dist-electron/main.js",
     "name": "nexttst",
     "private": true,
     "version": "0.0.0",

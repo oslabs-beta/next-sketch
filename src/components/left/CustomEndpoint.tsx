@@ -52,10 +52,9 @@ const CustomEndpoint = ({
       loading: false,
       notFound: false,
       route: false,
-      template: false,      
-      page:true
-    })
-
+      template: false,
+      page: true,
+    });
   };
 
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
@@ -80,22 +79,20 @@ const CustomEndpoint = ({
     }
   }, [codeSnippet]);
 
-
   async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
-    
+
     setSelectedItems({
       ...selectedItems,
       [name]: true,
     });
 
     const fileName = e.target.name;
-    const folderName = folder
+    const folderName = folder;
     setFile(fileName);
 
     setComponentName(fileName);
-    setPostData(true
-
+    setPostData(true);
   }
 
   const handlePostingFiles = async (
@@ -116,9 +113,8 @@ const CustomEndpoint = ({
       },
       body: JSON.stringify(body),
     });
-  }
+  };
 
- 
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     e?.preventDefault();
@@ -141,23 +137,22 @@ const CustomEndpoint = ({
   return (
     <div className='cursor'>
       <form>
-      <div className="input-container">
-        <input
-          type='text'
-          autoFocus
-          placeholder='New Endpoint in src/app'
-          onChange={handleChange}
-          value={folder}
-          id="searchInput"
-        />
-        <div className="text-cursor"></div>
-      </div>
+        <div className='input-container'>
+          <input
+            type='text'
+            autoFocus
+            placeholder='New Endpoint in src/app'
+            onChange={handleChange}
+            value={folder}
+            id='searchInput'
+          />
+          <div className='text-cursor'></div>
+        </div>
 
-      <button type='submit' onClick={handleCreateCustomFolder}>
-        Submit
-      </button>
-    </form>
-
+        <button type='submit' onClick={handleCreateCustomFolder}>
+          Submit
+        </button>
+      </form>
 
       <Modal
         open={open}
