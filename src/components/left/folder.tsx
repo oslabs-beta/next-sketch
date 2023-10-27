@@ -110,9 +110,11 @@ function Folder({
 
     const fileName = e.target.name;
     setFile(fileName);
-    const folderName = folder;
 
+    if(!cacheModal.includes(fileName)){
+      cacheModal.push(fileName)
     setComponentName(fileName);
+    }
 
   };
 
@@ -122,7 +124,6 @@ function Folder({
   };
   let AllFilesInApp = appFolder.items[2].items[0];
 
-  // console.log(AllFilesInApp.items);
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);

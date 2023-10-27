@@ -26,10 +26,10 @@ const TabsComponent = ({ code, treeData }: TabsComponentProps) => {
             <Tab label='Item Three' value='3' />
           </TabList>
         </Box>
-        <TabPanel value='1'>
+        <TabPanel value='1'> 
           <DisplayContainer />
         </TabPanel>
-        <TabPanel value='2'>
+        <TabPanel value='2' >
           <CodePreview code={code} treeData={treeData} />
         </TabPanel>
         <TabPanel value='3'>Item Three</TabPanel>
