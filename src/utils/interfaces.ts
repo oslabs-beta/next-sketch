@@ -20,5 +20,8 @@ export interface modalLayout {
     route: boolean;
     template: boolean;
     page: boolean
-  }
-  
+}
+
+export interface RenderCodeProps {
+    elements: Tag[];
+}

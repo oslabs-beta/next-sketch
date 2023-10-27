@@ -55,6 +55,8 @@ const DisplayContainer = () => {
     });
   };
 
+  console.log(tags);
+
   const getTagIds = (parent?: UniqueIdentifier) => {
     return getTags(parent).map((tag) => tag.id);
   };

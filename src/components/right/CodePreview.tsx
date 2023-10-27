@@ -6,7 +6,8 @@ import 'prismjs/themes/prism-okaidia.css'; //okadia theme
 import 'prismjs/components/prism-javascript';
 import { useContext, useEffect } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
-// import { useCode } from '../../utils/reducer/CodeContext';
+import AppContext from '../../context/AppContext';
+import { RenderCodeProps } from '../../utils/interfaces';
 
 interface CodePreviewProps {
   treeData: object;
@@ -15,51 +16,57 @@ interface CodePreviewProps {
 const CodePreview = ({ treeData: CodePreviewProps }) => {
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  const { tags, setTags } = useContext(AppContext);
 
   useEffect(() => {
     // Generate the code snippet
+    renderCode(componentName, tags);
     Prism.highlightAll();
-    renderCode(componentName);
-  }, [componentName]); // Re-render and update the code when componentName changes
+  }, [componentName]); // Re-render and update the code when componentName change
+  //adding tags as a dependency breaks prism
 
-  function renderCode(title: string) {
-    if (title === undefined) return;
+  function renderCode(name: string, elements: RenderCodeProps) {
+    if (name === undefined) return;
     //Check if it has end .tsx
-    if (title.slice(-4) === '.tsx') {
-      title = title.slice(0, -4);
+    if (name.slice(-4) === '.tsx') {
+      name = name.slice(0, -4);
     }
     // Capitalize the component name
-    title = title.charAt(0).toUpperCase() + title.slice(1);
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+
+    //itirate through the tags
+    const htmlElements = tags.map((tag) => {
+      return <li key={tag.id}>{tag.name}</li>;
+    });
+    // console.log(htmlElements);
 
     let codeSnippet = '';
-    if (title === 'NotFound') {
+    if (name === 'NotFound') {
       codeSnippet = `
   import React from 'react';
   
-  const ${title} = () => {
+  const ${name} = () => {
     return (
       <div>
         <h1>404 - Page Not Found</h1>
-        {/* You can add additional content or links here */}
       </div>
     );
   };
   
-  export default ${title};
+  export default ${name};
   `;
     } else {
       codeSnippet = `
   import React from 'react';
   
-  const ${title} = () => {
+  const ${name} = () => {
     return (
       <>
-        {/* Your page content goes here */}
       </>
     );
   };
   
-  export default ${title};
+  export default ${name};
   `;
     }
     setCodeSnippet(codeSnippet);
@@ -67,9 +74,11 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
 
   return (
     <Box>
-      <pre>
-        <code className='language-javascript'>{codeSnippet}</code>
-      </pre>
+      <ul>
+        <pre>
+          <code className='language-javascript'>{codeSnippet}</code>
+        </pre>
+      </ul>
     </Box>
   );
 };

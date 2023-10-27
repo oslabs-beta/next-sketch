@@ -4,7 +4,6 @@
   const Layout = () => {
     return (
       <>
-        {/* Your page content goes here */}
       </>
     );
   };

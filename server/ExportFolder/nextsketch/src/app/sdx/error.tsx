@@ -4,7 +4,6 @@
   const Error = () => {
     return (
       <>
-        {/* Your page content goes here */}
       </>
     );
   };

@@ -4,7 +4,6 @@
   const Default = () => {
     return (
       <>
-        {/* Your page content goes here */}
       </>
     );
   };

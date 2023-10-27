@@ -20,7 +20,7 @@ import { generateId } from './utils/generateId';
 import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
 import AppContext from './context/AppContext';
-
+import CodePreview from './components/right/CodePreview';
 
 interface ComponentNameType {
   componentName: string;
@@ -46,8 +46,6 @@ const App = () => {
   const [appFolder, setappFolder] = useState(explorer);
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState('Page');
-  //this code is for the component button might delete
-  const [code, setCode] = useState<string>('Hello'); // Use state to store the code
   const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
     undefined
   );
@@ -144,7 +142,6 @@ const App = () => {
           boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
         }}
       >
-
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider value={{ tags, setTags }}>
@@ -159,7 +156,6 @@ const App = () => {
                       handleCreateCustomEndpoint={handleCreateCustomEndpoint}
                       handleInputBoilerFiles={handleInputBoilerFiles}
                       explorer={explorerData}
-                      code={code}
                       open={open}
                       setOpen={setOpen}
                       setFolder={setFolder}
@@ -175,8 +171,6 @@ const App = () => {
                       handleInputBoilerFiles={handleInputBoilerFiles}
                       appFolder={appFolder}
                       explorer={explorerData}
-                      code={code}
-                      setCode={setCode}
                       folderExpanded={folderExpanded}
                       setFolderExpanded={setFolderExpanded}
                       setFolder={setFolder}
@@ -189,24 +183,21 @@ const App = () => {
                   </Grid>
 
                   <Grid item xs={4} sx={{ display: 'flex' }}>
-                
                     <StaticTagsContainer />
                   </Grid>
 
                   <Grid item xs={4} sx={{ height: '500px' }}>
-                    <TabsComponent
-                      code={code}
-                      setCode={setCode}
+                    {/* <TabsComponent
                       treeData={explorerData}
-                    />
-                    {/* <DisplayContainer /> */}
+                    /> */}
+                    <DisplayContainer />
+                    <CodePreview treeData={explorerData} />
                   </Grid>
                 </Grid>
               </Box>
             </AppContext.Provider>
           </CodeSnippetContext.Provider>
         </CodeContext.Provider>
-      
       </Box>
     </Box>
   );
