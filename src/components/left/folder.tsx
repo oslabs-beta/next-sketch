@@ -6,7 +6,7 @@ import {
   faTrash,
   faFileCirclePlus,
   faAtom,
-  faN,
+  faMinus
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
@@ -288,7 +288,7 @@ function Folder({
           <span>
             {folderIcon} {folderLogo} {explorer.name}
           </span>
-          <div>
+          <div className='buttons'>
             {explorer.name !== 'app' && explorer.name !== 'src' ? (
               <button
                 onClick={(e) => {
@@ -311,7 +311,7 @@ function Folder({
 
             {explorer.name !== 'app' && explorer.name !== 'src' ? (
               <button onClick={(e) => handleDeleteFolder(e, false)}>
-                <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon icon={faMinus} />
               </button>
             ) : (
               ''
@@ -369,10 +369,10 @@ function Folder({
         )}
         {explorer.name}
         {explorer.name === 'page.tsx' ? (
-          ''
+          '   '
         ) : (
-          <button onClick={(e) => handleDeleteFolder(e, false)}>
-            <FontAwesomeIcon icon={faTrash} />
+          <button className ='deletebtn' onClick={(e) => handleDeleteFolder(e, false)}>
+            <FontAwesomeIcon icon={faMinus} />
           </button>
         )}
       </div>

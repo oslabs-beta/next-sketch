@@ -8,7 +8,7 @@ div {
     background-color: white;
     display: flex;
     align-items: center;
-    justify-content: left;
+    justify-content: space-between;
     padding: 5px;
     width: 75%;
     cursor: pointer;
@@ -153,7 +153,10 @@ button[type="submit"]:disabled {
   animation: cursor-blink 1s infinite; /* Start blinking animation when focused */
 }
 
-
+.buttons{
+  display: flex;
+  justify-content: right;
+}
   /* YourComponent.css */
 
 /* Styles for the blinking cursor */

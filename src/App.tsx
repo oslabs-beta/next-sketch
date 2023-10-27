@@ -20,7 +20,7 @@ import { generateId } from './utils/generateId';
 import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
 import AppContext from './context/AppContext';
-
+import Tree from './components/right/Tree';
 
 interface ComponentNameType {
   componentName: string;
@@ -149,6 +149,7 @@ const App = () => {
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider value={{ tags, setTags }}>
               <Box sx={{ flexGrow: 1 }}>
+                
                 <Grid
                   container
                   justifyContent={'space-between'}
@@ -186,22 +187,27 @@ const App = () => {
                       setPostData={setPostData}
                       postData={postData}
                     />
+
                   </Grid>
 
                   <Grid item xs={4} sx={{ display: 'flex' }}>
                 
                     <StaticTagsContainer />
+                    
                   </Grid>
 
                   <Grid item xs={4} sx={{ height: '500px' }}>
                     <TabsComponent
                       code={code}
                       setCode={setCode}
-                      treeData={explorerData}
+                      explorer={explorer}
                     />
+
                     {/* <DisplayContainer /> */}
                   </Grid>
+
                 </Grid>
+
               </Box>
             </AppContext.Provider>
           </CodeSnippetContext.Provider>
