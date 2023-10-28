@@ -13,7 +13,20 @@ const explorer = {
       id: '3',
       name: 'public',
       isFolder: true,
-      items: [],
+      items: [
+        {
+          id: '3.33',
+          name: 'next.svg',
+          isFolder: false,
+          items: []
+        },
+        {
+          id: '3.66',
+          name: 'vercel.svg',
+          isFolder: false,
+          items: []
+        },
+      ],
     },
     {
       id: '4',
