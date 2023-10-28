@@ -6,7 +6,7 @@ import {
   faTrash,
   faFileCirclePlus,
   faAtom,
-  faN,
+  faMinus
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
@@ -32,7 +32,6 @@ function Folder({
   handleInsertNode,
   handleDeleteNode,
   handleInputBoilerFiles,
-  appFolder,
   explorer,
   setFolder,
   folder,
@@ -85,6 +84,17 @@ function Folder({
 
   const handleClose = () => {
     setOpen(false);
+    setFolder('');
+    setSelectedItems({
+      default: false,
+      error: false,
+      layout: false,
+      loading: false,
+      notFound: false,
+      route: false,
+      template: false,
+      page: true,
+    });
   };
 
   const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
@@ -110,9 +120,11 @@ function Folder({
 
     const fileName = e.target.name;
     setFile(fileName);
-    const folderName = folder;
 
+    if(!cacheModal.includes(fileName)){
+      cacheModal.push(fileName)
     setComponentName(fileName);
+    }
 
   };
 
@@ -122,9 +134,9 @@ function Folder({
   };
   let AllFilesInApp = appFolder.items[2].items[0];
 
-  // console.log(AllFilesInApp.items);
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
+
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setFolder(e.currentTarget.value);
@@ -148,19 +160,10 @@ function Folder({
 
       setShowInput({ ...showInput, visible: false });
 
-      //recursive helper function to make only files that are inside the app folder make the modal popup
-      function recall(tree: any, fileName: string) {
-        if (tree.name === fileName && showInput.isFolder) {
-          setOpen(true);
-          return;
-        }
+      
 
-        tree.items.map((obj) => {
-          return recall(obj, fileName);
-        });
-      }
+      if(showInput.isFolder) setOpen(true)
 
-      recall(AllFilesInApp, fileName);
     }
   };
 
@@ -287,8 +290,8 @@ function Folder({
           <span>
             {folderIcon} {folderLogo} {explorer.name}
           </span>
-          <div>
-            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+          <div className='buttons'>
+            {explorer.name !== 'app' && explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' ? (
               <button
                 onClick={(e) => {
                   handleNewFolder(e, true);
@@ -300,7 +303,7 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'src' ? (
+            {explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
                 <FontAwesomeIcon icon={faFileCirclePlus} />
               </button>
@@ -308,9 +311,9 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+            {explorer.name !== 'app' && explorer.name !== 'src' && explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleDeleteFolder(e, false)}>
-                <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon icon={faMinus} />
               </button>
             ) : (
               ''
@@ -343,7 +346,6 @@ function Folder({
                 handleInsertNode={handleInsertNode}
                 handleDeleteNode={handleDeleteNode}
                 handleInputBoilerFiles={handleInputBoilerFiles}
-                appFolder={appFolder}
                 explorer={exp}
                 key={exp.id}
                 setFolder={setFolder}
@@ -368,10 +370,10 @@ function Folder({
         )}
         {explorer.name}
         {explorer.name === 'page.tsx' ? (
-          ''
+          '   '
         ) : (
-          <button onClick={(e) => handleDeleteFolder(e, false)}>
-            <FontAwesomeIcon icon={faTrash} />
+          <button className ='deletebtn' onClick={(e) => handleDeleteFolder(e, false)}>
+            <FontAwesomeIcon icon={faMinus} />
           </button>
         )}
       </div>
