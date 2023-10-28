@@ -33,13 +33,13 @@ const TabsComponent = ({ code, treeData, explorer }: TabsComponentProps) => {
   };
 
   return (
-    <Box sx={{ width: '100%', typography: 'body1' }}>
+    <Box >
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange}>
             <Tab label='Display' value='1' />
             <Tab label='Code Preview' value='2' />
-            <Tab label='Item Three' value='3' />
+            <Tab label='Tree' value='3' />
           </TabList>
         </Box>
         <TabPanel value='1'>
@@ -48,10 +48,9 @@ const TabsComponent = ({ code, treeData, explorer }: TabsComponentProps) => {
         <TabPanel value='2'>
           <CodePreview code={code} treeData={treeData} />
         </TabPanel>
-        <TabPanel value='3'>
-        <div id="tree-container">
-  <Tree explorer={explorer} />
-</div>
+        <TabPanel value='3'sx={{ backgroundColor: '#42464C', width: '900px'}} >
+          src/app
+        <Tree explorer={explorer} />
         </TabPanel>
       </TabContext>
     </Box>

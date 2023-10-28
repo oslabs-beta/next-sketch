@@ -15,7 +15,7 @@ div {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 3px;
-    
+    overflow-y: scroll;
   }
   
   /* Styling for the folder text and buttons */
@@ -166,6 +166,16 @@ button[type="submit"]:disabled {
   justify-content: right;
 }
   /* YourComponent.css */
-
+  @media (max-width: 768px) {
+    .tree-container {
+      width: 20%; /* Change as needed for smaller screens */
+    }
+  }
+  @media (max-width: 480px) {
+    .tree-container {
+      width: 80%; /* Change as needed for even smaller screens */
+    }
+  }
+  
 /* Styles for the blinking cursor */
 

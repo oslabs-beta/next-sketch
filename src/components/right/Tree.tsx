@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { select, tree, hierarchy, linkVertical } from 'd3';
+import { select, tree, hierarchy, linkVertical, linkHorizontal } from 'd3';
 
 const Tree = ({ explorer }) => {
   const svgRef = useRef(null);
@@ -17,26 +17,66 @@ const Tree = ({ explorer }) => {
     }
   };
 
+  const setTreeNodePositions = (node) => {
+    let x = 0;
+    let y = 0;
+
+    if (node.children) {
+      // Adjust the x position based on the children
+      node.children.forEach((child) => {
+        setTreeNodePositions(child);
+        x += child.x;
+      });
+      x /= node.children.length;
+    }
+
+    // Update the x and y positions for the current node
+    node.x = x;
+    node.y = y;
+
+    return node;
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      const maxWidth = window.innerWidth - 20;
+      const maxHeight = window.innerHeight - 20;
+      const newWidth = Math.min(maxWidth, 700);
+      const newHeight = Math.min(maxHeight, 800);
+      setWidth(newWidth);
+      setHeight(newHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     const svg = select(svgRef.current);
     svg.selectAll("*").remove();
 
     const root = hierarchy(createTree(explorer.items[2].items[0]));
 
-    const treeData = tree()
-      .size([width, height])
-      .separation(() => 1)(root);
+    // Set the initial positions of tree nodes
+    setTreeNodePositions(root);
 
-    const pathGenerator = linkVertical()
-      .x((d) => d.x)
-      .y((d) => d.y);
+    const treeLayout = tree()
+      .size([height, width]);
+
+    const treeData = treeLayout(root);
+
+    const pathGenerator = linkHorizontal()
+      .x((d) => d.y + 40)
+      .y((d) => d.x);
+
     const g = svg.append('g');
 
     g.selectAll('path')
       .data(treeData.links())
       .enter()
       .append('path')
-      .attr("stroke", '#000')
+      .attr("stroke", 'white')
       .attr('fill', 'none')
       .attr('opacity', 1)
       .attr('d', pathGenerator);
@@ -45,36 +85,30 @@ const Tree = ({ explorer }) => {
       .data(treeData.descendants())
       .enter()
       .append("g")
-      .attr("transform", (d) => `translate(${d.x},${d.y})`);
+      .attr("transform", (d) => `translate(${d.y + 40},${d.x})`);
 
     nodes.append("circle")
-      .attr("r", 5);
+      .attr("r", 5)
+      .style('fill', 'white')
 
     nodes.append("text")
       .text((d) => d.data.name)
       .attr("dy", 20)
+      .attr('dx', -20)
       .attr("text-anchor", "middle")
+      .attr("fill", '#bdbdbd')
+
       .style("font-size", "1.00rem");
   }, [explorer, width, height]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const maxWidth = window.innerWidth - 20;
-      const maxHeight = window.innerHeight - 20;
-      const newWidth = Math.min(maxWidth, 500);
-      const newHeight = Math.min(maxHeight, 500);
-      setWidth(newWidth);
-      setHeight(newHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, [explorer, width, height]);
+  const treeStyles = {
+    height: '800px',
+    width: '100%',
+ };
 
   return (
-    <div style={{ width, height }}>
-      <svg ref={svgRef} style={{ width: '100%', height: '100%' }}></svg>
+    <div >
+      <svg ref={svgRef} style={treeStyles}></svg>
     </div>
   );
 };

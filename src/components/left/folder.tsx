@@ -32,7 +32,6 @@ function Folder({
   handleInsertNode,
   handleDeleteNode,
   handleInputBoilerFiles,
-  appFolder,
   explorer,
   setFolder,
   folder,
@@ -137,6 +136,7 @@ function Folder({
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
+
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setFolder(e.currentTarget.value);
@@ -160,21 +160,11 @@ function Folder({
 
       setShowInput({ ...showInput, visible: false });
 
-      //recursive helper function to make only files that are inside the app folder make the modal popup
-      function recall(tree: any, fileName: string) {
-        if (tree.name === fileName && showInput.isFolder) {
-          setOpen(true);
-          return;
-        }
+      
 
-        tree.items.map((obj) => {
-          return recall(obj, fileName);
-        });
-      }
+      if(showInput.isFolder) setOpen(true)
 
-      recall(AllFilesInApp, fileName);
     }
-
   };
 
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
@@ -301,7 +291,7 @@ function Folder({
             {folderIcon} {folderLogo} {explorer.name}
           </span>
           <div className='buttons'>
-            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+            {explorer.name !== 'app' && explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' ? (
               <button
                 onClick={(e) => {
                   handleNewFolder(e, true);
@@ -313,7 +303,7 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'src' ? (
+            {explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
                 <FontAwesomeIcon icon={faFileCirclePlus} />
               </button>
@@ -321,7 +311,7 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+            {explorer.name !== 'app' && explorer.name !== 'src' && explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleDeleteFolder(e, false)}>
                 <FontAwesomeIcon icon={faMinus} />
               </button>
@@ -356,7 +346,6 @@ function Folder({
                 handleInsertNode={handleInsertNode}
                 handleDeleteNode={handleDeleteNode}
                 handleInputBoilerFiles={handleInputBoilerFiles}
-                appFolder={appFolder}
                 explorer={exp}
                 key={exp.id}
                 setFolder={setFolder}
