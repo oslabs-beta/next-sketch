@@ -9,7 +9,7 @@ import AppContext from '../../context/AppContext';
 /**
  * @description - container for draggable HTML tag elements
  * @parent - MiddleContainer.tsx (make this)
- * @children - DraggableItem.tsx 
+ * @children - DraggableItem.tsx
  */
 
 const StaticTagsContainer = (): JSX.Element => {
@@ -18,31 +18,41 @@ const StaticTagsContainer = (): JSX.Element => {
       id: generateId(),
       name: 'div',
       container: true,
+      openTag: '<div>',
+      closeTag: '</div>',
     },
     {
       id: generateId(),
       name: 'img',
       container: false,
+      openTag: `<img src=' '>`,
     },
     {
       id: generateId(),
       name: 'p',
       container: false,
+      openTag: '<p>',
+      closeTag: '</p>',
     },
     {
       id: generateId(),
       name: 'form',
       container: true,
+      openTag: '<form>',
+      closeTag: '</form>',
     },
     {
       id: generateId(),
       name: 'button',
       container: false,
+      openTag: '<button>',
+      closeTag: '</button>',
     },
     {
       id: generateId(),
       name: 'link',
       container: false,
+      openTag: `<link href=' ''>`,
     },
   ];
 
@@ -52,10 +62,13 @@ const StaticTagsContainer = (): JSX.Element => {
 
   const addTagToDisplay = (event: DragEndEvent) => {
     const { active } = event;
+    console.log(active);
     const newTag: Tag = {
       id: active.id,
       name: active.data.current?.name,
       container: active.data.current?.container,
+      openTag: active.data.current?.openTag,
+      closeTag: active.data.current?.closeTag,
     };
     setTags([...tags, newTag]);
   };

@@ -113,7 +113,6 @@ function Folder({
     const folderName = folder;
 
     setComponentName(fileName);
-
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {

@@ -20,12 +20,75 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
 
   useEffect(() => {
     // Generate the code snippet
-    renderCode(componentName, tags);
+    renderCode(componentName);
     Prism.highlightAll();
   }, [componentName]); // Re-render and update the code when componentName change
   //adding tags as a dependency breaks prism
 
-  function renderCode(name: string, elements: RenderCodeProps) {
+  const addingChildrenTags = (elements: Tag[]): Tag[] => {
+    //check if the container property is true
+    //add a property of children
+    tags.map((tag) => {
+      if (tag.container) {
+        tag.children = [];
+      }
+      //if it has a parent, push it inside of the corresponding children array
+      if (tag.parent) {
+        const parentId = tag.parent;
+        console.log(parentId);
+
+        const index = tags.findIndex((tag) => tag.id === parentId);
+        tags[index].children.push(tag);
+      }
+    });
+
+    return tags;
+  };
+
+  const childrenTags = addingChildrenTags(tags);
+  console.log('CHILDREN', childrenTags);
+
+  const generateCode = (elements: Tag[]): JSX.Element => {
+    const renderElements = elements.map((element) => {
+      if (element.children) {
+        const children = element.children;
+        const result = children.map((child) => {
+          return (
+            <div key={child.id}>
+              {child.openTag}
+              {child.closeTag}
+            </div>
+          );
+        });
+        return (
+          <ul>
+            <div>
+              {element.openTag}
+              {result}
+              {element.closeTag}
+            </div>
+          </ul>
+        );
+      } else if (!element.container && !element.parent) {
+        console.log(element);
+        console.log('independent tag');
+
+        return (
+          <div>
+            {element.openTag}
+            {element.closeTag}
+          </div>
+        );
+      } else console.log('in other conditional');
+    });
+
+    return renderElements;
+  };
+
+  const additional = generateCode(childrenTags);
+  console.log(additional);
+
+  function renderCode(name: string) {
     if (name === undefined) return;
     //Check if it has end .tsx
     if (name.slice(-4) === '.tsx') {
@@ -33,12 +96,6 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
     }
     // Capitalize the component name
     name = name.charAt(0).toUpperCase() + name.slice(1);
-
-    //itirate through the tags
-    const htmlElements = tags.map((tag) => {
-      return <li key={tag.id}>{tag.name}</li>;
-    });
-    // console.log(htmlElements);
 
     let codeSnippet = '';
     if (name === 'NotFound') {
@@ -62,6 +119,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   const ${name} = () => {
     return (
       <>
+      ${additional}
       </>
     );
   };
@@ -73,13 +131,19 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   }
 
   return (
-    <Box>
+    // <Box>
+    //   <pre>
+    //     <code className='language-javascript'>{codeSnippet}</code>
+    //   </pre>
+    // </Box>
+    <div style={{ textAlign: 'center' }}>
       <ul>
-        <pre>
-          <code className='language-javascript'>{codeSnippet}</code>
-        </pre>
+        <li>hello</li>
       </ul>
-    </Box>
+      <ul>
+        <li> {additional}</li>
+      </ul>
+    </div>
   );
 };
 

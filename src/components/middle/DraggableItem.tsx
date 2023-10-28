@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { Tag } from '../../utils/interfaces';
 
 /**
- * @description - creates a draggable item 
+ * @description - creates a draggable item
  * @parent - StaticTagsContainer.tsx
  */
 
@@ -14,11 +14,16 @@ interface DraggableItemProps {
 }
 
 export const DraggableItem = ({ id, children }: DraggableItemProps) => {
-
-  const { name, container } = children;
+  const { name, container, openTag, closeTag } = children;
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
-    data: { name: name, container: container, type: 'type1' },
+    data: {
+      name: name,
+      container: container,
+      type: 'type1',
+      openTag: openTag,
+      closeTag: closeTag,
+    },
   });
 
   const style = {

@@ -40,11 +40,24 @@ const DisplayContainer = () => {
     })
   );
 
+  /**
+   * @method isContainer
+   * @description - checks if it the tag is a container
+   * @input - id of type number, null or undefined
+   * @output - boolean, true if it is container false if it isn't
+   */
+
   const isContainer = (id: UniqueIdentifier | null | undefined) => {
     const tag = tags.find((tag) => tag.id === id);
     return !tag ? false : tag.container;
   };
 
+  /**
+   * @method getTags
+   * @description - Checks the tags array to find elements with parent property
+   * @input - optional parent
+   * @output - array with false and strings as values
+   */
   const getTags = (parent?: UniqueIdentifier) => {
     return tags.filter((tag) => {
       if (!parent) {
@@ -57,9 +70,17 @@ const DisplayContainer = () => {
 
   console.log(tags);
 
+  /**
+   * @method getTagIds
+   * @description - maps through the array returned by getTags
+   * @input - optional parent of type unique identifier
+   * @output - An array of tag IDs that have parent
+   */
+
   const getTagIds = (parent?: UniqueIdentifier) => {
     return getTags(parent).map((tag) => tag.id);
   };
+
 
   const findParent = (id: UniqueIdentifier) => {
     const tag = tags.find((tag) => tag.id === id);
@@ -123,7 +144,7 @@ const DisplayContainer = () => {
       if (overId) {
         nextParent = overIsContainer ? overId : overParent;
       }
-      // console.log(nextParent);
+      console.log(nextParent);
 
       tags[activeIndex].parent = nextParent;
       const nextItems = arrayMove(tags, activeIndex, newIndex);
