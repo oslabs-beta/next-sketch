@@ -1,5 +1,12 @@
-import { useContext } from 'react';
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { useContext, useState } from 'react';
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  UniqueIdentifier,
+} from '@dnd-kit/core';
 import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
@@ -9,7 +16,7 @@ import AppContext from '../../context/AppContext';
 /**
  * @description - container for draggable HTML tag elements
  * @parent - MiddleContainer.tsx (make this)
- * @children - DraggableItem.tsx 
+ * @children - DraggableItem.tsx
  */
 
 const StaticTagsContainer = (): JSX.Element => {
@@ -44,13 +51,53 @@ const StaticTagsContainer = (): JSX.Element => {
       name: 'link',
       container: false,
     },
+    {
+      id: generateId(),
+      name: 'input',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'label',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'h1',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'h2',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'span',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'ordered list',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'unordered list',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'list item',
+      container: false,
+    },
   ];
 
   const { tags, setTags } = useContext(AppContext);
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
-  // console.log('initial state tags', tags);
-
-  const addTagToDisplay = (event: DragEndEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {
+    console.log('drag end', event);
     const { active } = event;
     const newTag: Tag = {
       id: active.id,
@@ -58,14 +105,15 @@ const StaticTagsContainer = (): JSX.Element => {
       container: active.data.current?.container,
     };
     setTags([...tags, newTag]);
+    setActiveId(null);
   };
 
   return (
     <Box
       sx={{
         display: 'flex',
-        width: '100%',
-        height: '200px',
+        width: 'auto',
+        height: 'auto',
         boxShadow: 20,
         borderTopLeftRadius: '20px',
         borderTopRightRadius: '20px',
@@ -73,7 +121,9 @@ const StaticTagsContainer = (): JSX.Element => {
         borderBottomLeftRadius: '20px',
       }}
     >
-      <DndContext onDragEnd={addTagToDisplay}>
+      <DndContext
+      onDragEnd={handleDragEnd}
+      >
         <Box
           sx={{
             width: '100%',
@@ -92,10 +142,12 @@ const StaticTagsContainer = (): JSX.Element => {
           </Box>
           <Box
             sx={{
+              padding: 1,
               display: 'flex',
               flexWrap: 'wrap',
               alignContent: 'flex-start',
               justifyContent: 'center',
+              flexDirection: 'column', 
               marginTop: 1.2,
             }}
           >

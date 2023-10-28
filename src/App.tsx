@@ -189,7 +189,7 @@ const App = () => {
                   </Grid>
 
                   <Grid item xs={4} sx={{ display: 'flex' }}>
-                
+
                     <StaticTagsContainer />
                   </Grid>
 

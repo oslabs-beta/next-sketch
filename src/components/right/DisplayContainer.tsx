@@ -107,6 +107,9 @@ const DisplayContainer = () => {
       const activeIndex = tags.findIndex((tag) => tag.id === id);
       const overIndex = tags.findIndex((tag) => tag.id === overId);
 
+      // console.log('activeIndex', activeIndex);
+      // console.log('overIndex', overIndex);
+
       let newIndex = overIndex;
       const isBelowLastItem =
         over &&
