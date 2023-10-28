@@ -15,7 +15,7 @@ div {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 3px;
-    
+    overflow-y: scroll;
   }
   
   /* Styling for the folder text and buttons */
@@ -105,7 +105,15 @@ button[type="submit"]:disabled {
 }
 
 
-  
+  /* Example container styles */
+#tree-container {
+  width: 200%; /* Set the container width to 100% */
+  max-height: 1000px; /* Set a maximum height, adjust as needed */
+  overflow: auto; /* Add scrollbars if the content overflows */
+  position: relative; /* Ensure correct positioning */
+  /* Add other styles as needed */
+}
+
 
  
  
@@ -153,8 +161,21 @@ button[type="submit"]:disabled {
   animation: cursor-blink 1s infinite; /* Start blinking animation when focused */
 }
 
-
+.buttons{
+  display: flex;
+  justify-content: right;
+}
   /* YourComponent.css */
-
+  @media (max-width: 768px) {
+    .tree-container {
+      width: 20%; /* Change as needed for smaller screens */
+    }
+  }
+  @media (max-width: 480px) {
+    .tree-container {
+      width: 80%; /* Change as needed for even smaller screens */
+    }
+  }
+  
 /* Styles for the blinking cursor */
 

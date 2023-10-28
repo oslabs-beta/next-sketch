@@ -21,7 +21,6 @@ const style = {
 };
 //MUI styling fior modal
 //-----------------
-const cacheModal: string[] = [];
 
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
