@@ -132,7 +132,6 @@ function Folder({
     setPostData(false);
     setCodeSnippet(explorer.preview);
   };
-  let AllFilesInApp = appFolder.items[2].items[0];
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {

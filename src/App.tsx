@@ -5,7 +5,7 @@ import React, {
   useEffect,
   createContext,
 } from 'react';
-import { Box, Grid, Typography, AppBar, Toolbar} from '@mui/material';
+import { Box, Grid, Typography, AppBar, Toolbar } from '@mui/material';
 
 import StaticTagsContainer from './components/middle/StaticTagsContainer';
 import './App.css';
@@ -22,6 +22,7 @@ import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
 import AppContext from './context/AppContext';
 import Tree from './components/right/Tree';
+import CodePreview from './components/right/CodePreview';
 
 interface ComponentNameType {
   componentName: string;
@@ -41,11 +42,7 @@ export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
   undefined
 );
 
-
 const App = () => {
- 
-
-
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
   const [explorerData, setExplorerData] = useState(explorer);
@@ -80,7 +77,6 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
-
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -122,26 +118,25 @@ const App = () => {
 
   return (
     <Box>
-      
-   <AppBar position='static' > 
-      <Typography
-        variant='h1'
-        fontSize={'3em'}
-        fontFamily={'Titillium Web'}
-        textAlign={'center'}
-        marginBottom={'0.5em'}
-        color={'#061E47'}
-        sx={{
-          textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
-        }}
-      >
-        NextSketch
-      </Typography>
+      <AppBar position='static'>
+        <Typography
+          variant='h1'
+          fontSize={'3em'}
+          fontFamily={'Titillium Web'}
+          textAlign={'center'}
+          marginBottom={'0.5em'}
+          color={'#061E47'}
+          sx={{
+            textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
+          }}
+        >
+          NextSketch
+        </Typography>
 
-      <Typography>
-      <ExportButton />
-      </Typography>
-</AppBar>
+        <Typography>
+          <ExportButton />
+        </Typography>
+      </AppBar>
 
       <Box
         sx={{
@@ -151,18 +146,24 @@ const App = () => {
           bgcolor: 'rgba(255, 255, 255, 0.7)',
           boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
         }}
-      >   
+      >
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider value={{ tags, setTags }}>
               <Box sx={{ flexGrow: 1 }}>
-                
                 <Grid
                   container
-                  justifyContent={'space-between'}
-                  sx={{ height: '100vh', overflowY: 'scroll' }}
+                  // justifyContent={'space-between'}
+                  sx={{
+                    height: '80vh',
+                    // overflowY: 'scroll',
+                  }}
                 >
-                  <Grid item xs={3.5}>
+                  <Grid
+                    item
+                    xs={3}
+                    sx={{ maxHeight: '80vh', overflowY: 'scroll' }}
+                  >
                     <CustomEndpoint
                       handleCreateCustomEndpoint={handleCreateCustomEndpoint}
                       handleInputBoilerFiles={handleInputBoilerFiles}
@@ -193,32 +194,30 @@ const App = () => {
                       setPostData={setPostData}
                       postData={postData}
                     />
-
                   </Grid>
 
-                  <Grid item xs={4} sx={{ display: 'flex' }}>
-
+                  <Grid
+                    item
+                    xs={9}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Grid
+                      xs={10}
+                      sx={{ display: 'flex', flexDirection: 'column' }}
+                    >
+                      <DisplayContainer />
+                      <CodePreview code={code} treeData={explorer} />
+                    </Grid>
                     <StaticTagsContainer />
-                    
                   </Grid>
-
-                  <Grid item xs={4} sx={{ height: '100vh' }}>
-                    <TabsComponent
-                      code={code}
-                      setCode={setCode}
-                      explorer={explorerData}
-                    />
-                    {/* <DisplayContainer /> */}
-
-                  </Grid>
-
                 </Grid>
-
               </Box>
             </AppContext.Provider>
           </CodeSnippetContext.Provider>
         </CodeContext.Provider>
-      
       </Box>
     </Box>
   );
