@@ -7,7 +7,58 @@ const explorer = {
       id: '2',
       name: 'node_modules',
       isFolder: true,
-      items: [],
+      items: [
+        {
+        id:'23',
+        name: 'yaml',
+        isFolder: true,
+        items: [
+          {
+            id: '124314',
+            name: 'These files will be available for view in your Export!',
+            isFolder: false,
+            items: []
+          }
+        ]
+      },
+      {
+        id: '24',
+        name: 'yocto-queue',
+        isFolder: true,
+        items: [
+          {
+          id:'111',
+          name: 'index.d.ts',
+          isFolder: false,
+          items:[]
+        },
+      {
+        id:'112',
+        name: 'index.js',
+        isFolder: false,
+        items:[]
+      },
+      {
+        id:'113',
+        name: 'license',
+        isFolder: false,
+        items:[]
+      },
+        {
+        id:'114',
+        name: 'package.json',
+        isFolder: false,
+        items:[]
+      },
+      {
+        id:'115',
+        name: 'readme.md',
+        isFolder: false,
+        items:[]
+      }
+    ]
+      }
+    ],
     },
     {
       id: '3',

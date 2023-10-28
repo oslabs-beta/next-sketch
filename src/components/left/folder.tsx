@@ -46,7 +46,6 @@ function Folder({
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
-  let example = [];
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);
@@ -132,7 +131,6 @@ function Folder({
     setPostData(false);
     setCodeSnippet(explorer.preview);
   };
-  let AllFilesInApp = appFolder.items[2].items[0];
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
@@ -291,7 +289,7 @@ function Folder({
             {folderIcon} {folderLogo} {explorer.name}
           </span>
           <div className='buttons'>
-            {explorer.name !== 'app' && explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' ? (
+            {explorer.name !== 'app' && explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' && explorer.name !== 'yaml' && explorer.name !== 'yocto-queue' ? (
               <button
                 onClick={(e) => {
                   handleNewFolder(e, true);
@@ -303,7 +301,7 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' ? (
+            {explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch'&& explorer.name !== 'yaml' && explorer.name !== 'yocto-queue' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
                 <FontAwesomeIcon icon={faFileCirclePlus} />
               </button>
