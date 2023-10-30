@@ -1,33 +1,251 @@
-import React, { useState } from "react"
+import React, { useContext, useState, useEffect } from 'react';
+import { Box, Button, Typography, Modal, Checkbox } from '@mui/material';
+import { CodeSnippetContext, CodeContext } from '../../App';
+import Code from '@mui/icons-material/Code';
+import { modalLayout } from '../../utils/interfaces';
+import Prism from 'prismjs';
+//import custom hook, from the reducer
+// import { useCode } from '../../utils/reducer/CodeContext'; /*================MODIFIED CODE====================*/
 
-const CustomEndpoint = ( {handleCreateCustomEndpoint, explorer}: any ) => {
-    
-    const handleCreateCustomFolder =(e?: React.KeyboardEvent<HTMLInputElement>) => {
-        e?.stopPropagation()
-        if (e?.key === 'Enter' && e?.currentTarget.value) {
-            e?.preventDefault()
+//----------------
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  height: 'fit-content',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+//MUI styling fior modal
+//-----------------
 
-            const result = handleCreateCustomEndpoint(explorer.id, e.currentTarget.value)
-            // console.log('result',result);
-        }
+const CustomEndpoint = ({
+  handleCreateCustomEndpoint,
+  handleInputBoilerFiles,
+  explorer,
+  setFolder,
+  folder,
+  setFile,
+  file,
+  setPostData,
+  postData,
+}: any) => {
+  // const [folder, setFolder] = useState('');
+  // const [file, setFile] = useState('');
+  const [open, setOpen] = useState(false);
+  const [componentName, setComponentName] = useContext(CodeContext);
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  //deconstructing the reducer elements
+  // const { componentName, updateComponent } = useCode();
+
+  const handleClose = () => {
+    setOpen(false);
+    setFolder('');
+    setSelectedItems({
+      default: false,
+      error: false,
+      layout: false,
+      loading: false,
+      notFound: false,
+      route: false,
+      template: false,
+      page: true,
+    });
+  };
+
+  const [selectedItems, setSelectedItems] = useState<modalLayout>({
+    default: false,
+    error: false,
+    layout: false,
+    loading: false,
+    notFound: false,
+    route: false,
+    template: false,
+    page: true,
+  });
+
+  function handleChange(e?: any) {
+    setFolder(e.target.value);
+  }
+
+  useEffect(() => {
+    if (postData === true) {
+      console.log('posting data');
+      handlePostingFiles(folder, componentName, codeSnippet);
     }
-    
-    return (
-        <div>
-            <form >
-            <input 
-            type="text"
-            placeholder="create an endpoint" 
-            autoFocus
-            onKeyDown={handleCreateCustomFolder}
-            />
-            <button type = "submit" onClick={() => handleCreateCustomFolder}>Submit</button>
-            
-            </form>
-        </div>
-    );
-}
+    Prism.highlightAll();
+  }, [codeSnippet]);
 
+  async function handleModalChange(e?: any) {
+    const name = e.target.name.slice(0, -4);
+
+    setSelectedItems({
+      ...selectedItems,
+      [name]: true,
+    });
+
+    const fileName = e.target.name;
+    const folderName = folder;
+    setFile(fileName);
+
+    setComponentName(fileName);
+    setPostData(true);
+  }
+
+  const handlePostingFiles = async (
+    folderName: string,
+    fileName: string,
+    code: string
+  ) => {
+    handleInputBoilerFiles(explorer.id, file, folder, codeSnippet);
+    const body = {
+      fileName: fileName,
+      folderName: folderName,
+      codeSnippet: code,
+    };
+    await fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+  };
+
+  const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
+
+    const body = { name: folder };
+
+    await fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (folder) {
+      handleCreateCustomEndpoint(explorer.id, folder);
+      setOpen(true);
+    }
+  };
+  return (
+    <div className='cursor'>
+      <form>
+        <div className='input-container'>
+          <input
+            type='text'
+            autoFocus
+            placeholder='New Endpoint in src/app'
+            onChange={handleChange}
+            value={folder}
+            id='searchInput'
+          />
+          <div className='text-cursor'></div>
+        </div>
+
+        <button type='submit' onClick={handleCreateCustomFolder}>
+          Submit
+        </button>
+      </form>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='modal-title'
+        aria-describedby='modal-description'
+      >
+        <Box sx={style}>
+          <Typography
+            id='modal-title'
+            variant='h6'
+            component='h2'
+            style={{ marginBottom: 20, fontSize: 30 }}
+          >
+            Choose Your Template Files
+          </Typography>
+
+          <div>
+            <Checkbox name='page.tsx' checked={selectedItems.page} />
+            page.tsx
+          </div>
+
+          <div className='option'>
+            <Checkbox
+              name='default.tsx'
+              checked={selectedItems.default}
+              onChange={handleModalChange}
+            />
+            default.tsx
+          </div>
+
+          <div>
+            <Checkbox
+              name='error.tsx'
+              checked={selectedItems.error}
+              onChange={handleModalChange}
+            />
+            error.tsx
+          </div>
+
+          <div>
+            <Checkbox
+              name='layout.tsx'
+              checked={selectedItems.layout}
+              onChange={handleModalChange}
+            />
+            layout.tsx
+          </div>
+
+          <div>
+            <Checkbox
+              name='loading.tsx'
+              checked={selectedItems.loading}
+              onChange={handleModalChange}
+            />
+            loading.tsx
+          </div>
+
+          <div>
+            <Checkbox
+              name='notFound.tsx'
+              checked={selectedItems.notFound}
+              onChange={handleModalChange}
+            />
+            notFound.tsx
+          </div>
+
+          <div>
+            <Checkbox
+              name='route.tsx'
+              checked={selectedItems.route}
+              onChange={handleModalChange}
+            />
+            route.tsx
+          </div>
+
+          <div>
+            <Checkbox
+              name='template.tsx'
+              checked={selectedItems.template}
+              onChange={handleModalChange}
+            />
+            template.tsx
+          </div>
+
+          <Button onClick={handleClose} sx={{ mt: 3 }}>
+            Submit
+          </Button>
+        </Box>
+      </Modal>
+    </div>
+  );
+};
 
 export default CustomEndpoint;
-
