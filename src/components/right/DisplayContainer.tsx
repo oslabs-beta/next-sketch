@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
   DndContext,
   DragEndEvent,
@@ -107,6 +107,9 @@ const DisplayContainer = () => {
       const activeIndex = tags.findIndex((tag) => tag.id === id);
       const overIndex = tags.findIndex((tag) => tag.id === overId);
 
+      // console.log('activeIndex', activeIndex);
+      // console.log('overIndex', overIndex);
+
       let newIndex = overIndex;
       const isBelowLastItem =
         over &&
@@ -154,9 +157,11 @@ const DisplayContainer = () => {
         // borderTopRightRadius: '20px',
         // borderBottomLeftRadius: '20px',
         width: '100%',
-        // overflowY: 'auto',
-        bgcolor: 'red',
-        height: '344px',
+        height: '35vh',
+        border: 2,
+        borderColor: 'orange',
+        paddingLeft: 2,
+        paddingRight: 2,
       }}
     >
       <DndContext
@@ -171,7 +176,22 @@ const DisplayContainer = () => {
           items={getTagIds()}
           strategy={verticalListSortingStrategy}
         >
-          <Box sx={{}}>
+          <Typography variant='h6'>My Page</Typography>
+          <Box
+            sx={{
+              border: 2,
+              borderColor: 'magenta',
+              height: '28vh',
+              overflow: 'auto',
+              scrollbarWidth: 'none', // Hide the scrollbar for firefox
+              '&::-webkit-scrollbar': {
+                display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+              },
+              '&-ms-overflow-style:': {
+                display: 'none', // Hide the scrollbar for IE
+              },
+            }}
+          >
             {getTags().map((tag) => {
               if (tag.container) {
                 return (

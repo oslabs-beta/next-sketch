@@ -2,7 +2,7 @@ import React, { MouseEvent, useContext } from 'react';
 import { Button } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Context } from './CreateComponentBtn';
-import { CodeContext } from '../../App';
+import { CodeContext } from '../../App.1';
 
 interface DeleteBtnProps {
   id: number;

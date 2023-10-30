@@ -5,8 +5,7 @@ import React, {
   useEffect,
   createContext,
 } from 'react';
-import { Box, Grid, Typography, AppBar, Toolbar} from '@mui/material';
-
+import { Box, Grid, Typography, AppBar, Toolbar, Button } from '@mui/material';
 import StaticTagsContainer from './components/middle/StaticTagsContainer';
 import './App.css';
 import CreateComponentBtn from './components/middle/CreateComponentBtn';
@@ -22,6 +21,7 @@ import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
 import AppContext from './context/AppContext';
 import Tree from './components/right/Tree';
+import CodePreview from './components/right/CodePreview';
 
 interface ComponentNameType {
   componentName: string;
@@ -41,11 +41,7 @@ export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
   undefined
 );
 
-
-const App = () => {
- 
-
-
+export const App = () => {
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
   const [explorerData, setExplorerData] = useState(explorer);
@@ -80,7 +76,6 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
-
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -121,104 +116,143 @@ const App = () => {
   };
 
   return (
-    <Box>
-      
-   <AppBar position='static' > 
-      <Typography
-        variant='h1'
-        fontSize={'3em'}
-        fontFamily={'Titillium Web'}
-        textAlign={'center'}
-        marginBottom={'0.5em'}
-        color={'#061E47'}
-        sx={{
-          textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
-        }}
-      >
-        NextSketch
-      </Typography>
-
-      <Typography>
-      <ExportButton />
-      </Typography>
-</AppBar>
+    <Box sx={{ border: 2, borderColor: 'brown' }}>
+      <AppBar position='static' sx={{ bgcolor: 'skyblue' }}>
+        <Toolbar
+          sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <Typography
+            variant='h3'
+            sx={{
+              fontFamily: 'Titillium Web',
+              // marginBottom: '0.5em',
+              color: '#061E47',
+              textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
+            }}
+          >
+            NextSketch
+          </Typography>
+          <ExportButton />
+        </Toolbar>
+      </AppBar>
 
       <Box
         sx={{
-          margin: 2,
-          padding: 2,
+          marginTop: 4,
+          marginLeft: 1,
+          marginRight: 1,
+          // margin: 1,
+          padding: 1,
           borderRadius: 3,
           bgcolor: 'rgba(255, 255, 255, 0.7)',
           boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
+          border: 2,
+          borderColor: 'red',
         }}
-      >   
+      >
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider value={{ tags, setTags }}>
-              <Box sx={{ flexGrow: 1 }}>
-                
+              <Grid
+                container
+                sx={{
+                  height: '79vh',
+                  border: 2,
+                  borderColor: 'blue',
+                }}
+              >
                 <Grid
-                  container
-                  justifyContent={'space-between'}
-                  sx={{ height: '100vh', overflowY: 'scroll' }}
+                  item
+                  sm={4}
+                  md={3.5}
+                  lg={3}
+                  xl={2.5}
+                  sx={{
+                    maxHeight: '79vh',
+                    border: 2,
+                    borderColor: 'pink',
+                    paddingLeft: 1,
+                    overflow: 'auto',
+                    scrollbarWidth: 'none',
+                    '&::-webkit-scrollbar': {
+                      display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+                    },
+                    '&-ms-overflow-style:': {
+                      display: 'none', // Hide the scrollbar for IE
+                    },
+                  }}
                 >
-                  <Grid item xs={3.5}>
-                    <CustomEndpoint
-                      handleCreateCustomEndpoint={handleCreateCustomEndpoint}
-                      handleInputBoilerFiles={handleInputBoilerFiles}
-                      explorer={explorerData}
-                      code={code}
-                      open={open}
-                      setOpen={setOpen}
-                      setFolder={setFolder}
-                      folder={folder}
-                      setFile={setFile}
-                      file={file}
-                      setPostData={setPostData}
-                      postData={postData}
-                    />
-                    <Folder
-                      handleInsertNode={handleInsertNode}
-                      handleDeleteNode={handleDeleteNode}
-                      handleInputBoilerFiles={handleInputBoilerFiles}
-                      explorer={explorerData}
-                      code={code}
-                      setCode={setCode}
-                      folderExpanded={folderExpanded}
-                      setFolderExpanded={setFolderExpanded}
-                      setFolder={setFolder}
-                      folder={folder}
-                      setFile={setFile}
-                      file={file}
-                      setPostData={setPostData}
-                      postData={postData}
-                    />
-
-                  </Grid>
-
-                  <Grid item xs={4} sx={{ display: 'flex' }}>
-                
-                    <StaticTagsContainer />
-                    
-                  </Grid>
-
-                  <Grid item xs={4} sx={{ height: '100vh' }}>
-                    <TabsComponent
-                      code={code}
-                      setCode={setCode}
-                      explorer={explorerData}
-                    />
-                    {/* <DisplayContainer /> */}
-
-                  </Grid>
-
+                  <CustomEndpoint
+                    handleCreateCustomEndpoint={handleCreateCustomEndpoint}
+                    handleInputBoilerFiles={handleInputBoilerFiles}
+                    explorer={explorerData}
+                    code={code}
+                    open={open}
+                    setOpen={setOpen}
+                    setFolder={setFolder}
+                    folder={folder}
+                    setFile={setFile}
+                    file={file}
+                    setPostData={setPostData}
+                    postData={postData}
+                  />
+                  <Folder
+                    handleInsertNode={handleInsertNode}
+                    handleDeleteNode={handleDeleteNode}
+                    handleInputBoilerFiles={handleInputBoilerFiles}
+                    explorer={explorerData}
+                    code={code}
+                    setCode={setCode}
+                    folderExpanded={folderExpanded}
+                    setFolderExpanded={setFolderExpanded}
+                    setFolder={setFolder}
+                    folder={folder}
+                    setFile={setFile}
+                    file={file}
+                    setPostData={setPostData}
+                    postData={postData}
+                  />
                 </Grid>
 
-              </Box>
+                <Grid
+                  item
+                  sm={5}
+                  md={6}
+                  lg={7}
+                  xl={8}
+                  sx={{
+                    justifyContent: 'space-between',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    border: 2,
+                    borderColor: 'cyan',
+                  }}
+                >
+                  <DisplayContainer />
+                  <CodePreview code={code} treeData={explorer} />
+                </Grid>
+
+                <Grid
+                  item
+                  sm={3}
+                  md={2.5}
+                  lg={2}
+                  xl={1.5}
+                  sx={{
+                    border: 2,
+                    borderColor: 'black',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <StaticTagsContainer />
+                  <Button>tree</Button>
+                </Grid>
+              </Grid>
             </AppContext.Provider>
           </CodeSnippetContext.Provider>
         </CodeContext.Provider>
-      
       </Box>
     </Box>
   );

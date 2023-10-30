@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { Tag } from '../../utils/interfaces';
 
 /**
- * @description - creates a draggable item 
+ * @description - creates a draggable item
  * @parent - StaticTagsContainer.tsx
  */
 
@@ -14,11 +14,15 @@ interface DraggableItemProps {
 }
 
 export const DraggableItem = ({ id, children }: DraggableItemProps) => {
-
   const { name, container } = children;
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
-    data: { name: name, container: container, type: 'type1' },
+    data: {
+      name: name,
+      container: container,
+      type: 'type1',
+      isDraggableItem: true,
+    },
   });
 
   const style = {
@@ -31,6 +35,36 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
       style={style}
       {...attributes}
       {...listeners}
+      variant='contained'
+      sx={{
+        textAlign: 'center',
+        bgcolor: '#FEFCFB',
+        color: '#0A0908',
+        border: 1,
+        fontSize: 12,
+        margin: 0.5,
+        borderRadius: '7px',
+        paddingLeft: 3.5,
+        paddingRight: 3.5,
+        width: 'fit-content',
+        minWidth: 80,
+        height: 35,
+        boxShadow: 8,
+        ':hover': {
+          bgcolor: 'rgba(191, 196, 248, 0.8)',
+          color: '#FEFCFB',
+          borderColor: 'black',
+        },
+      }}
+    >
+      {children.name}
+    </Button>
+  );
+};
+
+export const DraggableItemOverlay = ({ children }: DraggableItemProps) => {
+  return (
+    <Button
       variant='contained'
       sx={{
         bgcolor: '#FEFCFB',

@@ -1,5 +1,12 @@
-import { useContext } from 'react';
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { useContext, useState } from 'react';
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  UniqueIdentifier,
+} from '@dnd-kit/core';
 import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
@@ -9,7 +16,7 @@ import AppContext from '../../context/AppContext';
 /**
  * @description - container for draggable HTML tag elements
  * @parent - MiddleContainer.tsx (make this)
- * @children - DraggableItem.tsx 
+ * @children - DraggableItem.tsx
  */
 
 const StaticTagsContainer = (): JSX.Element => {
@@ -44,13 +51,53 @@ const StaticTagsContainer = (): JSX.Element => {
       name: 'link',
       container: false,
     },
+    {
+      id: generateId(),
+      name: 'input',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'label',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'h1',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'h2',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'span',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'ordered list',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'unordered list',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'list item',
+      container: false,
+    },
   ];
 
   const { tags, setTags } = useContext(AppContext);
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
-  // console.log('initial state tags', tags);
-
-  const addTagToDisplay = (event: DragEndEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {
+    // console.log('drag end', event);
     const { active } = event;
     const newTag: Tag = {
       id: active.id,
@@ -58,59 +105,44 @@ const StaticTagsContainer = (): JSX.Element => {
       container: active.data.current?.container,
     };
     setTags([...tags, newTag]);
+    setActiveId(null);
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        height: '200px',
-        boxShadow: 20,
-        borderTopLeftRadius: '20px',
-        borderTopRightRadius: '20px',
-        borderBottomRightRadius: '20px',
-        borderBottomLeftRadius: '20px',
-      }}
-    >
-      <DndContext onDragEnd={addTagToDisplay}>
+    <DndContext onDragEnd={handleDragEnd}>
+      <Box
+        sx={{
+          border: 2,
+          borderColor: 'gold',
+          flexGrow: 1,
+        }}
+      >
+        <Typography variant='h6' sx={{ textAlign: 'center', }}>
+          Add Elements
+        </Typography>
         <Box
           sx={{
-            width: '100%',
-            height: '100%',
-            borderTopLeftRadius: '20px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignContent: 'flex-start',
+            justifyContent: 'center',
+            border: 2,
+            borderColor: 'pink',
+            minHeight: '68vh',
+            maxHeight: '70vh',
           }}
         >
-          <Box
-            sx={{
-              bgcolor: 'rgba(191, 196, 248, 0.8)',
-              color: 'black',
-              textAlign: 'center',
-            }}
-          >
-            <Typography variant='h6'>HTML Tags</Typography>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignContent: 'flex-start',
-              justifyContent: 'center',
-              marginTop: 1.2,
-            }}
-          >
-            {staticTags.map((staticTag) => (
-              <DraggableItem
-                key={`${staticTag.name}-${staticTag.id}`}
-                id={staticTag.id}
-              >
-                {staticTag}
-              </DraggableItem>
-            ))}
-          </Box>
+          {staticTags.map((staticTag) => (
+            <DraggableItem
+              key={`${staticTag.name}-${staticTag.id}`}
+              id={staticTag.id}
+            >
+              {staticTag}
+            </DraggableItem>
+          ))}
         </Box>
-      </DndContext>
-    </Box>
+      </Box>
+    </DndContext>
   );
 };
 

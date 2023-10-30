@@ -1,7 +1,7 @@
-import React, { useEffect, useContext } from "react";
-import { Button } from "@mui/material";
-import CodeIcon from "@mui/icons-material/Code";
-import { CodeContext } from "../../App";
+import React, { useEffect, useContext } from 'react';
+import { Button } from '@mui/material';
+import CodeIcon from '@mui/icons-material/Code';
+import { CodeContext } from '../../App.1';
 
 interface DisplayCodeProps {
   component: string;
@@ -22,8 +22,8 @@ const DisplayCode = ({ component }: DisplayCodeProps) => {
   return (
     <>
       <Button
-        color="primary"
-        size="small"
+        color='primary'
+        size='small'
         sx={{ minWidth: 24, minHeight: 24, padding: 0 }}
         onClick={showClick}
       >
