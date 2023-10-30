@@ -5,7 +5,8 @@ import React, {
   useEffect,
   createContext,
 } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, AppBar, Toolbar} from '@mui/material';
+
 import StaticTagsContainer from './components/middle/StaticTagsContainer';
 import './App.css';
 import CreateComponentBtn from './components/middle/CreateComponentBtn';
@@ -21,6 +22,7 @@ import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
 import AppContext from './context/AppContext';
 import CodePreview from './components/right/CodePreview';
+import Tree from './components/right/Tree';
 
 interface ComponentNameType {
   componentName: string;
@@ -40,10 +42,13 @@ export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
   undefined
 );
 
+
 const App = () => {
+ 
+
+
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
-  const [appFolder, setappFolder] = useState(explorer);
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState('Page');
   const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
@@ -74,7 +79,7 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
-    setappFolder(finalTree);
+
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -94,7 +99,6 @@ const App = () => {
       isFolder
     );
     setExplorerData(finalTree);
-    setappFolder(finalTree);
   };
 
   const handleInputBoilerFiles = (
@@ -117,8 +121,8 @@ const App = () => {
 
   return (
     <Box>
-      <ExportButton />
-
+      
+   <AppBar position='static' > 
       <Typography
         variant='h1'
         fontSize={'3em'}
@@ -133,6 +137,11 @@ const App = () => {
         NextSketch
       </Typography>
 
+      <Typography>
+      <ExportButton />
+      </Typography>
+</AppBar>
+
       <Box
         sx={{
           margin: 2,
@@ -141,15 +150,16 @@ const App = () => {
           bgcolor: 'rgba(255, 255, 255, 0.7)',
           boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
         }}
-      >
+      >   
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider value={{ tags, setTags }}>
               <Box sx={{ flexGrow: 1 }}>
+                
                 <Grid
                   container
                   justifyContent={'space-between'}
-                  sx={{ height: '85vh' }}
+                  sx={{ height: '100vh', overflowY: 'scroll' }}
                 >
                   <Grid item xs={3.5}>
                     <CustomEndpoint
@@ -169,7 +179,6 @@ const App = () => {
                       handleInsertNode={handleInsertNode}
                       handleDeleteNode={handleDeleteNode}
                       handleInputBoilerFiles={handleInputBoilerFiles}
-                      appFolder={appFolder}
                       explorer={explorerData}
                       folderExpanded={folderExpanded}
                       setFolderExpanded={setFolderExpanded}
@@ -180,10 +189,12 @@ const App = () => {
                       setPostData={setPostData}
                       postData={postData}
                     />
+
                   </Grid>
 
                   <Grid item xs={4} sx={{ display: 'flex' }}>
                     <StaticTagsContainer />
+                    
                   </Grid>
 
                   <Grid item xs={4} sx={{ height: '500px' }}>
@@ -193,7 +204,9 @@ const App = () => {
                     <DisplayContainer />
                     <CodePreview treeData={explorerData} />
                   </Grid>
+
                 </Grid>
+
               </Box>
             </AppContext.Provider>
           </CodeSnippetContext.Provider>

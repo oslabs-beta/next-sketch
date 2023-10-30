@@ -5,8 +5,7 @@ export interface Tag  {
     name: string;
     container: boolean;
     parent?: UniqueIdentifier | undefined | boolean;
-    openTag: string,
-    closeTag?: string
+    attribute?: string
 }
 
 export interface Elements {

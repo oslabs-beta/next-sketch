@@ -119,7 +119,7 @@ function Folder({
     setPostData(false);
     setCodeSnippet(explorer.preview);
   };
-  let AllFilesInApp = appFolder.items[2].items[0];
+  // let AllFilesInApp = appFolder.items[2].items[0];
 
   // console.log(AllFilesInApp.items);
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {

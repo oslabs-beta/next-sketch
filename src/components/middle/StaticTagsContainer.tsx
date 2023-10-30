@@ -18,41 +18,33 @@ const StaticTagsContainer = (): JSX.Element => {
       id: generateId(),
       name: 'div',
       container: true,
-      openTag: '<div>',
-      closeTag: '</div>',
     },
     {
       id: generateId(),
       name: 'img',
       container: false,
-      openTag: `<img src=' '>`,
+      attribute: `src=' '`,
     },
     {
       id: generateId(),
       name: 'p',
       container: false,
-      openTag: '<p>',
-      closeTag: '</p>',
     },
     {
       id: generateId(),
       name: 'form',
       container: true,
-      openTag: '<form>',
-      closeTag: '</form>',
     },
     {
       id: generateId(),
       name: 'button',
       container: false,
-      openTag: '<button>',
-      closeTag: '</button>',
     },
     {
       id: generateId(),
       name: 'link',
       container: false,
-      openTag: `<link href=' ''>`,
+      attribute: `href=' '`,
     },
   ];
 
@@ -67,8 +59,7 @@ const StaticTagsContainer = (): JSX.Element => {
       id: active.id,
       name: active.data.current?.name,
       container: active.data.current?.container,
-      openTag: active.data.current?.openTag,
-      closeTag: active.data.current?.closeTag,
+      attribute: active.data.current?.attribute,
     };
     setTags([...tags, newTag]);
   };
