@@ -24,6 +24,8 @@ import Tree from './components/right/Tree';
 import CodePreview from './components/right/CodePreview';
 import { DndContext } from '@dnd-kit/core';
 
+// test
+
 interface ComponentNameType {
   componentName: string;
   setComponentName: Dispatch<SetStateAction<string>>;
@@ -42,13 +44,12 @@ export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
   undefined
 );
 
-export const App = () => {
+
+const App = () => {
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState('Page');
-  //this code is for the component button might delete
-  const [code, setCode] = useState<string>('Hello'); // Use state to store the code
   const [codeSnippet, setCodeSnippet] = useState<CodeSnippetType | undefined>(
     undefined
   );
@@ -137,7 +138,7 @@ export const App = () => {
 
       <Box
         sx={{
-          marginTop: 4,
+          marginTop: 6,
           marginLeft: 1,
           marginRight: 1,
           // margin: 1,
@@ -149,6 +150,7 @@ export const App = () => {
           borderColor: 'red',
         }}
       >
+
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider value={{ tags, setTags }}>
@@ -185,7 +187,6 @@ export const App = () => {
                     handleCreateCustomEndpoint={handleCreateCustomEndpoint}
                     handleInputBoilerFiles={handleInputBoilerFiles}
                     explorer={explorerData}
-                    code={code}
                     open={open}
                     setOpen={setOpen}
                     setFolder={setFolder}
@@ -200,8 +201,6 @@ export const App = () => {
                     handleDeleteNode={handleDeleteNode}
                     handleInputBoilerFiles={handleInputBoilerFiles}
                     explorer={explorerData}
-                    code={code}
-                    setCode={setCode}
                     folderExpanded={folderExpanded}
                     setFolderExpanded={setFolderExpanded}
                     setFolder={setFolder}
@@ -262,7 +261,7 @@ export const App = () => {
                     >
                       <DisplayContainer />
                     </Box>
-                    <CodePreview code={code} treeData={explorer} />
+                    <CodePreview treeData={explorer} />
                   </Grid>
                 </DndContext>
               </Grid>

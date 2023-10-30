@@ -21,6 +21,7 @@ const StaticTagsContainer = (): JSX.Element => {
       id: generateId(),
       name: 'img',
       container: false,
+      attribute: `src=' '`,
     },
     {
       id: generateId(),
@@ -41,6 +42,7 @@ const StaticTagsContainer = (): JSX.Element => {
       id: generateId(),
       name: 'link',
       container: false,
+      attribute: `href=' '`,
     },
     {
       id: generateId(),

@@ -5,6 +5,7 @@ export interface Tag  {
     name: string;
     container: boolean;
     parent?: UniqueIdentifier | undefined | boolean;
+    attribute?: string
 }
 
 export interface Elements {
@@ -20,5 +21,8 @@ export interface modalLayout {
     route: boolean;
     template: boolean;
     page: boolean
-  }
-  
+}
+
+export interface RenderCodeProps {
+    elements: Tag[];
+}
