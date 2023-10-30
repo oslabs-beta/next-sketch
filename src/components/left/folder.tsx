@@ -46,7 +46,6 @@ function Folder({
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
-  let example = [];
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const [open, setOpen] = useState(false);

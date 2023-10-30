@@ -1,15 +1,42 @@
 import React, { useRef, useEffect, useState } from "react";
 import { select, tree, hierarchy, linkVertical, linkHorizontal } from 'd3';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+
+import Box from '@mui/material/Box';
+
 
 const Tree = ({ explorer }) => {
   const svgRef = useRef(null);
   const [width, setWidth] = useState('100%');
   const [height, setHeight] = useState('100%');
+  const [open, setOpen] = useState(false);
+ 
+  const folderNodeClass = "folder-node";
+const nonFolderNodeClass = "non-folder-node";
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 1000,
+    height: 'fit-content',
+    bgcolor: '#42464C',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+ 
 
   const createTree = (data) => {
+    console.log('d', data)
     if (data.isFolder) {
       return {
         name: data.name,
+        isFolder: data.isFolder,
         children: data.items.map((item) => createTree(item)),
       };
     } else {
@@ -81,25 +108,26 @@ const Tree = ({ explorer }) => {
       .attr('opacity', 1)
       .attr('d', pathGenerator);
 
-    const nodes = g.selectAll("g")
-      .data(treeData.descendants())
-      .enter()
-      .append("g")
-      .attr("transform", (d) => `translate(${d.y + 40},${d.x})`);
+      const nodes = g.selectAll("g")
+  .data(treeData.descendants())
+  .enter()
+  .append("g")
+  .attr("transform", (d) => `translate(${d.y + 40},${d.x})`);
 
-    nodes.append("circle")
-      .attr("r", 5)
-      .style('fill', 'white')
+nodes.append("circle")
+  .attr("r", 5)
+  .style('fill', (d) => (d.data.isFolder ? 'yellow' : 'white')); // Change node fill color based on isFolder property
 
-    nodes.append("text")
-      .text((d) => d.data.name)
-      .attr("dy", 20)
-      .attr('dx', -20)
-      .attr("text-anchor", "middle")
-      .attr("fill", '#bdbdbd')
+nodes.append("text")
+  .text((d) => d.data.name)
+  .attr("dy", 20)
+  .attr('dx', -20)
+  .attr("text-anchor", "middle")
+  .attr("fill", (d) => (d.data.isFolder ? 'yellow' : '#bdbdbd'))
+  .style("font-size", "1.00rem");
 
-      .style("font-size", "1.00rem");
-  }, [explorer, width, height]);
+
+  }, [explorer, width, height, open]);
 
   const treeStyles = {
     height: '800px',
@@ -107,8 +135,36 @@ const Tree = ({ explorer }) => {
  };
 
   return (
-    <div >
+    <div>
+    <button onClick={() => setOpen(true)}>
+      Tree
+      </button>
+
+    <Modal
+          open={open}
+          aria-labelledby='modal-title'
+          aria-describedby='modal-description'
+        >
+           <Box sx={style}>
+           <Typography
+              id='modal-title'
+              variant='h6' 
+              component='h2'
+              style={{ fontSize: 30 }}
+            >
+              src/app
+            </Typography>
+
+      
       <svg ref={svgRef} style={treeStyles}></svg>
+      <Button onClick={() => setOpen(false)} sx={{ fontSize: 20 }}>
+              Close
+            </Button>
+      </Box>
+
+      
+      </Modal>
+      
     </div>
   );
 };
