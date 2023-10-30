@@ -1,17 +1,8 @@
-import { useContext, useState } from 'react';
-import {
-  DndContext,
-  DragEndEvent,
-  DragOverEvent,
-  DragOverlay,
-  DragStartEvent,
-  UniqueIdentifier,
-} from '@dnd-kit/core';
 import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
 import { generateId } from '../../utils/generateId';
-import AppContext from '../../context/AppContext';
+import DragOverlayWrapper from './DragOverlayWrapper';
 
 /**
  * @description - container for draggable HTML tag elements
@@ -93,56 +84,41 @@ const StaticTagsContainer = (): JSX.Element => {
     },
   ];
 
-  const { tags, setTags } = useContext(AppContext);
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    // console.log('drag end', event);
-    const { active } = event;
-    const newTag: Tag = {
-      id: active.id,
-      name: active.data.current?.name,
-      container: active.data.current?.container,
-    };
-    setTags([...tags, newTag]);
-    setActiveId(null);
-  };
-
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <Box
+      sx={{
+        border: 2,
+        borderColor: 'gold',
+        // flexGrow: 1,
+        height: '35vh',
+      }}
+    >
+      <Typography variant='h6' sx={{ textAlign: 'center' }}>
+        Add Elements
+      </Typography>
       <Box
         sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignContent: 'flex-start',
+          justifyContent: 'center',
           border: 2,
-          borderColor: 'gold',
-          flexGrow: 1,
+          borderColor: 'pink',
+          // minHeight: '68vh',
+          // maxHeight: '70vh',
         }}
       >
-        <Typography variant='h6' sx={{ textAlign: 'center', }}>
-          Add Elements
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignContent: 'flex-start',
-            justifyContent: 'center',
-            border: 2,
-            borderColor: 'pink',
-            minHeight: '68vh',
-            maxHeight: '70vh',
-          }}
-        >
-          {staticTags.map((staticTag) => (
-            <DraggableItem
-              key={`${staticTag.name}-${staticTag.id}`}
-              id={staticTag.id}
-            >
-              {staticTag}
-            </DraggableItem>
-          ))}
-        </Box>
+        {staticTags.map((staticTag) => (
+          <DraggableItem
+            key={`${staticTag.name}-${staticTag.id}`}
+            id={staticTag.id}
+          >
+            {staticTag}
+          </DraggableItem>
+        ))}
       </Box>
-    </DndContext>
+      <DragOverlayWrapper />
+    </Box>
   );
 };
 

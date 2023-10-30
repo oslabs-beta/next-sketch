@@ -22,6 +22,7 @@ import ExportButton from './components/right/ExportButton';
 import AppContext from './context/AppContext';
 import Tree from './components/right/Tree';
 import CodePreview from './components/right/CodePreview';
+import { DndContext } from '@dnd-kit/core';
 
 interface ComponentNameType {
   componentName: string;
@@ -118,9 +119,7 @@ export const App = () => {
   return (
     <Box sx={{ border: 2, borderColor: 'brown' }}>
       <AppBar position='static' sx={{ bgcolor: 'skyblue' }}>
-        <Toolbar
-          sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-        >
+        <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography
             variant='h3'
             sx={{
@@ -163,10 +162,10 @@ export const App = () => {
               >
                 <Grid
                   item
-                  sm={4}
-                  md={3.5}
-                  lg={3}
-                  xl={2.5}
+                  sm={4.5}
+                  md={4}
+                  lg={3.5}
+                  xl={3}
                   sx={{
                     maxHeight: '79vh',
                     border: 2,
@@ -214,41 +213,58 @@ export const App = () => {
                   />
                 </Grid>
 
-                <Grid
-                  item
-                  sm={5}
-                  md={6}
-                  lg={7}
-                  xl={8}
-                  sx={{
-                    justifyContent: 'space-between',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    border: 2,
-                    borderColor: 'cyan',
-                  }}
-                >
-                  <DisplayContainer />
-                  <CodePreview code={code} treeData={explorer} />
-                </Grid>
-
-                <Grid
-                  item
-                  sm={3}
-                  md={2.5}
-                  lg={2}
-                  xl={1.5}
-                  sx={{
-                    border: 2,
-                    borderColor: 'black',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <StaticTagsContainer />
-                  <Tree explorer={explorerData}/>
-                </Grid>
+                <DndContext>
+                  <Grid
+                    item
+                    sm={3.75}
+                    md={4}
+                    lg={4.25}
+                    xl={4.5}
+                    sx={{
+                      border: 2,
+                      borderColor: 'black',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <StaticTagsContainer />
+                    <Box
+                    sx={{ border: 2, borderColor: 'lawngreen', flexGrow: 1,}}
+                    >
+                      HELLO
+                    </Box>
+                  </Grid>
+                  
+                  <Grid
+                    item
+                    sm={3.75}
+                    md={4}
+                    lg={4.25}
+                    xl={4.5}
+                    sx={{
+                      justifyContent: 'space-between',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      border: 2,
+                      borderColor: 'cyan',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: '100%',
+                        height: '35vh',
+                        border: 2,
+                        borderColor: 'orange',
+                        paddingLeft: 2,
+                        paddingRight: 2,
+                      }}
+                    >
+                      <DisplayContainer />
+                    </Box>
+                    <CodePreview code={code} treeData={explorer} />
+                  </Grid>
+                </DndContext>
               </Grid>
             </AppContext.Provider>
           </CodeSnippetContext.Provider>
