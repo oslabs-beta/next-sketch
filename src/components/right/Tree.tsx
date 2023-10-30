@@ -13,7 +13,9 @@ const Tree = ({ explorer }) => {
   const [height, setHeight] = useState('100%');
   const [open, setOpen] = useState(false);
  
-  
+  const folderNodeClass = "folder-node";
+const nonFolderNodeClass = "non-folder-node";
+
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -30,9 +32,11 @@ const Tree = ({ explorer }) => {
  
 
   const createTree = (data) => {
+    console.log('d', data)
     if (data.isFolder) {
       return {
         name: data.name,
+        isFolder: data.isFolder,
         children: data.items.map((item) => createTree(item)),
       };
     } else {
@@ -104,25 +108,26 @@ const Tree = ({ explorer }) => {
       .attr('opacity', 1)
       .attr('d', pathGenerator);
 
-    const nodes = g.selectAll("g")
-      .data(treeData.descendants())
-      .enter()
-      .append("g")
-      .attr("transform", (d) => `translate(${d.y + 40},${d.x})`);
+      const nodes = g.selectAll("g")
+  .data(treeData.descendants())
+  .enter()
+  .append("g")
+  .attr("transform", (d) => `translate(${d.y + 40},${d.x})`);
 
-    nodes.append("circle")
-      .attr("r", 5)
-      .style('fill', 'white')
+nodes.append("circle")
+  .attr("r", 5)
+  .style('fill', (d) => (d.data.isFolder ? 'yellow' : 'white')); // Change node fill color based on isFolder property
 
-    nodes.append("text")
-      .text((d) => d.data.name)
-      .attr("dy", 20)
-      .attr('dx', -20)
-      .attr("text-anchor", "middle")
-      .attr("fill", '#bdbdbd')
+nodes.append("text")
+  .text((d) => d.data.name)
+  .attr("dy", 20)
+  .attr('dx', -20)
+  .attr("text-anchor", "middle")
+  .attr("fill", (d) => (d.data.isFolder ? 'yellow' : '#bdbdbd'))
+  .style("font-size", "1.00rem");
 
-      .style("font-size", "1.00rem");
-  }, [explorer, width, height]);
+
+  }, [explorer, width, height, open]);
 
   const treeStyles = {
     height: '800px',
