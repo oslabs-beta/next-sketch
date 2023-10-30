@@ -247,7 +247,7 @@ export const App = () => {
                   }}
                 >
                   <StaticTagsContainer />
-                  <Button>tree</Button>
+                  <Tree explorer={explorerData}/>
                 </Grid>
               </Grid>
             </AppContext.Provider>
