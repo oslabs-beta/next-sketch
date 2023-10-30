@@ -32,7 +32,7 @@ export const Container = forwardRef(({ children }: ContainerProps, ref) => {
         display: 'flex',
         border: 1,
         borderRadius: 3,
-        margin: 2,
+        margin: 2.5,
         flex: 1,
         alignSelf: 'stretch',
         minHeight: 50,

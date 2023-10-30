@@ -179,3 +179,7 @@ button[type="submit"]:disabled {
   
 /* Styles for the blinking cursor */
 
+.folder-node {
+  fill: blue;
+}
+

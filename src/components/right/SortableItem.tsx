@@ -1,8 +1,8 @@
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { CSS } from '@dnd-kit/utilities';
-import { ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 
 /**
  * @description - creates a sortable item named after a tag element
@@ -27,7 +27,7 @@ export const Item = ({ name }: ItemProps) => {
         justifyContent: 'center',
         bgcolor: 'grey',
         color: 'white',
-        margin: 2,
+        margin: 2.5,
         height: 40,
         borderRadius: 2,
       }}
@@ -47,7 +47,10 @@ const SortableItem = ({ id, children }: SortableItemProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    flex: 1,
+    position: 'relative',
   };
+
   return (
     <Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
       {children}
