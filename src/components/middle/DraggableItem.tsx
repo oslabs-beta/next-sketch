@@ -43,7 +43,7 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
         width: 'fit-content',
         minWidth: 80,
         height: 35,
-        boxShadow: 8,
+        boxShadow: 3,
         ':hover': {
           bgcolor: 'rgba(191, 196, 248, 0.8)',
           color: '#FEFCFB',
@@ -77,7 +77,7 @@ export const DraggableItemOverlay = ({ children }: DraggableItemOverlayProps) =>
         width: 'fit-content',
         minWidth: 80,
         height: 35,
-        boxShadow: 8,
+        boxShadow: 3,
         ':hover': {
           bgcolor: 'rgba(191, 196, 248, 0.8)',
           color: '#FEFCFB',

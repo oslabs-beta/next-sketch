@@ -36,7 +36,7 @@ const DisplayContainer = () => {
   const { tags, setTags } = useContext(AppContext);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
-  const { setNodeRef } = useDroppable({
+  const { setNodeRef, isOver } = useDroppable({
     id: 'display-container-drop-area',
     data: {
       isDisplayContainerDropArea: true,
@@ -212,18 +212,36 @@ const DisplayContainer = () => {
           }}
           ref={setNodeRef}
         >
-          {getTags().map((tag) => {
-            if (tag.container) {
+          {!isOver && tags.length === 0 && (
+            <Box
+              sx={{
+                display: 'flex',
+                height: '60%',
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}
+            >
+              <Typography variant='h2'>Drop Here</Typography>
+            </Box>
+          )}
+
+          {tags.length > 0 &&
+            getTags().map((tag) => {
+              if (tag.container) {
+                return (
+                  <SortableContainer
+                    key={tag.id}
+                    id={tag.id}
+                    getTags={getTags}
+                  />
+                );
+              }
               return (
-                <SortableContainer key={tag.id} id={tag.id} getTags={getTags} />
+                <SortableItem key={tag.id} id={tag.id}>
+                  <Item name={tag.name} />
+                </SortableItem>
               );
-            }
-            return (
-              <SortableItem key={tag.id} id={tag.id}>
-                <Item name={tag.name} />
-              </SortableItem>
-            );
-          })}
+            })}
         </Box>
       </SortableContext>
       <DragOverlay>{getDragOverlay()}</DragOverlay>
