@@ -230,9 +230,9 @@ export const App = () => {
                   >
                     <StaticTagsContainer />
                     <Box
-                    sx={{ border: 2, borderColor: 'lawngreen', flexGrow: 1,}}
+                    sx={{ border: 2, borderColor: 'lawngreen', flexGrow: 1, background: '#42464C'}}
                     >
-                      HELLO
+                      <Tree explorer={explorerData}/>
                     </Box>
                   </Grid>
                   
