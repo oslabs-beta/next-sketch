@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { select, tree, hierarchy, linkVertical, linkHorizontal } from 'd3';
+import { select, tree, zoom, hierarchy, linkVertical, linkHorizontal } from 'd3';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -13,8 +13,6 @@ const Tree = ({ explorer }) => {
   const [height, setHeight] = useState('100%');
   const [open, setOpen] = useState(false);
  
-  const folderNodeClass = "folder-node";
-const nonFolderNodeClass = "non-folder-node";
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -32,7 +30,6 @@ const nonFolderNodeClass = "non-folder-node";
  
 
   const createTree = (data) => {
-    console.log('d', data)
     if (data.isFolder) {
       return {
         name: data.name,
@@ -68,8 +65,8 @@ const nonFolderNodeClass = "non-folder-node";
     const handleResize = () => {
       const maxWidth = window.innerWidth - 20;
       const maxHeight = window.innerHeight - 20;
-      const newWidth = Math.min(maxWidth, 700);
-      const newHeight = Math.min(maxHeight, 800);
+      const newWidth = Math.min(maxWidth, 600);
+      const newHeight = Math.min(maxHeight, 700);
       setWidth(newWidth);
       setHeight(newHeight);
     };
@@ -126,6 +123,15 @@ nodes.append("text")
   .attr("fill", (d) => (d.data.isFolder ? 'yellow' : '#bdbdbd'))
   .style("font-size", "1.00rem");
 
+  const zoomBehavior = zoom()
+  .scaleExtent([0.1, 10]) // Set the zoom scale extent
+  .on("zoom", (event) => {
+    g.attr("transform", event.transform); // Apply the zoom transform to the entire tree
+  });
+
+svg.call(zoomBehavior);
+
+
 
   }, [explorer, width, height, open]);
 
@@ -135,8 +141,8 @@ nodes.append("text")
  };
 
   return (
-    <div>
-    <button onClick={() => setOpen(true)}>
+    <div style={{height: '10px'}}>
+    {/* <button onClick={() => setOpen(true)}>
       Tree
       </button>
 
@@ -163,8 +169,9 @@ nodes.append("text")
       </Box>
 
       
-      </Modal>
-      
+      </Modal> */}
+            <svg ref={svgRef} style={treeStyles}></svg>
+
     </div>
   );
 };
