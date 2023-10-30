@@ -6,7 +6,7 @@ import {
   faTrash,
   faFileCirclePlus,
   faAtom,
-  faMinus
+  faMinus,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
@@ -121,11 +121,10 @@ function Folder({
     const fileName = e.target.name;
     setFile(fileName);
 
-    if(!cacheModal.includes(fileName)){
-      cacheModal.push(fileName)
-    setComponentName(fileName);
+    if (!cacheModal.includes(fileName)) {
+      cacheModal.push(fileName);
+      setComponentName(fileName);
     }
-
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
@@ -135,7 +134,6 @@ function Folder({
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
-
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setFolder(e.currentTarget.value);
@@ -159,10 +157,7 @@ function Folder({
 
       setShowInput({ ...showInput, visible: false });
 
-      
-
-      if(showInput.isFolder) setOpen(true)
-
+      if (showInput.isFolder) setOpen(true);
     }
   };
 
@@ -290,7 +285,11 @@ function Folder({
             {folderIcon} {folderLogo} {explorer.name}
           </span>
           <div className='buttons'>
-            {explorer.name !== 'app' && explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' ? (
+            {explorer.name !== 'app' &&
+            explorer.name !== 'src' &&
+            explorer.name !== 'node_modules' &&
+            explorer.name !== 'public' &&
+            explorer.name !== 'NextSketch' ? (
               <button
                 onClick={(e) => {
                   handleNewFolder(e, true);
@@ -302,7 +301,10 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'src' && explorer.name !== 'node_modules' && explorer.name !== 'public' && explorer.name !== 'NextSketch' ? (
+            {explorer.name !== 'src' &&
+            explorer.name !== 'node_modules' &&
+            explorer.name !== 'public' &&
+            explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
                 <FontAwesomeIcon icon={faFileCirclePlus} />
               </button>
@@ -310,7 +312,9 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'app' && explorer.name !== 'src' && explorer.name !== 'NextSketch' ? (
+            {explorer.name !== 'app' &&
+            explorer.name !== 'src' &&
+            explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleDeleteFolder(e, false)}>
                 <FontAwesomeIcon icon={faMinus} />
               </button>
@@ -371,7 +375,10 @@ function Folder({
         {explorer.name === 'page.tsx' ? (
           '   '
         ) : (
-          <button className ='deletebtn' onClick={(e) => handleDeleteFolder(e, false)}>
+          <button
+            className='deletebtn'
+            onClick={(e) => handleDeleteFolder(e, false)}
+          >
             <FontAwesomeIcon icon={faMinus} />
           </button>
         )}

@@ -1,5 +1,5 @@
 import Prism from 'prismjs';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import './prism/prism.css'; // Use the path to the actual Prism.css file
 import 'prismjs/themes/prism.css'; // Use the path to the actual Prism.css file
 import 'prismjs/themes/prism-okaidia.css'; //okadia theme
@@ -66,10 +66,35 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   }
 
   return (
-    <Box>
-      <pre>
-        <code className='language-javascript'>{codeSnippet}</code>
-      </pre>
+    <Box
+      sx={{
+        border: 2,
+        borderColor: 'darkgreen',
+        flexGrow: 1,
+        paddingLeft: 2,
+        paddingRight: 2,
+      }}
+    >
+      <Typography variant='h6'>Code Preview</Typography>
+      <Box
+        sx={{
+          border: 2,
+          borderColor: 'darkred',
+          height: '35vh',
+          overflow: 'auto',
+          scrollbarWidth: 'none', // Hide the scrollbar for firefox
+          '&::-webkit-scrollbar': {
+            display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+          },
+          '&-ms-overflow-style:': {
+            display: 'none', // Hide the scrollbar for IE
+          },
+        }}
+      >
+        <pre>
+          <code className='language-javascript'>{codeSnippet}</code>
+        </pre>
+      </Box>
     </Box>
   );
 };

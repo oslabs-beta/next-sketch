@@ -97,7 +97,7 @@ const StaticTagsContainer = (): JSX.Element => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
   const handleDragEnd = (event: DragEndEvent) => {
-    console.log('drag end', event);
+    // console.log('drag end', event);
     const { active } = event;
     const newTag: Tag = {
       id: active.id,
@@ -109,60 +109,40 @@ const StaticTagsContainer = (): JSX.Element => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: 'auto',
-        height: 'auto',
-        boxShadow: 20,
-        borderTopLeftRadius: '20px',
-        borderTopRightRadius: '20px',
-        borderBottomRightRadius: '20px',
-        borderBottomLeftRadius: '20px',
-      }}
-    >
-      <DndContext
-      onDragEnd={handleDragEnd}
+    <DndContext onDragEnd={handleDragEnd}>
+      <Box
+        sx={{
+          border: 2,
+          borderColor: 'gold',
+          flexGrow: 1,
+        }}
       >
+        <Typography variant='h6' sx={{ textAlign: 'center', }}>
+          Add Elements
+        </Typography>
         <Box
           sx={{
-            width: '100%',
-            height: '100%',
-            borderTopLeftRadius: '20px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignContent: 'flex-start',
+            justifyContent: 'center',
+            border: 2,
+            borderColor: 'pink',
+            minHeight: '68vh',
+            maxHeight: '70vh',
           }}
         >
-          <Box
-            sx={{
-              bgcolor: 'rgba(191, 196, 248, 0.8)',
-              color: 'black',
-              textAlign: 'center',
-            }}
-          >
-            <Typography variant='h6'>HTML Tags</Typography>
-          </Box>
-          <Box
-            sx={{
-              padding: 1,
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignContent: 'flex-start',
-              justifyContent: 'center',
-              flexDirection: 'column', 
-              marginTop: 1.2,
-            }}
-          >
-            {staticTags.map((staticTag) => (
-              <DraggableItem
-                key={`${staticTag.name}-${staticTag.id}`}
-                id={staticTag.id}
-              >
-                {staticTag}
-              </DraggableItem>
-            ))}
-          </Box>
+          {staticTags.map((staticTag) => (
+            <DraggableItem
+              key={`${staticTag.name}-${staticTag.id}`}
+              id={staticTag.id}
+            >
+              {staticTag}
+            </DraggableItem>
+          ))}
         </Box>
-      </DndContext>
-    </Box>
+      </Box>
+    </DndContext>
   );
 };
 
