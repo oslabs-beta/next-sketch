@@ -9,6 +9,8 @@ import {
   PointerSensor,
   UniqueIdentifier,
   closestCenter,
+  useDndMonitor,
+  useDroppable,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -22,6 +24,7 @@ import SortableContainer, { Container } from './SortableContainer';
 import { useContext, useState } from 'react';
 import SortableItem, { Item } from './SortableItem';
 import AppContext from '../../context/AppContext';
+import { Tag } from '../../utils/interfaces';
 
 /**
  * @description - container for displayed tag elements
@@ -32,6 +35,35 @@ import AppContext from '../../context/AppContext';
 const DisplayContainer = () => {
   const { tags, setTags } = useContext(AppContext);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+
+  const { setNodeRef } = useDroppable({
+    id: 'display-container-drop-area',
+    data: {
+      isDisplayContainerDropArea: true,
+    },
+  });
+
+  useDndMonitor({
+    onDragEnd: (event: DragEndEvent) => {
+      const { active, over } = event;
+
+      const isDraggableItem = active.data?.current?.isDraggableItem;
+      const isDisplayContainerDropArea =
+        over?.data?.current?.isDisplayContainerDropArea;
+
+      const droppingItemOverDisplayContainerDropArea =
+        isDraggableItem && isDisplayContainerDropArea;
+
+      if (droppingItemOverDisplayContainerDropArea) {
+        const newTag: Tag = {
+          id: active.id,
+          name: active.data.current?.name,
+          container: active.data.current?.container,
+        };
+        setTags([...tags, newTag]);
+      }
+    },
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -151,68 +183,51 @@ const DisplayContainer = () => {
   };
 
   return (
-    <Box
-      sx={{
-        // borderBottomRightRadius: '20px',
-        // borderTopRightRadius: '20px',
-        // borderBottomLeftRadius: '20px',
-        width: '100%',
-        height: '35vh',
-        border: 2,
-        borderColor: 'orange',
-        paddingLeft: 2,
-        paddingRight: 2,
-      }}
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+      collisionDetection={closestCenter}
     >
-      <DndContext
-        sensors={sensors}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-        collisionDetection={closestCenter}
+      <SortableContext
+        id='root'
+        items={getTagIds()}
+        strategy={verticalListSortingStrategy}
       >
-        <SortableContext
-          id='root'
-          items={getTagIds()}
-          strategy={verticalListSortingStrategy}
+        <Typography variant='h6'>My Page</Typography>
+        <Box
+          sx={{
+            border: 2,
+            borderColor: 'magenta',
+            height: '28vh',
+            overflow: 'auto',
+            scrollbarWidth: 'none', // Hide the scrollbar for firefox
+            '&::-webkit-scrollbar': {
+              display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+            },
+            '&-ms-overflow-style:': {
+              display: 'none', // Hide the scrollbar for IE
+            },
+          }}
+          ref={setNodeRef}
         >
-          <Typography variant='h6'>My Page</Typography>
-          <Box
-            sx={{
-              border: 2,
-              borderColor: 'magenta',
-              height: '28vh',
-              overflow: 'auto',
-              scrollbarWidth: 'none', // Hide the scrollbar for firefox
-              '&::-webkit-scrollbar': {
-                display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-              },
-              '&-ms-overflow-style:': {
-                display: 'none', // Hide the scrollbar for IE
-              },
-            }}
-          >
-            {getTags().map((tag) => {
-              if (tag.container) {
-                return (
-                  <SortableContainer
-                    key={tag.id}
-                    id={tag.id}
-                    getTags={getTags}
-                  />
-                );
-              }
+          {getTags().map((tag) => {
+            if (tag.container) {
               return (
-                <SortableItem key={tag.id} id={tag.id}>
-                  <Item name={tag.name} />
-                </SortableItem>
+                <SortableContainer key={tag.id} id={tag.id} getTags={getTags} />
               );
-            })}
-          </Box>
-        </SortableContext>
-        <DragOverlay>{getDragOverlay()}</DragOverlay>
-      </DndContext>
-    </Box>
+            }
+            return (
+              <SortableItem key={tag.id} id={tag.id}>
+                <Item name={tag.name} />
+              </SortableItem>
+            );
+          })}
+        </Box>
+      </SortableContext>
+      <DragOverlay>{getDragOverlay()}</DragOverlay>
+    </DndContext>
   );
 };
 

@@ -47,6 +47,8 @@ const SortableItem = ({ id, children }: SortableItemProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    flex: 1,
+    position: 'relative',
   };
 
   return (
