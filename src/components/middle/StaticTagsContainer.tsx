@@ -1,15 +1,13 @@
-import { useContext } from 'react';
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
 import { generateId } from '../../utils/generateId';
-import AppContext from '../../context/AppContext';
+import DragOverlayWrapper from './DragOverlayWrapper';
 
 /**
  * @description - container for draggable HTML tag elements
  * @parent - MiddleContainer.tsx (make this)
- * @children - DraggableItem.tsx 
+ * @children - DraggableItem.tsx
  */
 
 const StaticTagsContainer = (): JSX.Element => {
@@ -44,72 +42,82 @@ const StaticTagsContainer = (): JSX.Element => {
       name: 'link',
       container: false,
     },
+    {
+      id: generateId(),
+      name: 'input',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'label',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'h1',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'h2',
+      container: false,
+    },
+    {
+      id: generateId(),
+      name: 'span',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'ordered list',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'unordered list',
+      container: true,
+    },
+    {
+      id: generateId(),
+      name: 'list item',
+      container: false,
+    },
   ];
-
-  const { tags, setTags } = useContext(AppContext);
-
-  // console.log('initial state tags', tags);
-
-  const addTagToDisplay = (event: DragEndEvent) => {
-    const { active } = event;
-    const newTag: Tag = {
-      id: active.id,
-      name: active.data.current?.name,
-      container: active.data.current?.container,
-    };
-    setTags([...tags, newTag]);
-  };
 
   return (
     <Box
       sx={{
-        display: 'flex',
-        width: '100%',
-        height: '200px',
-        boxShadow: 20,
-        borderTopLeftRadius: '20px',
-        borderTopRightRadius: '20px',
-        borderBottomRightRadius: '20px',
-        borderBottomLeftRadius: '20px',
+        border: 2,
+        borderColor: 'gold',
+        // flexGrow: 1,
+        height: '35vh',
       }}
     >
-      <DndContext onDragEnd={addTagToDisplay}>
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            borderTopLeftRadius: '20px',
-          }}
-        >
-          <Box
-            sx={{
-              bgcolor: 'rgba(191, 196, 248, 0.8)',
-              color: 'black',
-              textAlign: 'center',
-            }}
+      <Typography variant='h6' sx={{ textAlign: 'center' }}>
+        Add Elements
+      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignContent: 'flex-start',
+          justifyContent: 'center',
+          border: 2,
+          borderColor: 'pink',
+          // minHeight: '68vh',
+          // maxHeight: '70vh',
+        }}
+      >
+        {staticTags.map((staticTag) => (
+          <DraggableItem
+            key={`${staticTag.name}-${staticTag.id}`}
+            id={staticTag.id}
           >
-            <Typography variant='h6'>HTML Tags</Typography>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignContent: 'flex-start',
-              justifyContent: 'center',
-              marginTop: 1.2,
-            }}
-          >
-            {staticTags.map((staticTag) => (
-              <DraggableItem
-                key={`${staticTag.name}-${staticTag.id}`}
-                id={staticTag.id}
-              >
-                {staticTag}
-              </DraggableItem>
-            ))}
-          </Box>
-        </Box>
-      </DndContext>
+            {staticTag}
+          </DraggableItem>
+        ))}
+      </Box>
+      <DragOverlayWrapper />
     </Box>
   );
 };
