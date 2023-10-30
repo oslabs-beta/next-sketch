@@ -3,6 +3,7 @@ import { Box, Button, Typography, Modal, Checkbox } from '@mui/material';
 import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
 import { modalLayout } from '../../utils/interfaces';
+import Prism from 'prismjs';
 //import custom hook, from the reducer
 // import { useCode } from '../../utils/reducer/CodeContext'; /*================MODIFIED CODE====================*/
 
@@ -76,6 +77,7 @@ const CustomEndpoint = ({
       console.log('posting data');
       handlePostingFiles(folder, componentName, codeSnippet);
     }
+    Prism.highlightAll();
   }, [codeSnippet]);
 
   async function handleModalChange(e?: any) {

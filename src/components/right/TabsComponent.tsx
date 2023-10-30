@@ -12,7 +12,7 @@ interface TabsComponentProps {
   explorer: object;
 }
 
-const TabsComponent = ({ code, treeData, explorer }: TabsComponentProps) => {
+  const TabsComponent = ({ code, treeData, explorer }: TabsComponentProps) => {
   const [value, setValue] = useState<JSX.Element | string>('1');
   const [treeRendered, setTreeRendered] = useState(false);
 

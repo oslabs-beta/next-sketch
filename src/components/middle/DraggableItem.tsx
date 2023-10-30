@@ -14,13 +14,14 @@ interface DraggableItemProps {
 }
 
 export const DraggableItem = ({ id, children }: DraggableItemProps) => {
-  const { name, container } = children;
+  const { name, container, attribute } = children;
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: id,
     data: {
       name: name,
       container: container,
       isDraggableItem: true,
+      attribute: attribute,
     },
   });
 
