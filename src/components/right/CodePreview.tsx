@@ -9,46 +9,59 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/plugins/match-braces/prism-match-braces.min';
 import 'prismjs/plugins/match-braces/prism-match-braces.css';
 import { useContext, useEffect, useState } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server'; //renders React components to HTML string
 import { CodeContext, CodeSnippetContext } from '../../App';
 import AppContext from '../../context/AppContext';
-import { RenderCodeProps } from '../../utils/interfaces';
 
 interface CodePreviewProps {
   treeData: object;
 }
 
+declare const prettier: any;
+declare const prettierPlugins: any;
+
 const CodePreview = ({ treeData: CodePreviewProps }) => {
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const [htmlCode, setHtmlCode] = useState<JSX.Element>(null);
   const { tags, setTags } = useContext(AppContext);
+  const { newTags, setNewTags } = useState<Tag[]>([]);
 
   useEffect(() => {
     // Generate the code snippet
     renderCode(componentName);
     Prism.highlightAll();
-  }, [componentName]); // Re-render and update the code when componentName change
+  }, [componentName, tags]); // Re-render and update the code when componentName change
   //adding tags as a dependency breaks prism
 
   const addingChildrenTags = (elements: Tag[]): Tag[] => {
     //check if the container property is true
     //add a property of children
-    tags.map((tag) => {
+    const tagsCopy = structuredClone(elements);
+
+    const tagsDirectory = {};
+
+    //create a dictinary of tags for easy lookup based on id
+    tagsCopy.forEach((tag) => {
+      tagsDirectory[tag.id] = tag;
       if (tag.container) {
         tag.children = [];
       }
-      //if it has a parent, push it inside of the corresponding children array
+    });
+
+    //map through the tags to see if they have a parent
+    tagsCopy.map((tag) => {
       if (tag.parent) {
         const parentId = tag.parent;
-        console.log(parentId);
+        const parentTag = tagsDirectory[parentId];
 
-        const index = tags.findIndex((tag) => tag.id === parentId);
-        tags[index].children.push(tag);
+        if (parentTag) {
+          parentTag.children.push(tag);
+        }
       }
     });
 
-    return tags;
+    const rootNodes = tagsCopy.filter((tag) => !tag.parent);
+    console.log('ROOT', rootNodes);
+    return rootNodes;
   };
 
   const childrenTags = addingChildrenTags(tags);
@@ -59,25 +72,35 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
       if (element.children) {
         const children = element.children;
         const result = children.map((child) => {
-          console.log(child);
           if (child.name === 'img' || child.name === 'link') {
-            console.log('checking for img or link');
-            return `<${child.name} ${child.attribute}>\n`;
+            return `<${child.name} ${child.attribute} />`;
           } else {
-            return `<${child.name}>\n</${child.name}>\n`;
+            return `<${child.name}></${child.name}>`;
           }
         });
-        return `<${element.name}>\n ${result}\n</${element.name}>\n`;
+        return `<${element.name}>${result.join('')}</${element.name}>`;
       } else if (!element.container && !element.parent) {
-        return `<${element.name}>\n</${element.name}>\n`;
+        if (element.name === 'img' || element.name === 'link') {
+          return `<${element.name} ${element.attribute} />`;
+        }
+        return `<${element.name}></${element.name}>`;
       } else console.log('in other conditional');
     });
-    console.log(renderElements);
-    return renderElements;
+
+    return renderElements.join('');
   };
 
   const additional = generateCode(childrenTags);
-  console.log('additional', additional);
+  console.log(additional);
+
+  const formatCode = (code: string) => {
+    return prettier.format(code, {
+      parser: 'babel',
+      plugins: prettierPlugins,
+      jsxBracketSameLine: true,
+      singleQuote: true,
+    });
+  };
 
   function renderCode(name: string) {
     if (name === undefined) return;
@@ -97,6 +120,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
     return (
       <div>
         <h1>404 - Page Not Found</h1>
+        ${additional}
       </div>
     );
   };
@@ -108,15 +132,19 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   
   const ${name} = () => {
     return (
-      <>${additional}</>
+      <>
+        ${additional}
+      </>
     );
   };
   
 export default ${name};
   `;
     }
-    setCodeSnippet(codeSnippet);
+    setCodeSnippet(formatCode(codeSnippet));
   }
+
+  console.log(codeSnippet);
 
   return (
     <>
@@ -125,17 +153,9 @@ export default ${name};
           <code className='language-jsx match-braces'>{codeSnippet}</code>
         </pre>
         <pre className='line-numbers'>
-          <code className='language-html line-numbers'>{additional}</code>
+          {/* <code className='language-html line-numbers'>{additional}</code> */}
         </pre>
       </Box>
-      <div style={{ textAlign: 'center' }}>
-        <ul>
-          <li>hello</li>
-        </ul>
-        <ul>
-          <li> {additional}</li>
-        </ul>
-      </div>
     </>
   );
 };
