@@ -27,9 +27,9 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
 
   useEffect(() => {
     // Generate the code snippet
-    if(tags.length === 0) {
-      return
-    }
+    // if(tags.length === 0) {
+    //   return
+    // }
     renderCode(componentName);
     Prism.highlightAll();
   }, [componentName, tags]); // Re-render and update the code when componentName change
