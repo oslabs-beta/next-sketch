@@ -131,9 +131,20 @@ const useTraverseTree = () => {
 }
 
 
+const updatePreview = ( tree: any,
+  folderId: number,
+  item: string,
+  folderName: string,
+  preview: string) => {
 
 
-  return { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles };
+
+  }
+
+
+
+
+  return { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles, updatePreview };
 }
 
 export default useTraverseTree;
