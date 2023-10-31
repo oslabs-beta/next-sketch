@@ -27,6 +27,9 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
 
   useEffect(() => {
     // Generate the code snippet
+    if(tags.length === 0) {
+      return
+    }
     renderCode(componentName);
     Prism.highlightAll();
   }, [componentName, tags]); // Re-render and update the code when componentName change
@@ -68,6 +71,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   console.log('CHILDREN', childrenTags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
+    console.log('generate code input', elements)
     const renderElements = elements.map((element) => {
       if (element.children) {
         const children = element.children;
@@ -84,7 +88,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
           return `<${element.name} ${element.attribute} />`;
         }
         return `<${element.name}></${element.name}>`;
-      } else console.log('in other conditional');
+      } 
     });
 
     return renderElements.join('');
