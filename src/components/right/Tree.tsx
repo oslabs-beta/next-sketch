@@ -65,8 +65,8 @@ const Tree = ({ explorer }) => {
     const handleResize = () => {
       const maxWidth = window.innerWidth - 20;
       const maxHeight = window.innerHeight - 20;
-      const newWidth = Math.min(maxWidth, 600);
-      const newHeight = Math.min(maxHeight, 700);
+      const newWidth = Math.min(maxWidth, 400);
+      const newHeight = Math.min(maxHeight, 400);
       setWidth(newWidth);
       setHeight(newHeight);
     };
@@ -136,7 +136,7 @@ svg.call(zoomBehavior);
   }, [explorer, width, height, open]);
 
   const treeStyles = {
-    height: '800px',
+    height: '400px',
     width: '100%',
  };
 
