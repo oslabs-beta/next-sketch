@@ -63,12 +63,12 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
     });
 
     const rootNodes = tagsCopy.filter((tag) => !tag.parent);
-    console.log('ROOT', rootNodes);
+    // console.log('ROOT', rootNodes);
     return rootNodes;
   };
 
   const childrenTags = addingChildrenTags(tags);
-  console.log('CHILDREN', childrenTags);
+  // console.log('CHILDREN', childrenTags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
     console.log('generate code input', elements)
@@ -95,7 +95,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   };
 
   const additional = generateCode(childrenTags);
-  console.log(additional);
+  // console.log(additional);
 
   const formatCode = (code: string) => {
     return prettier.format(code, {
@@ -148,7 +148,7 @@ export default ${name};
     setCodeSnippet(formatCode(codeSnippet));
   }
 
-  console.log(codeSnippet);
+  // console.log(codeSnippet);
 
   return (
     <>

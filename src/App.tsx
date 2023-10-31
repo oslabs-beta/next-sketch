@@ -44,7 +44,6 @@ export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
   undefined
 );
 
-
 const App = () => {
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
@@ -229,12 +228,17 @@ const App = () => {
                   >
                     <StaticTagsContainer />
                     <Box
-                    sx={{ border: 2, borderColor: 'lawngreen', flexGrow: 1, background: '#42464C'}}
+                      sx={{
+                        border: 2,
+                        borderColor: 'lawngreen',
+                        flexGrow: 1,
+                        background: '#42464C',
+                      }}
                     >
-                      <Tree explorer={explorerData}/>
+                      <Tree explorer={explorerData} />
                     </Box>
                   </Grid>
-                  
+
                   <Grid
                     item
                     sm={3.75}

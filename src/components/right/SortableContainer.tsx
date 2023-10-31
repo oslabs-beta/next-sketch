@@ -54,7 +54,10 @@ const SortableContainer = ({ id, getTags }: SortableContainer) => {
   const nestedTagIds = nestedTags.map((nestedTag) => nestedTag.id);
 
   const { setNodeRef } = useDroppable({
-    id: 'droppable-1',
+    id: id,
+    data: {
+      isSortableContainerDropArea: true,
+    }
   });
 
   return (
