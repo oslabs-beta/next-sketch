@@ -13,27 +13,31 @@ import { CodeContext, CodeSnippetContext } from '../../App';
 import AppContext from '../../context/AppContext';
 
 interface CodePreviewProps {
-  treeData: object;
+  treeData: object; 
 }
 
 declare const prettier: any;
 declare const prettierPlugins: any;
 
-const CodePreview = ({ treeData: CodePreviewProps }) => {
+const CodePreview = ({ treeData}: CodePreviewProps) => {
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const { tags, setTags } = useContext(AppContext);
-  const { newTags, setNewTags } = useState<Tag[]>([]);
+  const { tags, setTags, currentId, setCurrentId, reset, setReset } = useContext(AppContext);
 
   useEffect(() => {
-    // Generate the code snippet
-    if(tags.length === 0) {
+
+    if(reset === true) {
+      setReset(false)
       return
     }
+
+    // Generate the code snippet
     renderCode(componentName);
     Prism.highlightAll();
-  }, [componentName, tags]); // Re-render and update the code when componentName change
-  //adding tags as a dependency breaks prism
+    
+  }, [componentName, tags]); // Re-render and update the code when componentName and tags change
+
+
 
   const addingChildrenTags = (elements: Tag[]): Tag[] => {
     //check if the container property is true
@@ -63,22 +67,51 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
     });
 
     const rootNodes = tagsCopy.filter((tag) => !tag.parent);
-    // console.log('ROOT', rootNodes);
     return rootNodes;
   };
 
   const childrenTags = addingChildrenTags(tags);
-  console.log('CHILDREN', childrenTags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
 
+    console.log(elements)
     const renderElements = elements.map((element) => {
 
+      //checking for ul, ol and li
+      if(element.name === 'unordered list'){
+        element.name = 'ul'
+      }
+      if(element.name === 'ordered list'){
+        element.name = 'ol'
+      }
+      if(element.name === 'list item'){
+        element.name = 'li'
+      }
+
       if (element.children) {
-      generateCode(element.children)
+        generateCode(element.children)
+
 
         const children = element.children;
         const result = children.map((child) => {
+
+          // if(child.children) {
+          //   console.log('NESTED');
+          //   console.log(child);
+          //   generateCode(child.children)
+          // }
+           //checking for ul li and ol
+          if(child.name === 'unordered list'){
+            child.name = 'ul'
+          }
+          if(child.name === 'ordered list'){
+            child.name = 'ol'
+          }
+          if(child.name === 'list item'){
+            child.name = 'li'
+          }
+
+
           if (child.name === 'img' || child.name === 'link') {
             return `<${child.name} ${child.attribute} />`;
           } else {
@@ -94,16 +127,14 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
           return `<${element.name} ${element.attribute} />`;
         }
         return `<${element.name}></${element.name}>`;
-      } else console.log('in other conditional');
-
+      } 
 
     });
-
     return renderElements.join('');
   };
 
+
   const additional = generateCode(childrenTags);
-  // console.log(additional);
 
   const formatCode = (code: string) => {
     return prettier.format(code, {
@@ -156,7 +187,7 @@ export default ${name};
     setCodeSnippet(formatCode(codeSnippet));
   }
 
-  // console.log(codeSnippet);
+
 
   return (
     <>
@@ -198,3 +229,19 @@ export default ${name};
 };
 
 export default CodePreview;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

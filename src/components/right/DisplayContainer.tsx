@@ -25,16 +25,18 @@ import { useContext, useState } from 'react';
 import SortableItem, { Item } from './SortableItem';
 import AppContext from '../../context/AppContext';
 import { Tag } from '../../utils/interfaces';
-//
+import { CodeSnippetContext } from '../../App';
+
 /**
  * @description - container for displayed tag elements
  * @parent - TabsComponent.tsx
  * @children - SortableContainer.tsx, SortableItem.tsx
  */
 
-const DisplayContainer = () => {
-  const { tags, setTags } = useContext(AppContext);
+const DisplayContainer = ({handleUpdatePreview, explorer}) => {
+  const { tags, setTags, currentId, update, setUpdate } = useContext(AppContext);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
   const { setNodeRef } = useDroppable({
     id: 'display-container-drop-area',
@@ -44,7 +46,7 @@ const DisplayContainer = () => {
   });
 
   useDndMonitor({
-    onDragEnd: (event: DragEndEvent) => {
+    onDragEnd: async (event: DragEndEvent) => {
       const { active, over } = event;
 
       const isDraggableItem = active.data?.current?.isDraggableItem;
@@ -59,11 +61,19 @@ const DisplayContainer = () => {
           id: active.id,
           name: active.data.current?.name,
           container: active.data.current?.container,
+          attribute: active.data.current?.attribute,
         };
-        setTags([...tags, newTag]);
+        await setTags([...tags, newTag]);
       }
-    },
+
+      setUpdate(true)
+      // console.log('On drop',codeSnippet)
+      // handleUpdatePreview(currentId, codeSnippet)
+
+    }
   });
+
+
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -100,7 +110,6 @@ const DisplayContainer = () => {
     });
   };
 
-  console.log(tags);
 
   /**
    * @method getTagIds
@@ -144,7 +153,6 @@ const DisplayContainer = () => {
   };
 
   const handleDragOver = (event: DragOverEvent) => {
-    // console.log(event);
     const { active, over, delta } = event;
     const { id } = active;
     let overId!: UniqueIdentifier;
@@ -162,9 +170,6 @@ const DisplayContainer = () => {
       const activeIndex = tags.findIndex((tag) => tag.id === id);
       const overIndex = tags.findIndex((tag) => tag.id === overId);
 
-      // console.log('activeIndex', activeIndex);
-      // console.log('overIndex', overIndex);
-
       let newIndex = overIndex;
       const isBelowLastItem =
         over &&
@@ -179,13 +184,13 @@ const DisplayContainer = () => {
       if (overId) {
         nextParent = overIsContainer ? overId : overParent;
       }
-      console.log(nextParent);
 
       tags[activeIndex].parent = nextParent;
       const nextItems = arrayMove(tags, activeIndex, newIndex);
 
       return nextItems;
     });
+    setUpdate(true);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {

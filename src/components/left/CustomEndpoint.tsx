@@ -4,6 +4,7 @@ import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
 import { modalLayout } from '../../utils/interfaces';
 import Prism from 'prismjs';
+import AppContext from '../../context/AppContext';
 //import custom hook, from the reducer
 // import { useCode } from '../../utils/reducer/CodeContext'; /*================MODIFIED CODE====================*/
 
@@ -26,6 +27,7 @@ const style = {
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
   handleInputBoilerFiles,
+  handleUpdatePreview,
   explorer,
   setFolder,
   folder,
@@ -39,6 +41,9 @@ const CustomEndpoint = ({
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  const {tags, setTags, update, setUpdate, currentId } = useContext(AppContext);
+  const [previewFolder, setPreviewFolder] = useState(false);
+
   //deconstructing the reducer elements
   // const { componentName, updateComponent } = useCode();
 
@@ -70,12 +75,21 @@ const CustomEndpoint = ({
 
   function handleChange(e?: any) {
     setFolder(e.target.value);
+    setPreviewFolder(e.target.value)
   }
 
+
   useEffect(() => {
+    //creating new files with code
     if (postData === true) {
-      console.log('posting data');
       handlePostingFiles(folder, componentName, codeSnippet);
+    }
+
+    //updating code in existing files
+    if (update === true) {
+      handleUpdatingFiles(componentName, codeSnippet, previewFolder);
+      handleUpdatePreview(currentId, codeSnippet);
+      setUpdate(false)
     }
     Prism.highlightAll();
   }, [codeSnippet]);
@@ -83,13 +97,14 @@ const CustomEndpoint = ({
   async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
 
+    setTags([]);
+
     setSelectedItems({
       ...selectedItems,
       [name]: true,
     });
 
     const fileName = e.target.name;
-    const folderName = folder;
     setFile(fileName);
 
     setComponentName(fileName);
@@ -115,6 +130,22 @@ const CustomEndpoint = ({
       body: JSON.stringify(body),
     });
   };
+
+  const handleUpdatingFiles = async (file: string, code: string, previewFolder) => {
+
+    const body = {
+      fileName: file,
+      codeSnippet: code,
+      folder: previewFolder,
+    }
+    await fetch('http://localhost:3000/updatecode', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+  })
+  }
 
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
