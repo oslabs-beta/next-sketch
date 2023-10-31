@@ -29,10 +29,7 @@ export const Item = ({ name }: ItemProps) => {
         justifyContent: 'center',
         bgcolor: 'grey',
         color: 'white',
-        marginLeft: 2.5,
-        marginRight: 2.5,
-        marginTop: 5,
-        marginBottom: 5,
+        margin: 2.5,
         height: 40,
         borderRadius: 2,
       }}
@@ -51,11 +48,10 @@ const SortableItem = ({ id, children }: SortableItemProps) => {
     setTags((prev) => prev.filter((tag) => tag.id !== tagId));
   };
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: id,
-      animateLayoutChanges: () => false,
-    });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: id,
+    animateLayoutChanges: () => false,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -90,29 +86,8 @@ const SortableItem = ({ id, children }: SortableItemProps) => {
       onMouseLeave={() => {
         setMouseIsOver(false);
       }}
-      sx={{ flex: 1, position: 'relative', bgcolor: 'yellow', }}
+      sx={{ flex: 1, position: 'relative' }}
     >
-      <Box
-        ref={topHalf.setNodeRef}
-        sx={{
-          position: 'absolute',
-          bgcolor: 'green',
-          top: -25,
-          height: 20,
-          width: '100%',
-        }}
-      />
-      <Box
-        ref={bottomHalf.setNodeRef}
-        sx={{
-          position: 'absolute',
-          bgcolor: 'red',
-          bottom: -20,
-          height: 20,
-          width: '100%',
-        }}
-      />
-
       {mouseIsOver && (
         <>
           <Box
@@ -135,7 +110,6 @@ const SortableItem = ({ id, children }: SortableItemProps) => {
           </Box>
         </>
       )}
-      {/* {topHalf.isOver && <Box sx={{ position: 'absolute', top: -4, width: '100%', }} />} */}
       {children}
     </Box>
   );
