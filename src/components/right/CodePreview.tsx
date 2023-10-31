@@ -73,9 +73,34 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   const generateCode = (elements: Tag[]): JSX.Element => {
     console.log('generate code input', elements)
     const renderElements = elements.map((element) => {
+      
+      //checking for ul, ol and li
+      if(element.name === 'unordered list'){
+        element.name = 'ul'
+      }
+      if(element.name === 'ordered list'){
+        element.name = 'ol'
+      }
+      if(element.name === 'list item'){
+        element.name = 'li'
+      }
+
       if (element.children) {
         const children = element.children;
         const result = children.map((child) => {
+
+          //checking for ul li and ol
+          if(child.name === 'unordered list'){
+            child.name = 'ul'
+          }
+          if(child.name === 'ordered list'){
+            child.name = 'ol'
+          }
+          if(child.name === 'list item'){
+            child.name = 'li'
+          }
+
+          
           if (child.name === 'img' || child.name === 'link') {
             return `<${child.name} ${child.attribute} />`;
           } else {

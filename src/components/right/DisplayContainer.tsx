@@ -59,6 +59,7 @@ const DisplayContainer = () => {
           id: active.id,
           name: active.data.current?.name,
           container: active.data.current?.container,
+          attribute: active.data.current?.attribute,
         };
         setTags([...tags, newTag]);
       }
