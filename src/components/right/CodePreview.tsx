@@ -73,6 +73,7 @@ const CodePreview = ({ treeData}: CodePreviewProps) => {
   const childrenTags = addingChildrenTags(tags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
+
     console.log(elements)
     const renderElements = elements.map((element) => {
 
@@ -89,6 +90,7 @@ const CodePreview = ({ treeData}: CodePreviewProps) => {
 
       if (element.children) {
         generateCode(element.children)
+
 
         const children = element.children;
         const result = children.map((child) => {
@@ -113,9 +115,12 @@ const CodePreview = ({ treeData}: CodePreviewProps) => {
           if (child.name === 'img' || child.name === 'link') {
             return `<${child.name} ${child.attribute} />`;
           } else {
+
             return `<${child.name}></${child.name}>`;
           }
+
         });
+
         return `<${element.name}>${result.join('')}</${element.name}>`;
       } else if (!element.container && !element.parent) {
         if (element.name === 'img' || element.name === 'link') {
@@ -181,6 +186,7 @@ export default ${name};
     }
     setCodeSnippet(formatCode(codeSnippet));
   }
+
 
 
   return (

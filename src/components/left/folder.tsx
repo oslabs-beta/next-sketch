@@ -383,8 +383,9 @@ function Folder({
       </div>
     );
   } else if (explorer.name) {
+
     return (
-      <div className='folder' onClick={retrieveCode}>
+      <div className='folder' onClick={retrieveCode} >
         {explorer.name.slice(-3) === 'tsx' ? (
           <FontAwesomeIcon icon={faAtom} />
         ) : (

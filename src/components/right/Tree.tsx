@@ -7,29 +7,31 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
 
-const Tree = ({ explorer }) => {
+const Tree = ({ explorer, srcApp }) => {
   const svgRef = useRef(null);
   const [width, setWidth] = useState('100%');
   const [height, setHeight] = useState('100%');
   const [open, setOpen] = useState(false);
- 
+  const [resetView, setResetView] = useState(false)
 
-  const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 1000,
-    height: 'fit-content',
-    bgcolor: '#42464C',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
+  // const style = {
+  //   position: 'absolute' as 'absolute',
+  //   top: '50%',
+  //   left: '50%',
+  //   transform: 'translate(-50%, -50%)',
+  //   width: 1000,
+  //   height: 'fit-content',
+  //   bgcolor: '#42464C',
+  //   border: '2px solid #000',
+  //   boxShadow: 24,
+  //   p: 4,
+  // };
 
- 
+
 
   const createTree = (data) => {
+
+
     if (data.isFolder) {
       return {
         name: data.name,
@@ -39,6 +41,7 @@ const Tree = ({ explorer }) => {
     } else {
       return { name: data.name };
     }
+  
   };
 
   const setTreeNodePositions = (node) => {
@@ -80,7 +83,7 @@ const Tree = ({ explorer }) => {
     const svg = select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const root = hierarchy(createTree(explorer.items[2].items[0]));
+    const root = hierarchy(createTree(srcApp));
 
     // Set the initial positions of tree nodes
     setTreeNodePositions(root);
@@ -124,7 +127,7 @@ nodes.append("text")
   .style("font-size", "1.00rem");
 
   const zoomBehavior = zoom()
-  .scaleExtent([0.1, 10]) // Set the zoom scale extent
+  .scaleExtent([0.5, 10]) // Set the zoom scale extent
   .on("zoom", (event) => {
     g.attr("transform", event.transform); // Apply the zoom transform to the entire tree
   });
@@ -133,7 +136,7 @@ svg.call(zoomBehavior);
 
 
 
-  }, [explorer, width, height, open]);
+  }, [explorer, width, height, open, resetView]);
 
   const treeStyles = {
     height: '400px',
@@ -170,6 +173,7 @@ svg.call(zoomBehavior);
 
       
       </Modal> */}
+        <button onClick={() => setResetView(!resetView)} style={{color: 'white', marginLeft: '10px', backgroundColor: 'black'}}>Reset View</button>
             <svg ref={svgRef} style={treeStyles}></svg>
 
     </div>

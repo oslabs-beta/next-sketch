@@ -66,6 +66,9 @@ const App = () => {
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles, updatePreview } =
     useTraverseTree();
 
+
+const srcApp = explorer.items[2]
+
   const handleInsertNode = (
     folderId: number,
     item: string,
@@ -241,7 +244,7 @@ const handleUpdatePreview = ( fileId: number, preview: string) => {
                     <Box
                     sx={{ border: 2, borderColor: 'lawngreen', flexGrow: 1, background: '#42464C'}}
                     >
-                      <Tree explorer={explorerData}/>
+                      <Tree explorer={explorerData} srcApp={srcApp}/>
                     </Box>
                   </Grid>
                   
