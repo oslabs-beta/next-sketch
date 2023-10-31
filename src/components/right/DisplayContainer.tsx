@@ -6,7 +6,6 @@ import {
   DragOverlay,
   DragStartEvent,
   KeyboardSensor,
-  MouseSensor,
   PointerSensor,
   UniqueIdentifier,
   closestCenter,
@@ -37,7 +36,7 @@ const DisplayContainer = () => {
   const { tags, setTags } = useContext(AppContext);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
-  const { setNodeRef, isOver } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: 'display-container-drop-area',
     data: {
       isDisplayContainerDropArea: true,
@@ -46,7 +45,6 @@ const DisplayContainer = () => {
 
   useDndMonitor({
     onDragEnd: (event: DragEndEvent) => {
-      console.log('event', event);
       const { active, over } = event;
 
       const isDraggableItem = active.data?.current?.isDraggableItem;
@@ -68,11 +66,6 @@ const DisplayContainer = () => {
   });
 
   const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        distance: 10,
-      },
-    }),
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -107,7 +100,7 @@ const DisplayContainer = () => {
     });
   };
 
-  // console.log(tags);
+  console.log(tags);
 
   /**
    * @method getTagIds
@@ -119,6 +112,7 @@ const DisplayContainer = () => {
   const getTagIds = (parent?: UniqueIdentifier) => {
     return getTags(parent).map((tag) => tag.id);
   };
+
 
   const findParent = (id: UniqueIdentifier) => {
     const tag = tags.find((tag) => tag.id === id);
@@ -156,17 +150,9 @@ const DisplayContainer = () => {
     let overId!: UniqueIdentifier;
     if (over) overId = over.id;
 
-    console.log('over', over);
-
     const overParent = findParent(overId);
     const overIsContainer = isContainer(overId);
     const activeIsContainer = isContainer(activeId);
-
-    console.log('overId', overId);
-    console.log('activeId', activeId);
-
-    console.log('overIsContainer', overIsContainer);
-    console.log('activeIsContainer', activeIsContainer);
 
     if (overIsContainer) {
       if (activeIsContainer) return;
@@ -193,7 +179,7 @@ const DisplayContainer = () => {
       if (overId) {
         nextParent = overIsContainer ? overId : overParent;
       }
-      // console.log(nextParent);
+      console.log(nextParent);
 
       tags[activeIndex].parent = nextParent;
       const nextItems = arrayMove(tags, activeIndex, newIndex);
@@ -237,9 +223,6 @@ const DisplayContainer = () => {
           sx={{
             border: 2,
             borderColor: 'magenta',
-            ...(isOver && {
-              borderColor: 'red',
-            }),
             height: '28vh',
             overflow: 'auto',
             scrollbarWidth: 'none', // Hide the scrollbar for firefox
@@ -252,53 +235,18 @@ const DisplayContainer = () => {
           }}
           ref={setNodeRef}
         >
-          {/* drop here text */}
-          {!isOver && tags.length === 0 && (
-            <Box
-              sx={{
-                display: 'flex',
-                height: '60%',
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}
-            >
-              <Typography variant='h2'>Drop Here</Typography>
-            </Box>
-          )}
-
-          {isOver && tags.length === 0 && (
-            <Box
-              sx={{
-                display: 'flex',
-                border: 1,
-                borderRadius: 3,
-                margin: 2.5,
-                flex: 1,
-                alignSelf: 'stretch',
-                minHeight: 50,
-                flexDirection: 'column',
-              }}
-            ></Box>
-          )}
-
-          {/* renders tags array */}
-          {tags.length > 0 &&
-            getTags().map((tag) => {
-              if (tag.container) {
-                return (
-                  <SortableContainer
-                    key={tag.id}
-                    id={tag.id}
-                    getTags={getTags}
-                  />
-                );
-              }
+          {getTags().map((tag) => {
+            if (tag.container) {
               return (
-                <SortableItem key={tag.id} id={tag.id}>
-                  <Item name={tag.name} />
-                </SortableItem>
+                <SortableContainer key={tag.id} id={tag.id} getTags={getTags} />
               );
-            })}
+            }
+            return (
+              <SortableItem key={tag.id} id={tag.id}>
+                <Item name={tag.name} />
+              </SortableItem>
+            );
+          })}
         </Box>
       </SortableContext>
       <DragOverlay>{getDragOverlay()}</DragOverlay>

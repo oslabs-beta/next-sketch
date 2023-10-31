@@ -9,7 +9,7 @@ import { Tag } from '../../utils/interfaces';
  */
 
 interface DraggableItemProps {
-  id: UniqueIdentifier;
+  id: UniqueIdentifier
   children: Tag;
 }
 
@@ -44,7 +44,7 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
         width: 'fit-content',
         minWidth: 80,
         height: 35,
-        boxShadow: 3,
+        boxShadow: 8,
         ':hover': {
           bgcolor: 'rgba(191, 196, 248, 0.8)',
           color: '#FEFCFB',
@@ -58,12 +58,10 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
 };
 
 interface DraggableItemOverlayProps {
-  children: string;
+  children: string
 }
 
-export const DraggableItemOverlay = ({
-  children,
-}: DraggableItemOverlayProps) => {
+export const DraggableItemOverlay = ({ children }: DraggableItemOverlayProps) => {
   return (
     <Button
       variant='contained'
@@ -80,7 +78,7 @@ export const DraggableItemOverlay = ({
         width: 'fit-content',
         minWidth: 80,
         height: 35,
-        boxShadow: 3,
+        boxShadow: 8,
         ':hover': {
           bgcolor: 'rgba(191, 196, 248, 0.8)',
           color: '#FEFCFB',
