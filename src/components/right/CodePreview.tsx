@@ -63,17 +63,15 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
     });
 
     const rootNodes = tagsCopy.filter((tag) => !tag.parent);
-    console.log('ROOT', rootNodes);
     return rootNodes;
   };
 
   const childrenTags = addingChildrenTags(tags);
-  console.log('CHILDREN', childrenTags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
-    console.log('generate code input', elements)
+    console.log('Tags', elements)
     const renderElements = elements.map((element) => {
-      
+
       //checking for ul, ol and li
       if(element.name === 'unordered list'){
         element.name = 'ul'
@@ -89,6 +87,14 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
         const children = element.children;
         const result = children.map((child) => {
 
+          // if(child.children) {
+          //   console.log('NESTED');
+          //   console.log(child);
+          //   generateCode(child.children)
+          // }
+
+
+
           //checking for ul li and ol
           if(child.name === 'unordered list'){
             child.name = 'ul'
@@ -100,7 +106,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
             child.name = 'li'
           }
 
-          
+
           if (child.name === 'img' || child.name === 'link') {
             return `<${child.name} ${child.attribute} />`;
           } else {
@@ -114,13 +120,12 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
         }
         return `<${element.name}></${element.name}>`;
       } 
-    });
 
+    });
     return renderElements.join('');
   };
 
   const additional = generateCode(childrenTags);
-  console.log(additional);
 
   const formatCode = (code: string) => {
     return prettier.format(code, {
@@ -173,7 +178,6 @@ export default ${name};
     setCodeSnippet(formatCode(codeSnippet));
   }
 
-  console.log(codeSnippet);
 
   return (
     <>
