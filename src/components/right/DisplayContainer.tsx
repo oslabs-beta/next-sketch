@@ -267,6 +267,7 @@ const DisplayContainer = () => {
           )}
 
           {isOver && tags.length === 0 && (
+            //
             <Box
               sx={{
                 display: 'flex',
