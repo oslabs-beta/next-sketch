@@ -17,6 +17,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
 import { useCode } from '../../utils/reducer/CodeContext';
+import AppContext from '../../context/AppContext';
 
 import { modalLayout } from '../../utils/interfaces';
 import { app } from 'electron';
@@ -48,9 +49,8 @@ function Folder({
 
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  const { tags, setTags } = useContext(AppContext);
   const [open, setOpen] = useState(false);
-  // const [folder, setFolder] = useState('');
-  // const { componentName, updateComponent } = useCode();
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -124,10 +124,12 @@ function Folder({
       cacheModal.push(fileName);
       setComponentName(fileName);
     }
+
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
     setPostData(false);
+    setTags([]);
     setCodeSnippet(explorer.preview);
   };
 

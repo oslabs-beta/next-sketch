@@ -25,7 +25,7 @@ import { useContext, useState } from 'react';
 import SortableItem, { Item } from './SortableItem';
 import AppContext from '../../context/AppContext';
 import { Tag } from '../../utils/interfaces';
-
+//
 /**
  * @description - container for displayed tag elements
  * @parent - TabsComponent.tsx
