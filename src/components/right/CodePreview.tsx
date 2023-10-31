@@ -60,7 +60,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
     });
 
     const rootNodes = tagsCopy.filter((tag) => !tag.parent);
-    console.log('ROOT', rootNodes);
+    // console.log('ROOT', rootNodes);
     return rootNodes;
   };
 
@@ -68,16 +68,23 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   console.log('CHILDREN', childrenTags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
+
     const renderElements = elements.map((element) => {
+
       if (element.children) {
+      generateCode(element.children)
+
         const children = element.children;
         const result = children.map((child) => {
           if (child.name === 'img' || child.name === 'link') {
             return `<${child.name} ${child.attribute} />`;
           } else {
+
             return `<${child.name}></${child.name}>`;
           }
+
         });
+
         return `<${element.name}>${result.join('')}</${element.name}>`;
       } else if (!element.container && !element.parent) {
         if (element.name === 'img' || element.name === 'link') {
@@ -85,13 +92,14 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
         }
         return `<${element.name}></${element.name}>`;
       } else console.log('in other conditional');
+
     });
 
     return renderElements.join('');
   };
 
   const additional = generateCode(childrenTags);
-  console.log(additional);
+  // console.log(additional);
 
   const formatCode = (code: string) => {
     return prettier.format(code, {
@@ -144,7 +152,7 @@ export default ${name};
     setCodeSnippet(formatCode(codeSnippet));
   }
 
-  console.log(codeSnippet);
+  // console.log(codeSnippet);
 
   return (
     <>
