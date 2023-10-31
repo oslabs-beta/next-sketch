@@ -1,8 +1,10 @@
-import { UniqueIdentifier } from '@dnd-kit/core';
+import { UniqueIdentifier, useDraggable, useDroppable } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import { CSS } from '@dnd-kit/utilities';
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, useContext } from 'react';
+import AppContext from '../../context/AppContext';
+import ClearIcon from '@mui/icons-material/Clear';
 
 /**
  * @description - creates a sortable item named after a tag element
@@ -27,7 +29,10 @@ export const Item = ({ name }: ItemProps) => {
         justifyContent: 'center',
         bgcolor: 'grey',
         color: 'white',
-        margin: 2.5,
+        marginLeft: 2.5,
+        marginRight: 2.5,
+        marginTop: 5,
+        marginBottom: 5,
         height: 40,
         borderRadius: 2,
       }}
@@ -38,6 +43,14 @@ export const Item = ({ name }: ItemProps) => {
 };
 
 const SortableItem = ({ id, children }: SortableItemProps) => {
+  const { tags, setTags } = useContext(AppContext);
+  const [mouseIsOver, setMouseIsOver] = useState<boolean>(false);
+
+  const removeTag = (tagId: UniqueIdentifier) => {
+    console.log('entered remove tag');
+    setTags((prev) => prev.filter((tag) => tag.id !== tagId));
+  };
+
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: id,
@@ -47,12 +60,82 @@ const SortableItem = ({ id, children }: SortableItemProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    flex: 1,
-    position: 'relative',
   };
 
+  const topHalf = useDroppable({
+    id: id + '-top',
+    data: {
+      tagId: id,
+      isTopHalfSortableItem: true,
+    },
+  });
+
+  const bottomHalf = useDroppable({
+    id: id + '-bottom',
+    data: {
+      tagId: id,
+      isBottomHalfSortableItem: true,
+    },
+  });
+
   return (
-    <Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <Box
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      onMouseEnter={() => {
+        setMouseIsOver(true);
+      }}
+      onMouseLeave={() => {
+        setMouseIsOver(false);
+      }}
+      sx={{ flex: 1, position: 'relative', bgcolor: 'yellow', }}
+    >
+      <Box
+        ref={topHalf.setNodeRef}
+        sx={{
+          position: 'absolute',
+          bgcolor: 'green',
+          top: -25,
+          height: 20,
+          width: '100%',
+        }}
+      />
+      <Box
+        ref={bottomHalf.setNodeRef}
+        sx={{
+          position: 'absolute',
+          bgcolor: 'red',
+          bottom: -20,
+          height: 20,
+          width: '100%',
+        }}
+      />
+
+      {mouseIsOver && (
+        <>
+          <Box
+            sx={{
+              position: 'absolute',
+              right: 15,
+              height: '100%',
+              display: 'flex',
+              paddingBottom: 1,
+            }}
+          >
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                removeTag(id);
+              }}
+            >
+              <ClearIcon sx={{ color: 'black' }} />
+            </IconButton>
+          </Box>
+        </>
+      )}
+      {/* {topHalf.isOver && <Box sx={{ position: 'absolute', top: -4, width: '100%', }} />} */}
       {children}
     </Box>
   );

@@ -32,7 +32,10 @@ export const Container = forwardRef(({ children }: ContainerProps, ref) => {
         display: 'flex',
         border: 1,
         borderRadius: 3,
-        margin: 2.5,
+        marginLeft: 2.5,
+        marginRight: 2.5,
+        marginTop: 5,
+        marginBottom: 5,
         flex: 1,
         alignSelf: 'stretch',
         minHeight: 50,
@@ -54,7 +57,10 @@ const SortableContainer = ({ id, getTags }: SortableContainer) => {
   const nestedTagIds = nestedTags.map((nestedTag) => nestedTag.id);
 
   const { setNodeRef } = useDroppable({
-    id: 'droppable-1',
+    id: id,
+    data: {
+      isSortableContainerDropArea: true,
+    }
   });
 
   return (
