@@ -13,27 +13,31 @@ import { CodeContext, CodeSnippetContext } from '../../App';
 import AppContext from '../../context/AppContext';
 
 interface CodePreviewProps {
-  treeData: object;
+  treeData: object; 
 }
 
 declare const prettier: any;
 declare const prettierPlugins: any;
 
-const CodePreview = ({ treeData: CodePreviewProps }) => {
+const CodePreview = ({ treeData}: CodePreviewProps) => {
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const { tags, setTags } = useContext(AppContext);
-  const { newTags, setNewTags } = useState<Tag[]>([]);
+  const { tags, setTags, currentId, setCurrentId, reset, setReset } = useContext(AppContext);
 
   useEffect(() => {
-    // Generate the code snippet
-    if(tags.length === 0) {
+
+    if(reset === true) {
+      setReset(false)
       return
     }
+
+    // Generate the code snippet
     renderCode(componentName);
     Prism.highlightAll();
-  }, [componentName, tags]); // Re-render and update the code when componentName change
-  //adding tags as a dependency breaks prism
+    
+  }, [componentName, tags]); // Re-render and update the code when componentName and tags change
+
+
 
   const addingChildrenTags = (elements: Tag[]): Tag[] => {
     //check if the container property is true
@@ -69,7 +73,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
   const childrenTags = addingChildrenTags(tags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
-    console.log('Tags', elements)
+    console.log(elements)
     const renderElements = elements.map((element) => {
 
       //checking for ul, ol and li
@@ -84,6 +88,8 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
       }
 
       if (element.children) {
+        generateCode(element.children)
+
         const children = element.children;
         const result = children.map((child) => {
 
@@ -92,10 +98,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
           //   console.log(child);
           //   generateCode(child.children)
           // }
-
-
-
-          //checking for ul li and ol
+           //checking for ul li and ol
           if(child.name === 'unordered list'){
             child.name = 'ul'
           }
@@ -124,6 +127,7 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
     });
     return renderElements.join('');
   };
+
 
   const additional = generateCode(childrenTags);
 
@@ -219,3 +223,19 @@ export default ${name};
 };
 
 export default CodePreview;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

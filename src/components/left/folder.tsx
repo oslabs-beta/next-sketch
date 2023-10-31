@@ -49,7 +49,7 @@ function Folder({
 
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const { tags, setTags } = useContext(AppContext);
+  const { tags, setTags, currentId, setCurrentId, reset, setReset } = useContext(AppContext);
   const [open, setOpen] = useState(false);
 
   const style = {
@@ -106,6 +106,11 @@ function Folder({
       visible: true,
       isFolder: arg,
     });
+
+    if(arg === false) {
+      console.log(e.target)
+      setComponentName()
+    }
   };
 
   const handleModalChange = async (e?: any) => {
@@ -128,10 +133,23 @@ function Folder({
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
+    //This is to avoid posting a new file every time you click it (useEffect in customEndPoint)
     setPostData(false);
-    setTags([]);
+
+    //activates the reset, it helps so the useEffect in codePreview doesn't run completely
+    setReset(true);
+
+    //data to relate to the new code snippet
+    console.log(explorer)
+    setComponentName(explorer.name)
     setCodeSnippet(explorer.preview);
+    setCurrentId(explorer.id);
+
+    //clears the tags
+    setTags([]);
   };
+
+
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {

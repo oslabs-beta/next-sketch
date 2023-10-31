@@ -84,6 +84,19 @@ const useTraverseTree = () => {
                   id: new Date().getTime(),
                   name: 'page.tsx',
                   isFolder: false,
+                  preview: `
+                  import React from 'react';
+                    
+                    const Page = () => {
+                      return (
+                        <>
+                          {/* Your page content goes here */}
+                        </>
+                      );
+                    };
+                    
+                    export default Page;
+                                `,
                   items: []
                 }]
 
@@ -130,10 +143,28 @@ const useTraverseTree = () => {
     return { ...tree, items: latestNode };
 }
 
+const updatePreview = ( tree: any,
+  fileId: number,
+  preview: string) => {
+
+  
+if(fileId == tree.id) {
+  // console.log('TREE PREVIEW', tree.preview)
+  // console.log('PASSED IN PREVIEW', preview)
+  tree.preview = preview;
+}
 
 
+let latestNode = [];
+    latestNode = tree.items.map((ob: object) => {
+      return updatePreview(ob, fileId, preview);
+    });
 
-  return { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles };
+    return { ...tree, items: latestNode };
+}
+
+
+  return { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles, updatePreview };
 }
 
 export default useTraverseTree;
