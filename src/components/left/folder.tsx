@@ -34,6 +34,7 @@ function Folder({
   handleInsertNode,
   handleDeleteNode,
   handleInputBoilerFiles,
+  handleInitialPreview,
   explorer,
   setFolder,
   folder,

@@ -44,7 +44,6 @@ export const CodeSnippetContext = createContext<CodeSnippetType | undefined>(
   undefined
 );
 
-
 const App = () => {
   const [folderExpanded, setFolderExpanded] = useState(false);
   const [open, setOpen] = useState(false);
@@ -62,14 +61,19 @@ const App = () => {
   const [currentId, setCurrentId] = useState<number>(8);
   const [update, setUpdate] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
-  const [previewFolder, setPreviewFolder] = useState<string>('')
+  const [previewFolder, setPreviewFolder] = useState<string>('');
+  const [currentParent, setCurrentParent] = useState<string>('');
 
-  const [srcApp, setSrcApp] = useState(explorer.items[2])
+  const [srcApp, setSrcApp] = useState(explorer.items[2]);
 
-  const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles, updatePreview } =
-    useTraverseTree();
-
-
+  const {
+    insertNode,
+    deleteNode,
+    createCustomEndpoint,
+    insertBoilerFiles,
+    updatePreview,
+    initialPreview,
+  } = useTraverseTree();
 
   const handleInsertNode = (
     folderId: number,
@@ -87,29 +91,41 @@ const App = () => {
 
     setExplorerData(finalTree);
     // setSrcApp(finalTree.items[2]);
-     for(let items of finalTree.items){
-      if(items.name === 'src') setSrcApp(items)
-      }
-  
-
+    for (let items of finalTree.items) {
+      if (items.name === 'src') setSrcApp(items);
+    }
   };
 
   const handleDeleteNode = (folderId: number) => {
     const finalTree: any = deleteNode(explorerData, folderId);
     setExplorerData(finalTree);
-    for(let items of finalTree.items){
-      if(items.name === 'src') setSrcApp(items)
-      }
-  
-
+    for (let items of finalTree.items) {
+      if (items.name === 'src') setSrcApp(items);
+    }
   };
 
-
-const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
+  const handleUpdatePreview = (fileId: number, preview: string, tags: []) => {
     const finalTree: any = updatePreview(explorerData, fileId, preview, tags);
 
-    setExplorerData(finalTree)
-}
+    setExplorerData(finalTree);
+  };
+
+  const handleInitialPreview = (
+    folderName: string,
+    fileName: string,
+    preview: string,
+    tags: []
+  ) => {
+    const finalTree: any = initialPreview(
+      explorerData,
+      folderName,
+      fileName,
+      preview,
+      tags
+    );
+
+    setExplorerData(finalTree);
+  };
 
   const handleCreateCustomEndpoint = (
     folderId: number,
@@ -124,10 +140,9 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
     );
     setExplorerData(finalTree);
     // setSrcApp(finalTree.items[2])
-    for(let items of finalTree.items){
-      if(items.name === 'src') setSrcApp(items)
-      }
-  
+    for (let items of finalTree.items) {
+      if (items.name === 'src') setSrcApp(items);
+    }
   };
 
   const handleInputBoilerFiles = (
@@ -149,10 +164,9 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
 
     setExplorerData(finalTree);
     // setSrcApp(finalTree.items[2]);
-    for(let items of finalTree.items){
-      if(items.name === 'src') setSrcApp(items)
-      }
-  
+    for (let items of finalTree.items) {
+      if (items.name === 'src') setSrcApp(items);
+    }
   };
 
   return (
@@ -188,10 +202,24 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
           borderColor: 'red',
         }}
       >
-
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
-            <AppContext.Provider value={{ tags, setTags, currentId, setCurrentId, update, setUpdate, reset, setReset, previewFolder, setPreviewFolder}}>
+            <AppContext.Provider
+              value={{
+                tags,
+                setTags,
+                currentId,
+                setCurrentId,
+                update,
+                setUpdate,
+                reset,
+                setReset,
+                previewFolder,
+                setPreviewFolder,
+                currentParent,
+                setCurrentParent,
+              }}
+            >
               <Grid
                 container
                 sx={{
@@ -225,6 +253,7 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
                     handleCreateCustomEndpoint={handleCreateCustomEndpoint}
                     handleInputBoilerFiles={handleInputBoilerFiles}
                     handleUpdatePreview={handleUpdatePreview}
+                    handleInitialPreview={handleInitialPreview}
                     explorer={explorerData}
                     open={open}
                     setOpen={setOpen}
@@ -239,6 +268,7 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
                     handleInsertNode={handleInsertNode}
                     handleDeleteNode={handleDeleteNode}
                     handleInputBoilerFiles={handleInputBoilerFiles}
+                    handleInitialPreview={handleInitialPreview}
                     explorer={explorerData}
                     folderExpanded={folderExpanded}
                     setFolderExpanded={setFolderExpanded}
@@ -268,12 +298,17 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
                   >
                     <StaticTagsContainer />
                     <Box
-                    sx={{ border: 2, borderColor: 'lawngreen', flexGrow: 1, background: '#42464C'}}
+                      sx={{
+                        border: 2,
+                        borderColor: 'lawngreen',
+                        flexGrow: 1,
+                        background: '#42464C',
+                      }}
                     >
-                      <Tree explorer={explorerData} srcApp={srcApp}/>
+                      <Tree explorer={explorerData} srcApp={srcApp} />
                     </Box>
                   </Grid>
-                  
+
                   <Grid
                     item
                     sm={3.75}
@@ -298,7 +333,10 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
                         paddingRight: 2,
                       }}
                     >
-                      <DisplayContainer explorer={explorerData} handleUpdatePreview={handleUpdatePreview} />
+                      <DisplayContainer
+                        explorer={explorerData}
+                        handleUpdatePreview={handleUpdatePreview}
+                      />
                     </Box>
                     <CodePreview treeData={explorerData} />
                   </Grid>

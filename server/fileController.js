@@ -11,6 +11,14 @@ const fileController = {
   postFolder: function (req, res, next) {
     const folderDir = 'server/ExportFolder/';
 
+    const fileProperties = [
+      req.body.folderName,
+      req.body.fileName,
+      req.body.codeSnippet,
+    ];
+
+    res.locals.fileProps = fileProperties;
+
     if (req.body.name) {
       const dir = 'server/ExportFolder/NextSketch/src/app/';
       fs.mkdirSync(path.join(dir, req.body.name));
