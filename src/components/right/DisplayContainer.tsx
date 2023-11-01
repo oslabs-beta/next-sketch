@@ -1,30 +1,16 @@
 import { Box, Typography } from '@mui/material';
 import {
-  DndContext,
   DragEndEvent,
-  DragOverEvent,
-  DragOverlay,
-  DragStartEvent,
-  KeyboardSensor,
-  PointerSensor,
   UniqueIdentifier,
-  closestCenter,
   useDndMonitor,
   useDroppable,
-  useSensor,
-  useSensors,
 } from '@dnd-kit/core';
-import {
-  SortableContext,
-  arrayMove,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import SortableContainer, { Container } from './SortableContainer';
 import { useContext, useState } from 'react';
-import SortableItem, { Item } from './SortableItem';
 import AppContext from '../../context/AppContext';
 import { Tag } from '../../utils/interfaces';
+import { TestItem } from './TestItem';
+import { TestContainer } from './TestContainer';
+
 import { CodeSnippetContext } from '../../App';
 
 /**
@@ -36,27 +22,36 @@ import { CodeSnippetContext } from '../../App';
 const DisplayContainer = ({handleUpdatePreview, explorer}) => {
   const { tags, setTags, currentId, update, setUpdate } = useContext(AppContext);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+
+  const tagsWithoutParents = tags.filter((prev) => !prev.parent);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
-  const { setNodeRef } = useDroppable({
+  const { setNodeRef, isOver } = useDroppable({
     id: 'display-container-drop-area',
     data: {
       isDisplayContainerDropArea: true,
     },
   });
 
+  console.log('tags', tags);
+
   useDndMonitor({
+    // onDragOver: (event: DragOverEvent) => {
+    //   console.log('drag over event', event.over);
+    // },
     onDragEnd: async (event: DragEndEvent) => {
+      console.log('drag end event', event);
       const { active, over } = event;
 
       const isDraggableItem = active.data?.current?.isDraggableItem;
-      const isDisplayContainerDropArea =
+      const isDroppingOverDisplayContainerDropArea =
         over?.data?.current?.isDisplayContainerDropArea;
 
-      const droppingItemOverDisplayContainerDropArea =
-        isDraggableItem && isDisplayContainerDropArea;
+      const droppingDraggableItemOverDisplayContainerDropArea =
+        isDraggableItem && isDroppingOverDisplayContainerDropArea;
 
-      if (droppingItemOverDisplayContainerDropArea) {
+      // scenario 1: dropping draggable item over display container drop area
+      if (droppingDraggableItemOverDisplayContainerDropArea) {
         const newTag: Tag = {
           id: active.id,
           name: active.data.current?.name,
@@ -64,196 +59,203 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
           attribute: active.data.current?.attribute,
         };
         await setTags([...tags, newTag]);
+        setUpdate(true);
+        return;
       }
 
-      setUpdate(true)
+      const isDroppingOverTestItemTopHalf =
+        over?.data?.current?.isTopHalfTestItem;
+      const isDroppingOverTestItemBottomHalf =
+        over?.data?.current?.isBottomHalfTestItem;
 
-    }
+      const isDroppingOverTestItem =
+        isDroppingOverTestItemTopHalf || isDroppingOverTestItemBottomHalf;
+
+      const isDroppingOverTestContainerTopArea =
+        over?.data?.current?.isTopAreaTestContainer;
+      const isDroppingOverTestContainerMiddleArea =
+        over?.data?.current?.isMiddleAreaTestContainer;
+      const isDroppingOverTestContainerBottomArea =
+        over?.data?.current?.isBottomAreaTestContainer;
+
+      const isDroppingOverTestContainer =
+        isDroppingOverTestContainerTopArea ||
+        isDroppingOverTestContainerMiddleArea ||
+        isDroppingOverTestContainerBottomArea;
+
+      const droppingDraggableItemOverTestItemOrTestContainer =
+        isDraggableItem &&
+        (isDroppingOverTestItem || isDroppingOverTestContainer);
+
+      // scenario 2: dropping draggable item over a test item or container (either above or below it)
+      if (droppingDraggableItemOverTestItemOrTestContainer) {
+        const newTag: Tag = {
+          id: active.id,
+          name: active.data.current?.name,
+          container: active.data.current?.container,
+          attribute: active.data.current?.attribute,
+        };
+
+        const overId = over.data?.current?.tagId;
+
+        const overTagIndex = tags.findIndex((tag) => tag.id === overId);
+        if (overTagIndex === -1) {
+          throw new Error('tag not found');
+        }
+
+        let indexForNewTag = overTagIndex;
+        if (
+          isDroppingOverTestItemBottomHalf ||
+          isDroppingOverTestContainerBottomArea
+        ) {
+          indexForNewTag = overTagIndex + 1;
+        }
+        // add tag
+        await setTags((prev) => {
+          const newTags = [...prev];
+          newTags.splice(indexForNewTag, 0, newTag);
+          return newTags;
+        });
+
+        setUpdate(true);
+      }
+
+      const isDraggingTestItem = active?.data?.current?.isTestItem;
+      const isDraggingTestContainer = active?.data?.current?.isTestContainer;
+
+      const isDraggingTestItemOrTestContainer =
+        isDraggingTestItem || isDraggingTestContainer;
+
+      const draggingTestItemOrTestContainerOverAnotherTestItemOrTestContainer =
+        isDraggingTestItemOrTestContainer &&
+        (isDroppingOverTestItem || isDroppingOverTestContainer);
+
+      // scenario 3: dragging test item or container over another test item or container (placement of test items once its in the display container)
+      if (draggingTestItemOrTestContainerOverAnotherTestItemOrTestContainer) {
+        // console.log('hello');
+        const activeId = active.data?.current?.tagId;
+        const overId = over.data?.current?.tagId;
+
+        const activeTagIndex = tags.findIndex((tag) => tag.id === activeId);
+        const overTagIndex = tags.findIndex((tag) => tag.id === overId);
+
+        if (activeTagIndex === -1 || overTagIndex === -1) {
+          throw new Error('tag not found');
+        }
+
+        const activeTag = { ...tags[activeTagIndex] };
+
+        // console.log('activeTag', activeTag);
+
+        // remove tag
+        await setTags((prev) => prev.filter((tag) => tag.id !== activeId));
+
+        // scenario 4: dragging test item or container into a test container
+        if (isDroppingOverTestContainerMiddleArea) {
+          activeTag.parent = overId;
+        }
+
+        let indexForNewTag = overTagIndex;
+
+        if (isDroppingOverTestContainerTopArea) {
+          activeTag.parent = false;
+        }
+
+        if (
+          isDroppingOverTestItemBottomHalf ||
+          isDroppingOverTestContainerBottomArea
+        ) {
+          indexForNewTag = overTagIndex + 1;
+          activeTag.parent = false;
+        }
+
+        // add tag
+        await setTags((prev) => {
+          const newTags = [...prev];
+          newTags.splice(indexForNewTag, 0, activeTag);
+          return newTags;
+        });
+        setUpdate(true);
+      }
+
+      // scenario 5: dropping draggable item into test container middle area
+      const droppingDraggableItemOverTestContainerMiddleArea =
+        isDraggableItem && isDroppingOverTestContainerMiddleArea;
+
+      if (droppingDraggableItemOverTestContainerMiddleArea) {
+        const newTag: Tag = {
+          id: active.id,
+          name: active.data.current?.name,
+          container: active.data.current?.container,
+          attribute: active.data.current?.attribute,
+          parent: over?.data.current?.tagId,
+        };
+        await setTags([...tags, newTag]);
+        setUpdate(true);
+        return;
+      }
+    },
   });
 
-
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  /**
-   * @method isContainer
-   * @description - checks if it the tag is a container
-   * @input - id of type number, null or undefined
-   * @output - boolean, true if it is container false if it isn't
-   */
-
-  const isContainer = (id: UniqueIdentifier | null | undefined) => {
-    const tag = tags.find((tag) => tag.id === id);
-    return !tag ? false : tag.container;
-  };
-
-  /**
-   * @method getTags
-   * @description - Checks the tags array to find elements with parent property
-   * @input - optional parent
-   * @output - array with false and strings as values
-   */
-  const getTags = (parent?: UniqueIdentifier) => {
-    return tags.filter((tag) => {
-      if (!parent) {
-        return !tag.parent;
-      }
-
-      return tag.parent === parent;
-    });
-  };
-
-
-  /**
-   * @method getTagIds
-   * @description - maps through the array returned by getTags
-   * @input - optional parent of type unique identifier
-   * @output - An array of tag IDs that have parent
-   */
-
-  const getTagIds = (parent?: UniqueIdentifier) => {
-    return getTags(parent).map((tag) => tag.id);
-  };
-
-
-  const findParent = (id: UniqueIdentifier) => {
-    const tag = tags.find((tag) => tag.id === id);
-    return !tag ? false : tag.parent;
-  };
-
-  const getDragOverlay = () => {
-    if (!activeId) return null;
-
-    const index = tags.findIndex((tag) => tag.id === activeId);
-    const name = tags[index].name;
-
-    if (isContainer(activeId)) {
-      return (
-        <Container>
-          {getTags(activeId).map((tag) => (
-            <Item key={tag.id} name={tag.name} />
-          ))}
-        </Container>
-      );
-    }
-    return <Item name={name} />;
-  };
-
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event;
-    const { id } = active;
-    setActiveId(id);
-  };
-
-  const handleDragOver = (event: DragOverEvent) => {
-    const { active, over, delta } = event;
-    const { id } = active;
-    let overId!: UniqueIdentifier;
-    if (over) overId = over.id;
-
-    const overParent = findParent(overId);
-    const overIsContainer = isContainer(overId);
-    const activeIsContainer = isContainer(activeId);
-
-    if (overIsContainer) {
-      if (activeIsContainer) return;
-    }
-
-    setTags((tags) => {
-      const activeIndex = tags.findIndex((tag) => tag.id === id);
-      const overIndex = tags.findIndex((tag) => tag.id === overId);
-
-      let newIndex = overIndex;
-      const isBelowLastItem =
-        over &&
-        overIndex === tags.length - 1 &&
-        delta.y > over.rect.top + over.rect.height;
-
-      const modifier = isBelowLastItem ? 1 : 0;
-
-      newIndex = overIndex >= 0 ? overIndex + modifier : tags.length + 1;
-
-      let nextParent;
-      if (overId) {
-        nextParent = overIsContainer ? overId : overParent;
-      }
-
-      tags[activeIndex].parent = nextParent;
-      const nextItems = arrayMove(tags, activeIndex, newIndex);
-
-      return nextItems;
-    });
-    setUpdate(true);
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    const { id } = active;
-    let overId: UniqueIdentifier;
-    if (over) overId = over.id;
-
-    const activeIndex = tags.findIndex((tag) => tag.id === id);
-    const overIndex = tags.findIndex((tag) => tag.id === overId);
-
-    const newIndex = overIndex >= 0 ? overIndex : 0;
-
-    if (activeIndex !== overIndex) {
-      setTags((tags) => arrayMove(tags, activeIndex, newIndex));
-    }
-    setActiveId(null);
-  };
-
   return (
-    <DndContext
-      sensors={sensors}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-      collisionDetection={closestCenter}
-    >
-      <SortableContext
-        id='root'
-        items={getTagIds()}
-        strategy={verticalListSortingStrategy}
+    <Box>
+      <Typography variant='h6'>My Page</Typography>
+      <Box
+        sx={{
+          border: 2,
+          borderColor: 'magenta',
+          ...(isOver && {
+            borderColor: 'red',
+          }),
+          height: '28vh',
+          overflow: 'auto',
+          scrollbarWidth: 'none', // Hide the scrollbar for firefox
+          '&::-webkit-scrollbar': {
+            display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+          },
+          '&-ms-overflow-style:': {
+            display: 'none', // Hide the scrollbar for IE
+          },
+        }}
+        ref={setNodeRef}
       >
-        <Typography variant='h6'>My Page</Typography>
-        <Box
-          sx={{
-            border: 2,
-            borderColor: 'magenta',
-            height: '28vh',
-            overflow: 'auto',
-            scrollbarWidth: 'none', // Hide the scrollbar for firefox
-            '&::-webkit-scrollbar': {
-              display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-            },
-            '&-ms-overflow-style:': {
-              display: 'none', // Hide the scrollbar for IE
-            },
-          }}
-          ref={setNodeRef}
-        >
-          {getTags().map((tag) => {
+        {/* drop here text */}
+        {!isOver && tags.length === 0 && (
+          <Box
+            sx={{
+              display: 'flex',
+              height: '60%',
+              justifyContent: 'center',
+              alignItems: 'flex-end',
+            }}
+          >
+            <Typography variant='h2'>Drop Here</Typography>
+          </Box>
+        )}
+
+        {/* {isOver && tags.length === 0 && (
+          //
+          <Box
+            sx={{
+              display: 'flex',
+              bgcolor: 'lightgrey',
+              margin: 2.5,
+              height: 60,
+              borderRadius: 2,
+            }}
+          ></Box>
+        )} */}
+
+        {/* renders tags array */}
+        {tags.length > 0 &&
+          tagsWithoutParents.map((tag) => {
             if (tag.container) {
-              return (
-                <SortableContainer key={tag.id} id={tag.id} getTags={getTags} />
-              );
+              return <TestContainer key={tag.id} tag={tag} />;
             }
-            return (
-              <SortableItem key={tag.id} id={tag.id}>
-                <Item name={tag.name} />
-              </SortableItem>
-            );
+            return <TestItem key={tag.id} tag={tag} />;
           })}
-        </Box>
-      </SortableContext>
-      <DragOverlay>{getDragOverlay()}</DragOverlay>
-    </DndContext>
+      </Box>
+    </Box>
   );
 };
 

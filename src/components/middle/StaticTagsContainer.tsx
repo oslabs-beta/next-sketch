@@ -2,7 +2,6 @@ import { DraggableItem } from './DraggableItem';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
 import { generateId } from '../../utils/generateId';
-import DragOverlayWrapper from './DragOverlayWrapper';
 
 /**
  * @description - container for draggable HTML tag elements
@@ -119,7 +118,6 @@ const StaticTagsContainer = (): JSX.Element => {
           </DraggableItem>
         ))}
       </Box>
-      <DragOverlayWrapper />
     </Box>
   );
 };
