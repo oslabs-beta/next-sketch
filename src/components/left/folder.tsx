@@ -49,9 +49,18 @@ function Folder({
 
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const { tags, setTags, currentId, setCurrentId, reset, setReset, previewFolder, setPreviewFolder} = useContext(AppContext);
+  const {
+    tags,
+    setTags,
+    currentId,
+    setCurrentId,
+    reset,
+    setReset,
+    previewFolder,
+    setPreviewFolder,
+  } = useContext(AppContext);
   const [open, setOpen] = useState(false);
-  const [expand, setExpand] = useState(false)
+  const [expand, setExpand] = useState(false);
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -108,9 +117,9 @@ function Folder({
       isFolder: arg,
     });
 
-    if(arg === false) {
-      console.log(e.target)
-      setComponentName()
+    if (arg === false) {
+      console.log(e.target);
+      setComponentName();
     }
   };
 
@@ -128,18 +137,15 @@ function Folder({
 
     if (!cacheModal.includes(fileName)) {
       cacheModal.push(fileName);
-      
     }
 
     setComponentName(fileName);
-
-
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
     //This is to avoid posting a new file every time you click it (useEffect in customEndPoint)
-    
-    setPreviewFolder(explorer.parent)
+
+    setPreviewFolder(explorer.parent);
 
     setPostData(false);
 
@@ -147,21 +153,19 @@ function Folder({
     setReset(true);
 
     //data to relate to the new code snippet
-    setComponentName(explorer.name)
+    setComponentName(explorer.name);
     setCodeSnippet(explorer.preview);
     setCurrentId(explorer.id);
 
     //clears the tags
-    if(explorer.tags === undefined) {
-      setTags([])
+    if (explorer.tags === undefined) {
+      setTags([]);
     } else {
       setTags(explorer.tags);
     }
     // console.log('EXPLORER TAGS', explorer.tags)
     // setTags(explorer.tags)
   };
-
-
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
@@ -192,6 +196,8 @@ function Folder({
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
     e?.stopPropagation();
     handleDeleteNode(explorer.id);
+    setComponentName('Page');
+    setTags([]);
 
     await fetch('http://localhost:3000/', {
       method: 'Delete',
@@ -391,9 +397,8 @@ function Folder({
       </div>
     );
   } else if (explorer.name) {
-
     return (
-      <div className='folder' onClick={retrieveCode} >
+      <div className='folder' onClick={retrieveCode}>
         {explorer.name.slice(-3) === 'tsx' ? (
           <FontAwesomeIcon icon={faAtom} />
         ) : (
