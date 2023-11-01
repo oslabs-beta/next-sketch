@@ -104,7 +104,6 @@ const fileController = {
         }
 
         if (file === req.body.folder) {
-          console.log(req.body.codeSnippet)
           fs.writeFileSync(
             path.join(name, req.body.fileName),
             req.body.codeSnippet
