@@ -7,6 +7,7 @@ import {
   faFileCirclePlus,
   faAtom,
   faMinus,
+  faSliders,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
@@ -41,7 +42,6 @@ function Folder({
   setPostData,
   postData,
 }: any) {
-  const [expand, setExpand] = useState<boolean>(false);
   const [folderIcon, setFolderIcon] = useState<string>('▶');
   const [folderLogo, setFolderLogo] = useState(
     <FontAwesomeIcon icon={faFolderClosed} />
@@ -51,6 +51,7 @@ function Folder({
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const { tags, setTags, currentId, setCurrentId, reset, setReset, previewFolder, setPreviewFolder} = useContext(AppContext);
   const [open, setOpen] = useState(false);
+  const [expand, setExpand] = useState(false)
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -132,13 +133,11 @@ function Folder({
 
     setComponentName(fileName);
 
-    console.log('folder state', postData)
 
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
     //This is to avoid posting a new file every time you click it (useEffect in customEndPoint)
-    console.log('explorer', explorer)
     
     setPreviewFolder(explorer.parent)
 
@@ -169,14 +168,11 @@ function Folder({
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setFolder(e.currentTarget.value);
-      const isFolder = showInput.isFolder;
-
-      let fileName = e.currentTarget.value;
 
       const body = {
         fileName: e.currentTarget.value,
         folderName: explorer.name,
-        isFolder: isFolder,
+        isFolder: showInput.isFolder,
       };
 
       await fetch('http://localhost:3000/', {

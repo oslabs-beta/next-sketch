@@ -39,8 +39,7 @@ app.get('/export',  (req,res) => {
   
     archive.finalize();
     output.on('close', () => {
-      res.status(200).send();
-    });})
+      res.download('exported_folder.zip');    });})
 
 
 app.get(

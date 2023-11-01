@@ -73,64 +73,32 @@ const CodePreview = ({ treeData}: CodePreviewProps) => {
   const childrenTags = addingChildrenTags(tags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
-
-    console.log(elements)
-    const renderElements = elements.map((element) => {
-
-      //checking for ul, ol and li
-      if(element.name === 'unordered list'){
-        element.name = 'ul'
-      }
-      if(element.name === 'ordered list'){
-        element.name = 'ol'
-      }
-      if(element.name === 'list item'){
-        element.name = 'li'
-      }
-
-      if (element.children) {
-        generateCode(element.children)
-
-
-        const children = element.children;
-        const result = children.map((child) => {
-
-          // if(child.children) {
-          //   console.log('NESTED');
-          //   console.log(child);
-          //   generateCode(child.children)
-          // }
-           //checking for ul li and ol
-          if(child.name === 'unordered list'){
-            child.name = 'ul'
+    
+        const renderElements = elements.map((element) => {
+    
+          let tagStart = `<${element.name}`;
+          let tagEnd = `</${element.name}>`;
+  
+          if (element.attribute) {
+            tagStart += ` ${element.attribute}`;
           }
-          if(child.name === 'ordered list'){
-            child.name = 'ol'
-          }
-          if(child.name === 'list item'){
-            child.name = 'li'
-          }
-
-
-          if (child.name === 'img' || child.name === 'link') {
-            return `<${child.name} ${child.attribute} />`;
+    
+          if (element.name === 'img' || element.name === 'link') {
+            tagStart += ' />';
+            tagEnd = '';
           } else {
-
-            return `<${child.name}></${child.name}>`;
+            tagStart += '>';
           }
-
-        });
-
-        return `<${element.name}>${result.join('')}</${element.name}>`;
-      } else if (!element.container && !element.parent) {
-        if (element.name === 'img' || element.name === 'link') {
-          return `<${element.name} ${element.attribute} />`;
-        }
-        return `<${element.name}></${element.name}>`;
-      } 
-
+    
+          if (element.children) {
+            const children = element.children;
+            const result = children.map((child) => generateCode([child]));
+            return `${tagStart}${result.join('')}${tagEnd}`;
+          } else {
+            return `${tagStart}${tagEnd}`;
+          }
     });
-    return renderElements.join('');
+        return renderElements.join('');
   };
 
 

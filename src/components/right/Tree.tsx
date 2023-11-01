@@ -11,22 +11,7 @@ const Tree = ({ explorer, srcApp }) => {
   const svgRef = useRef(null);
   const [width, setWidth] = useState('100%');
   const [height, setHeight] = useState('100%');
-  const [open, setOpen] = useState(false);
   const [resetView, setResetView] = useState(false)
-
-  // const style = {
-  //   position: 'absolute' as 'absolute',
-  //   top: '50%',
-  //   left: '50%',
-  //   transform: 'translate(-50%, -50%)',
-  //   width: 1000,
-  //   height: 'fit-content',
-  //   bgcolor: '#42464C',
-  //   border: '2px solid #000',
-  //   boxShadow: 24,
-  //   p: 4,
-  // };
-
 
 
   const createTree = (data) => {
@@ -145,34 +130,6 @@ svg.call(zoomBehavior);
 
   return (
     <div style={{height: '10px'}}>
-    {/* <button onClick={() => setOpen(true)}>
-      Tree
-      </button>
-
-    <Modal
-          open={open}
-          aria-labelledby='modal-title'
-          aria-describedby='modal-description'
-        >
-           <Box sx={style}>
-           <Typography
-              id='modal-title'
-              variant='h6' 
-              component='h2'
-              style={{ fontSize: 30 }}
-            >
-              src/app
-            </Typography>
-
-      
-      <svg ref={svgRef} style={treeStyles}></svg>
-      <Button onClick={() => setOpen(false)} sx={{ fontSize: 20 }}>
-              Close
-            </Button>
-      </Box>
-
-      
-      </Modal> */}
         <button onClick={() => setResetView(!resetView)} style={{color: 'white', marginLeft: '10px', backgroundColor: 'black'}}>Reset View</button>
             <svg ref={svgRef} style={treeStyles}></svg>
 

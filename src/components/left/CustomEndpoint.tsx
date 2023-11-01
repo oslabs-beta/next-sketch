@@ -41,7 +41,7 @@ const CustomEndpoint = ({
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const {tags, setTags, update, setUpdate, currentId, previewFolder, setPreviewFolder } = useContext(AppContext);
+  const {tags, setTags, update, setUpdate, currentId, previewFolder, setPreviewFolder} = useContext(AppContext);
 
 
   //deconstructing the reducer elements
@@ -80,7 +80,6 @@ const CustomEndpoint = ({
 
 
   useEffect(() => {
-    console.log('useEffect customendpoint')
 
     //creating new files with code
     if (postData === true) {
