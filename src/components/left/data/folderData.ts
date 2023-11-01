@@ -19,7 +19,7 @@ const explorer = {
             isFolder: false,
             items: []
           }
-        ]
+        ],
       },
       {
         id: '24',

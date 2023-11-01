@@ -62,6 +62,7 @@ const App = () => {
   const [currentId, setCurrentId] = useState<number>(8);
   const [update, setUpdate] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
+  const [previewFolder, setPreviewFolder] = useState<string>('')
 
   const [srcApp, setSrcApp] = useState(explorer.items[2])
 
@@ -174,7 +175,7 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
 
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
-            <AppContext.Provider value={{ tags, setTags, currentId, setCurrentId, update, setUpdate, reset, setReset }}>
+            <AppContext.Provider value={{ tags, setTags, currentId, setCurrentId, update, setUpdate, reset, setReset, previewFolder, setPreviewFolder }}>
               <Grid
                 container
                 sx={{

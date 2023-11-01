@@ -49,7 +49,7 @@ function Folder({
 
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const { tags, setTags, currentId, setCurrentId, reset, setReset } = useContext(AppContext);
+  const { tags, setTags, currentId, setCurrentId, reset, setReset, previewFolder, setPreviewFolder} = useContext(AppContext);
   const [open, setOpen] = useState(false);
 
   const style = {
@@ -136,11 +136,7 @@ function Folder({
     //This is to avoid posting a new file every time you click it (useEffect in customEndPoint)
     console.log('explorer', explorer)
     
-
-
-
-
-
+    setPreviewFolder(explorer.parent)
 
     setPostData(false);
 
