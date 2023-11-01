@@ -26,7 +26,7 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
   const tagsWithoutParents = tags.filter((prev) => !prev.parent);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
-  const { setNodeRef } = useDroppable({
+  const { setNodeRef, isOver } = useDroppable({
     id: 'display-container-drop-area',
     data: {
       isDisplayContainerDropArea: true,
@@ -93,6 +93,7 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
           id: active.id,
           name: active.data.current?.name,
           container: active.data.current?.container,
+          attribute: active.data.current?.attribute,
         };
 
         const overId = over.data?.current?.tagId;
@@ -110,11 +111,13 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
           indexForNewTag = overTagIndex + 1;
         }
         // add tag
-        setTags((prev) => {
+        await setTags((prev) => {
           const newTags = [...prev];
           newTags.splice(indexForNewTag, 0, newTag);
           return newTags;
         });
+
+        setUpdate(true);
       }
 
       const isDraggingTestItem = active?.data?.current?.isTestItem;
@@ -145,7 +148,7 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
         // console.log('activeTag', activeTag);
 
         // remove tag
-        setTags((prev) => prev.filter((tag) => tag.id !== activeId));
+        await setTags((prev) => prev.filter((tag) => tag.id !== activeId));
 
         // scenario 4: dragging test item or container into a test container
         if (isDroppingOverTestContainerMiddleArea) {
@@ -167,11 +170,12 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
         }
 
         // add tag
-        setTags((prev) => {
+        await setTags((prev) => {
           const newTags = [...prev];
           newTags.splice(indexForNewTag, 0, activeTag);
           return newTags;
         });
+        setUpdate(true);
       }
 
       // scenario 5: dropping draggable item into test container middle area
@@ -183,9 +187,11 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
           id: active.id,
           name: active.data.current?.name,
           container: active.data.current?.container,
+          attribute: active.data.current?.attribute,
           parent: over?.data.current?.tagId,
         };
-        setTags([...tags, newTag]);
+        await setTags([...tags, newTag]);
+        setUpdate(true);
         return;
       }
     },
