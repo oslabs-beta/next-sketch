@@ -213,7 +213,6 @@ function Folder({
       <div style={{ marginTop: 5 }}>
         <Modal
           open={open}
-          onClose={handleClose}
           aria-labelledby='modal-title'
           aria-describedby='modal-description'
         >

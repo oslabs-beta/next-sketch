@@ -194,7 +194,6 @@ const CustomEndpoint = ({
 
       <Modal
         open={open}
-        onClose={handleClose}
         aria-labelledby='modal-title'
         aria-describedby='modal-description'
       >
