@@ -146,7 +146,11 @@ function Folder({
     setCurrentId(explorer.id);
 
     //clears the tags
-    setTags([]);
+    if(explorer.tags === undefined) {
+      setTags([])
+    } else {
+      setTags(explorer.tags);
+    }
   };
 
 

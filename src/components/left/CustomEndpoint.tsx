@@ -80,6 +80,7 @@ const CustomEndpoint = ({
 
 
   useEffect(() => {
+
     //creating new files with code
     if (postData === true) {
       handlePostingFiles(folder, componentName, codeSnippet);
@@ -88,7 +89,9 @@ const CustomEndpoint = ({
     //updating code in existing files
     if (update === true) {
       handleUpdatingFiles(componentName, codeSnippet, previewFolder);
-      handleUpdatePreview(currentId, codeSnippet);
+
+      handleUpdatePreview(currentId, codeSnippet, tags);
+
       setUpdate(false)
     }
     Prism.highlightAll();

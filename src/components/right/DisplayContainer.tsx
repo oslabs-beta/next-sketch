@@ -67,8 +67,6 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
       }
 
       setUpdate(true)
-      // console.log('On drop',codeSnippet)
-      // handleUpdatePreview(currentId, codeSnippet)
 
     }
   });

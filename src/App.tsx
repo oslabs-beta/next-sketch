@@ -92,8 +92,9 @@ const srcApp = explorer.items[2]
   };
 
 
-const handleUpdatePreview = ( fileId: number, preview: string) => {
-    const finalTree: any = updatePreview(explorerData, fileId, preview);
+const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
+    const finalTree: any = updatePreview(explorerData, fileId, preview, tags);
+
     setExplorerData(finalTree)
 }
 
@@ -115,7 +116,8 @@ const handleUpdatePreview = ( fileId: number, preview: string) => {
     folderId: number,
     item: string,
     folderName: string,
-    preview: string
+    preview: string,
+    tags: []
   ) => {
     // if (item === '') return;
     const finalTree: any = insertBoilerFiles(
@@ -123,7 +125,8 @@ const handleUpdatePreview = ( fileId: number, preview: string) => {
       folderId,
       item,
       folderName,
-      preview
+      preview,
+      tags
     );
 
     setExplorerData(finalTree);
