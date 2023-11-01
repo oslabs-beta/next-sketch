@@ -127,6 +127,7 @@ function Folder({
   const handleModalChange = async (e?: any) => {
     const name = e.target.name.slice(0, -4);
     setPostData(true);
+    setTags([]);
 
     setSelectedItems({
       ...selectedItems,
