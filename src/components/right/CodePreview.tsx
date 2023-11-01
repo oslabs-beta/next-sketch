@@ -74,6 +74,7 @@ const CodePreview = ({ treeData}: CodePreviewProps) => {
 
   const generateCode = (elements: Tag[]): JSX.Element => {
 
+    console.log(elements)
     const renderElements = elements.map((element) => {
 
       //checking for ul, ol and li

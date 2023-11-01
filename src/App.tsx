@@ -96,6 +96,7 @@ const App = () => {
 
 const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
     const finalTree: any = updatePreview(explorerData, fileId, preview, tags);
+
     setExplorerData(finalTree)
 }
 
