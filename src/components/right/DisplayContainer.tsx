@@ -46,7 +46,7 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
   });
 
   useDndMonitor({
-    onDragEnd: (event: DragEndEvent) => {
+    onDragEnd: async (event: DragEndEvent) => {
       const { active, over } = event;
 
       const isDraggableItem = active.data?.current?.isDraggableItem;
@@ -63,7 +63,7 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
           container: active.data.current?.container,
           attribute: active.data.current?.attribute,
         };
-        setTags([...tags, newTag]);
+        await setTags([...tags, newTag]);
       }
 
       setUpdate(true)

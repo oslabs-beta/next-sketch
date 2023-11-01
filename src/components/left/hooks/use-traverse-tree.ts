@@ -147,6 +147,7 @@ const useTraverseTree = () => {
 
 const updatePreview = ( tree: any,
   fileId: number,
+
   preview: string,
   tags: []) => {
 
@@ -157,12 +158,15 @@ if(fileId == tree.id) {
   // console.log('PASSED IN PREVIEW', preview)
   tree.preview = preview;
   tree.tags = tags
+
 }
 
 
 let latestNode = [];
     latestNode = tree.items.map((ob: object) => {
+
       return updatePreview(ob, fileId, preview, tags);
+
     });
 
     return { ...tree, items: latestNode };
