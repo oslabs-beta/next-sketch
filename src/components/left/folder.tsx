@@ -134,14 +134,20 @@ function Folder({
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
     //This is to avoid posting a new file every time you click it (useEffect in customEndPoint)
-    console.log(explorer)
+    console.log('explorer', explorer)
+    
+
+
+
+
+
+
     setPostData(false);
 
     //activates the reset, it helps so the useEffect in codePreview doesn't run completely
     setReset(true);
 
     //data to relate to the new code snippet
-    console.log(explorer)
     setComponentName(explorer.name)
     setCodeSnippet(explorer.preview);
     setCurrentId(explorer.id);
@@ -152,7 +158,7 @@ function Folder({
     } else {
       setTags(explorer.tags);
     }
-    console.log('EXPLORER TAGS', explorer.tags)
+    // console.log('EXPLORER TAGS', explorer.tags)
     // setTags(explorer.tags)
   };
 

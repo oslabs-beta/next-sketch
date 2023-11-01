@@ -63,11 +63,12 @@ const App = () => {
   const [update, setUpdate] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
 
+  const [srcApp, setSrcApp] = useState(explorer.items[2])
+
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles, updatePreview } =
     useTraverseTree();
 
 
-const srcApp = explorer.items[2]
 
   const handleInsertNode = (
     folderId: number,
@@ -84,6 +85,7 @@ const srcApp = explorer.items[2]
     );
 
     setExplorerData(finalTree);
+    setSrcApp(finalTree.items[2])
   };
 
   const handleDeleteNode = (folderId: number) => {
@@ -109,6 +111,8 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
       isFolder
     );
     setExplorerData(finalTree);
+    setSrcApp(finalTree.items[2])
+
   };
 
   const handleInputBoilerFiles = (
@@ -129,6 +133,8 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
     );
 
     setExplorerData(finalTree);
+    setSrcApp(finalTree.items[2]);
+
   };
 
   return (

@@ -136,7 +136,7 @@ svg.call(zoomBehavior);
 
 
 
-  }, [explorer, width, height, open, resetView]);
+  }, [explorer, width, height, srcApp, resetView]);
 
   const treeStyles = {
     height: '400px',
