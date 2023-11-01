@@ -15,6 +15,7 @@ div {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 3px;
+    overflow-y: scroll;
   }
   
   /* Styling for the folder text and buttons */
@@ -23,6 +24,7 @@ div {
     font-size: 16px;
     font-weight: normal;
     color: #333;
+    
   }
   
   /* Styling for the buttons inside the folder */
@@ -61,11 +63,16 @@ form {
   
 }
 
+form:hover{
+  cursor: text;
+}
+
 /* Styles for the input field */
 input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
+  width: 80%;
   border-radius: 5px;
   font-size: 16px;
   margin-right: 5px;
@@ -78,11 +85,11 @@ button[type="submit"] {
   color: #fff;
   border: none;
   border-radius: 5px;
-  padding: 0px 15px;
+  padding: 0px 10px;
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-left: 10px;
+  margin-left: 20px;
   box-sizing: border-box; /* Include padding and border in the width */
 }
 
@@ -97,12 +104,82 @@ button[type="submit"]:disabled {
   cursor: not-allowed;
 }
 
-@keyframes blink {
-    0%, 100% {
-      border-color: #333; /* Set caret color */
+
+  /* Example container styles */
+#tree-container {
+  width: 200%; /* Set the container width to 100% */
+  max-height: 1000px; /* Set a maximum height, adjust as needed */
+  overflow: auto; /* Add scrollbars if the content overflows */
+  position: relative; /* Ensure correct positioning */
+  /* Add other styles as needed */
+}
+
+
+ 
+ 
+  
+/* YourComponent.css */
+
+/* Styles for the input container */
+.input-container {
+  position: relative;
+}
+
+/* Styles for the input field */
+#searchInput {
+  border: none; /* Remove the default input border */
+  outline: none; /* Remove the default input focus outline */
+  padding: 0; /* Remove any padding or margins */
+  width: 100%;
+  
+  
+}
+
+/* Styles for the blinking cursor (initially hidden) */
+.text-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 2px; /* Adjust the width as needed */
+  animation: none; /* Blinking animation */
+}
+
+@keyframes cursor-blink {
+  0%, 100% {
+    background: transparent; /* Make the cursor disappear */
+  }
+  50% {
+  }
+}
+
+#searchInput::placeholder {
+  color: #ccc; /* Customize the placeholder text color */
+}
+
+#searchInput:focus + .text-cursor {
+  animation: cursor-blink 1s infinite; /* Start blinking animation when focused */
+}
+
+.buttons{
+  display: flex;
+  justify-content: right;
+}
+  /* YourComponent.css */
+  @media (max-width: 768px) {
+    .tree-container {
+      width: 20%; /* Change as needed for smaller screens */
     }
-    50% {
-      border-color: transparent; /* Hide the caret at its midpoint */
+  }
+  @media (max-width: 480px) {
+    .tree-container {
+      width: 80%; /* Change as needed for even smaller screens */
     }
   }
   
+/* Styles for the blinking cursor */
+
+.folder-node {
+  fill: blue;
+}
+
