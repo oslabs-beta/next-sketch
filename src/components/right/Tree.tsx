@@ -9,8 +9,8 @@ import Box from '@mui/material/Box';
 
 const Tree = ({ explorer, srcApp }) => {
   const svgRef = useRef(null);
-  const [width, setWidth] = useState('100%');
-  const [height, setHeight] = useState('100%');
+  const [width, setWidth] = useState('');
+  const [height, setHeight] = useState('');
   const [resetView, setResetView] = useState(false)
 
 
@@ -53,8 +53,8 @@ const Tree = ({ explorer, srcApp }) => {
     const handleResize = () => {
       const maxWidth = window.innerWidth - 20;
       const maxHeight = window.innerHeight - 20;
-      const newWidth = Math.min(maxWidth, 400);
-      const newHeight = Math.min(maxHeight, 400);
+      const newWidth = Math.min(maxWidth, 600);
+      const newHeight = Math.min(maxHeight, 500);
       setWidth(newWidth);
       setHeight(newHeight);
     };
@@ -124,7 +124,7 @@ svg.call(zoomBehavior);
   }, [explorer, width, height, srcApp, resetView]);
 
   const treeStyles = {
-    height: '400px',
+    height: '900px',
     width: '100%',
  };
 
