@@ -34,6 +34,7 @@ function Folder({
   handleInsertNode,
   handleDeleteNode,
   handleInputBoilerFiles,
+  handleInitialPreview,
   explorer,
   setFolder,
   folder,
@@ -126,6 +127,7 @@ function Folder({
   const handleModalChange = async (e?: any) => {
     const name = e.target.name.slice(0, -4);
     setPostData(true);
+    setTags([]);
 
     setSelectedItems({
       ...selectedItems,

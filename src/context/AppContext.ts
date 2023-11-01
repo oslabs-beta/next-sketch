@@ -12,6 +12,8 @@ interface AppContextType {
   setReset: Dispatch<SetStateAction<boolean>>;
   previewFolder: string,
   setPreviewFolder: Dispatch<SetStateAction<string>>;
+  currentParent: string,
+  setCurrentParent: Dispatch<SetStateAction<string>>;
 }
 
 export default createContext<AppContextType | null>(null); 
