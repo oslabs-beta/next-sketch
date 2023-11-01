@@ -86,13 +86,21 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
-    setSrcApp(finalTree.items[2])
+    // setSrcApp(finalTree.items[2]);
+     for(let items of finalTree.items){
+      if(items.name === 'src') setSrcApp(items)
+      }
+  
+
   };
 
   const handleDeleteNode = (folderId: number) => {
     const finalTree: any = deleteNode(explorerData, folderId);
     setExplorerData(finalTree);
-    setSrcApp(finalTree.items[2]);
+    for(let items of finalTree.items){
+      if(items.name === 'src') setSrcApp(items)
+      }
+  
 
   };
 
@@ -115,8 +123,11 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
       isFolder
     );
     setExplorerData(finalTree);
-    setSrcApp(finalTree.items[2])
-
+    // setSrcApp(finalTree.items[2])
+    for(let items of finalTree.items){
+      if(items.name === 'src') setSrcApp(items)
+      }
+  
   };
 
   const handleInputBoilerFiles = (
@@ -137,8 +148,11 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
     );
 
     setExplorerData(finalTree);
-    setSrcApp(finalTree.items[2]);
-
+    // setSrcApp(finalTree.items[2]);
+    for(let items of finalTree.items){
+      if(items.name === 'src') setSrcApp(items)
+      }
+  
   };
 
   return (
@@ -177,7 +191,7 @@ const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
 
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
-            <AppContext.Provider value={{ tags, setTags, currentId, setCurrentId, update, setUpdate, reset, setReset, previewFolder, setPreviewFolder }}>
+            <AppContext.Provider value={{ tags, setTags, currentId, setCurrentId, update, setUpdate, reset, setReset, previewFolder, setPreviewFolder}}>
               <Grid
                 container
                 sx={{
