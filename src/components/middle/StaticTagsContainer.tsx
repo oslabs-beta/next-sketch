@@ -83,16 +83,6 @@ const StaticTagsContainer = (): JSX.Element => {
       name: 'list item',
       container: false,
     },
-    {
-      id: generateId(),
-      name: 'nav',
-      container: true,
-    },
-    {
-      id: generateId(),
-      name: 'strong',
-      container: false,
-    },
   ];
 
   return (
@@ -100,9 +90,8 @@ const StaticTagsContainer = (): JSX.Element => {
       sx={{
         border: 2,
         borderColor: 'gold',
+        // flexGrow: 1,
         height: '35vh',
-        paddingLeft: 2,
-        paddingRight: 2,
       }}
     >
       <Typography variant='h6' sx={{ textAlign: 'center' }}>
@@ -116,16 +105,8 @@ const StaticTagsContainer = (): JSX.Element => {
           justifyContent: 'center',
           border: 2,
           borderColor: 'pink',
-          height: '28vh',
-          maxHeight: '28vh',
-          overflow: 'auto', // turn to auto once there are more elements
-          scrollbarWidth: 'none', // Hide the scrollbar for firefox
-          '&::-webkit-scrollbar': {
-            display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-          },
-          '&-ms-overflow-style:': {
-            display: 'none', // Hide the scrollbar for IE
-          },
+          // minHeight: '68vh',
+          // maxHeight: '70vh',
         }}
       >
         {staticTags.map((staticTag) => (

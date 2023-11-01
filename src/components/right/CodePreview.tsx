@@ -19,18 +19,23 @@ interface CodePreviewProps {
 declare const prettier: any;
 declare const prettierPlugins: any;
 
-const CodePreview = ({ treeData: CodePreviewProps }) => {
+const CodePreview = ({ treeData }: CodePreviewProps) => {
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const { tags, setTags } = useContext(AppContext);
-  const { newTags, setNewTags } = useState<Tag[]>([]);
+  const { tags, setTags, currentId, setCurrentId, reset, setReset } =
+    useContext(AppContext);
 
   useEffect(() => {
+    console.log('inside codepreview useefffect');
+    if (reset === true) {
+      setReset(false);
+      return;
+    }
+
     // Generate the code snippet
     renderCode(componentName);
     Prism.highlightAll();
-  }, [componentName, tags]); // Re-render and update the code when componentName change
-  //adding tags as a dependency breaks prism
+  }, [componentName, tags]); // Re-render and update the code when componentName and tags change
 
   const addingChildrenTags = (elements: Tag[]): Tag[] => {
     //check if the container property is true
@@ -60,38 +65,43 @@ const CodePreview = ({ treeData: CodePreviewProps }) => {
     });
 
     const rootNodes = tagsCopy.filter((tag) => !tag.parent);
-    // console.log('ROOT', rootNodes);
     return rootNodes;
   };
 
   const childrenTags = addingChildrenTags(tags);
-  // console.log('CHILDREN', childrenTags);
 
   const generateCode = (elements: Tag[]): JSX.Element => {
     const renderElements = elements.map((element) => {
+      if (element.name === 'unordered list') element.name = 'ul';
+      if (element.name === 'ordered list') element.name = 'ol';
+      if (element.name === 'list item') element.name = 'li';
+
+      let tagStart = `<${element.name}`;
+      let tagEnd = `</${element.name}>`;
+
+      if (element.attribute) {
+        tagStart += ` ${element.attribute}`;
+      }
+
+      if (element.name === 'img' || element.name === 'link') {
+        tagStart += ' />';
+        tagEnd = '';
+      } else {
+        tagStart += '>';
+      }
+
       if (element.children) {
         const children = element.children;
-        const result = children.map((child) => {
-          if (child.name === 'img' || child.name === 'link') {
-            return `<${child.name} ${child.attribute} />`;
-          } else {
-            return `<${child.name}></${child.name}>`;
-          }
-        });
-        return `<${element.name}>${result.join('')}</${element.name}>`;
-      } else if (!element.container && !element.parent) {
-        if (element.name === 'img' || element.name === 'link') {
-          return `<${element.name} ${element.attribute} />`;
-        }
-        return `<${element.name}></${element.name}>`;
-      } else console.log('in other conditional');
+        const result = children.map((child) => generateCode([child]));
+        return `${tagStart}${result.join('')}${tagEnd}`;
+      } else {
+        return `${tagStart}${tagEnd}`;
+      }
     });
-
     return renderElements.join('');
   };
 
   const additional = generateCode(childrenTags);
-  // console.log(additional);
 
   const formatCode = (code: string) => {
     return prettier.format(code, {
@@ -144,42 +154,40 @@ export default ${name};
     setCodeSnippet(formatCode(codeSnippet));
   }
 
-  // console.log(codeSnippet);
-
   return (
     <>
       <Box
-      sx={{
-        border: 2,
-        borderColor: 'darkgreen',
-        flexGrow: 1,
-        paddingLeft: 2,
-        paddingRight: 2,
-      }}
-    >
-      <Typography variant='h6'>Code Preview</Typography>
-      <Box
         sx={{
           border: 2,
-          borderColor: 'darkred',
-          height: '35vh',
-          overflow: 'auto',
-          scrollbarWidth: 'none', // Hide the scrollbar for firefox
-          '&::-webkit-scrollbar': {
-            display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-          },
-          '&-ms-overflow-style:': {
-            display: 'none', // Hide the scrollbar for IE
-          },
+          borderColor: 'darkgreen',
+          flexGrow: 1,
+          paddingLeft: 2,
+          paddingRight: 2,
         }}
       >
+        <Typography variant='h6'>Code Preview</Typography>
+        <Box
+          sx={{
+            border: 2,
+            borderColor: 'darkred',
+            height: '35vh',
+            overflow: 'auto',
+            scrollbarWidth: 'none', // Hide the scrollbar for firefox
+            '&::-webkit-scrollbar': {
+              display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+            },
+            '&-ms-overflow-style:': {
+              display: 'none', // Hide the scrollbar for IE
+            },
+          }}
+        >
           <pre className='line-numbers'>
             <code className='language-jsx match-braces'>{codeSnippet}</code>
           </pre>
-        <pre className='line-numbers'>
-          {/* <code className='language-html line-numbers'>{additional}</code> */}
-        </pre>
-      </Box>
+          <pre className='line-numbers'>
+            {/* <code className='language-html line-numbers'>{additional}</code> */}
+          </pre>
+        </Box>
       </Box>
     </>
   );

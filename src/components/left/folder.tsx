@@ -7,6 +7,7 @@ import {
   faFileCirclePlus,
   faAtom,
   faMinus,
+  faSliders,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
@@ -17,6 +18,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
 import { useCode } from '../../utils/reducer/CodeContext';
+import AppContext from '../../context/AppContext';
 
 import { modalLayout } from '../../utils/interfaces';
 import { app } from 'electron';
@@ -32,6 +34,7 @@ function Folder({
   handleInsertNode,
   handleDeleteNode,
   handleInputBoilerFiles,
+  handleInitialPreview,
   explorer,
   setFolder,
   folder,
@@ -40,7 +43,6 @@ function Folder({
   setPostData,
   postData,
 }: any) {
-  const [expand, setExpand] = useState<boolean>(false);
   const [folderIcon, setFolderIcon] = useState<string>('▶');
   const [folderLogo, setFolderLogo] = useState(
     <FontAwesomeIcon icon={faFolderClosed} />
@@ -48,9 +50,18 @@ function Folder({
 
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  const {
+    tags,
+    setTags,
+    currentId,
+    setCurrentId,
+    reset,
+    setReset,
+    previewFolder,
+    setPreviewFolder,
+  } = useContext(AppContext);
   const [open, setOpen] = useState(false);
-  // const [folder, setFolder] = useState('');
-  // const { componentName, updateComponent } = useCode();
+  const [expand, setExpand] = useState(false);
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -106,11 +117,17 @@ function Folder({
       visible: true,
       isFolder: arg,
     });
+
+    if (arg === false) {
+      console.log(e.target);
+      setComponentName();
+    }
   };
 
   const handleModalChange = async (e?: any) => {
     const name = e.target.name.slice(0, -4);
     setPostData(true);
+    setTags([]);
 
     setSelectedItems({
       ...selectedItems,
@@ -122,13 +139,34 @@ function Folder({
 
     if (!cacheModal.includes(fileName)) {
       cacheModal.push(fileName);
-      setComponentName(fileName);
     }
+
+    setComponentName(fileName);
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
+    //This is to avoid posting a new file every time you click it (useEffect in customEndPoint)
+
+    setPreviewFolder(explorer.parent);
+
     setPostData(false);
+
+    //activates the reset, it helps so the useEffect in codePreview doesn't run completely
+    setReset(true);
+
+    //data to relate to the new code snippet
+    setComponentName(explorer.name);
     setCodeSnippet(explorer.preview);
+    setCurrentId(explorer.id);
+
+    //clears the tags
+    if (explorer.tags === undefined) {
+      setTags([]);
+    } else {
+      setTags(explorer.tags);
+    }
+    // console.log('EXPLORER TAGS', explorer.tags)
+    // setTags(explorer.tags)
   };
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
@@ -136,14 +174,11 @@ function Folder({
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setFolder(e.currentTarget.value);
-      const isFolder = showInput.isFolder;
-
-      let fileName = e.currentTarget.value;
 
       const body = {
         fileName: e.currentTarget.value,
         folderName: explorer.name,
-        isFolder: isFolder,
+        isFolder: showInput.isFolder,
       };
 
       await fetch('http://localhost:3000/', {
@@ -163,6 +198,8 @@ function Folder({
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
     e?.stopPropagation();
     handleDeleteNode(explorer.id);
+    setComponentName('Page');
+    setTags([]);
 
     await fetch('http://localhost:3000/', {
       method: 'Delete',
@@ -180,7 +217,6 @@ function Folder({
       <div style={{ marginTop: 5 }}>
         <Modal
           open={open}
-          onClose={handleClose}
           aria-labelledby='modal-title'
           aria-describedby='modal-description'
         >

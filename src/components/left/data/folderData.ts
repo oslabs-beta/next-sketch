@@ -19,7 +19,7 @@ const explorer = {
             isFolder: false,
             items: []
           }
-        ]
+        ],
       },
       {
         id: '24',
@@ -106,7 +106,19 @@ const explorer = {
               name: 'layout.tsx',
               isFolder: false,
               items: [],
-              preview: '',
+              preview: `
+import React from 'react';
+  
+  const Layout = () => {
+    return (
+      <>
+        {/* Your page content goes here */}
+      </>
+    );
+  };
+  
+  export default Layout;
+              `,
             },
             {
               id: '8',

@@ -11,19 +11,22 @@ import { Tag } from '../../utils/interfaces';
 import { TestItem } from './TestItem';
 import { TestContainer } from './TestContainer';
 
+import { CodeSnippetContext } from '../../App';
+
 /**
  * @description - container for displayed tag elements
  * @parent - TabsComponent.tsx
  * @children - SortableContainer.tsx, SortableItem.tsx
  */
 
-const DisplayContainer = () => {
-  const { tags, setTags } = useContext(AppContext);
+const DisplayContainer = ({handleUpdatePreview, explorer}) => {
+  const { tags, setTags, currentId, update, setUpdate } = useContext(AppContext);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
   const tagsWithoutParents = tags.filter((prev) => !prev.parent);
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
-  const { setNodeRef, isOver } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: 'display-container-drop-area',
     data: {
       isDisplayContainerDropArea: true,
@@ -36,7 +39,7 @@ const DisplayContainer = () => {
     // onDragOver: (event: DragOverEvent) => {
     //   console.log('drag over event', event.over);
     // },
-    onDragEnd: (event: DragEndEvent) => {
+    onDragEnd: async (event: DragEndEvent) => {
       console.log('drag end event', event);
       const { active, over } = event;
 
@@ -53,8 +56,10 @@ const DisplayContainer = () => {
           id: active.id,
           name: active.data.current?.name,
           container: active.data.current?.container,
+          attribute: active.data.current?.attribute,
         };
-        setTags([...tags, newTag]);
+        await setTags([...tags, newTag]);
+        setUpdate(true);
         return;
       }
 
