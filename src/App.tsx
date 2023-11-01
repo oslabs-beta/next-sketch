@@ -23,6 +23,7 @@ import AppContext from './context/AppContext';
 import Tree from './components/right/Tree';
 import CodePreview from './components/right/CodePreview';
 import { DndContext } from '@dnd-kit/core';
+import DragOverlayWrapper from './components/middle/DragOverlayWrapper';
 
 // test
 
@@ -267,6 +268,7 @@ const App = () => {
                     </Box>
                     <CodePreview treeData={explorer} />
                   </Grid>
+                  <DragOverlayWrapper />
                 </DndContext>
               </Grid>
             </AppContext.Provider>

@@ -1,37 +1,63 @@
-import { Active, DragOverlay, useDndMonitor } from "@dnd-kit/core";
-import { useState } from "react";
-import { DraggableItemOverlay } from "./DraggableItem";
+import { Active, DragOverlay, useDndMonitor } from '@dnd-kit/core';
+import { useContext, useState } from 'react';
+import { DraggableItemOverlay } from './DraggableItem';
+import AppContext from '../../context/AppContext';
+import { Box } from '@mui/material';
+import { TestItemOverlay } from '../right/TestItem';
+import { TestContainerOverlay } from '../right/TestContainer';
 
 const DragOverlayWrapper = () => {
-    const [draggedItem, setDraggedItem] = useState<Active | null>(null);
+  const { tags } = useContext(AppContext);
+  const [draggedItem, setDraggedItem] = useState<Active | null>(null);
 
-    useDndMonitor({
-        onDragStart: (event) => {
-            setDraggedItem(event.active);
-        },
-        onDragCancel: () => {
-            setDraggedItem(null);
-        },
-        onDragEnd: () => {
-            setDraggedItem(null);
-        },
-    });
+  useDndMonitor({
+    onDragStart: (event) => {
+      setDraggedItem(event.active);
+    },
+    onDragCancel: () => {
+      setDraggedItem(null);
+    },
+    onDragEnd: () => {
+      setDraggedItem(null);
+    },
+  });
 
-    if (!draggedItem) return null;
+  if (!draggedItem) return null;
 
-    let node = <div>no drag overlay</div>
-    const isDraggableItem = draggedItem?.data?.current?.isDraggableItem;
+  let node = <Box>no drag overlay!</Box>;
 
-    if (isDraggableItem) {
-        const itemName = draggedItem?.data?.current?.name;
-        node = <DraggableItemOverlay>{itemName}</DraggableItemOverlay>;
+  const isDraggableItem = draggedItem?.data?.current?.isDraggableItem;
+
+  if (isDraggableItem) {
+    const itemName = draggedItem?.data?.current?.name;
+    node = <DraggableItemOverlay>{itemName}</DraggableItemOverlay>;
+  }
+
+  const isTestItem = draggedItem?.data?.current?.isTestItem;
+
+  if (isTestItem) {
+    const tagId = draggedItem?.data?.current?.tagId;
+    const tag = tags[tags.findIndex((tag) => tag.id === tagId)];
+
+    if (!tag) node = <Box>tag not found!</Box>;
+    else {
+      node = <TestItemOverlay tag={tag} />;
     }
+  }
 
-    return (
-        <DragOverlay>
-            {node}
-        </DragOverlay>
-    );
+  const isTestContainer = draggedItem?.data?.current?.isTestContainer;
+
+  if (isTestContainer) {
+    const tagId = draggedItem?.data?.current?.tagId;
+    const tag = tags[tags.findIndex((tag) => tag.id === tagId)];
+
+    if (!tag) node = <Box>tag not found!</Box>;
+    else {
+        node = <TestContainerOverlay tag={tag} />;
+      }
+  }
+
+  return <DragOverlay>{node}</DragOverlay>;
 };
 
 export default DragOverlayWrapper;
