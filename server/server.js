@@ -52,7 +52,7 @@ app.get(
   }
 );
 
-app.put("/", fileController.updateCode, (req, res) => {
+app.put("/updatecode", fileController.updateCode, (req, res) => {
   res.status(200).send();
 });
 

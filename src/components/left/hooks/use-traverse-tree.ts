@@ -84,6 +84,19 @@ const useTraverseTree = () => {
                   id: new Date().getTime(),
                   name: 'page.tsx',
                   isFolder: false,
+                  preview: `
+                  import React from 'react';
+                    
+                    const Page = () => {
+                      return (
+                        <>
+                          {/* Your page content goes here */}
+                        </>
+                      );
+                    };
+                    
+                    export default Page;
+                                `,
                   items: []
                 }]
 
@@ -108,7 +121,8 @@ const useTraverseTree = () => {
     folderId: number,
     item: string,
     folderName: string,
-    preview: string
+    preview: string,
+    tags: []
   ) => {
 
     if (tree.name === folderName) {
@@ -117,6 +131,7 @@ const useTraverseTree = () => {
         name: item,
         items: [],
         preview: preview,
+        tags: tags
       });
       return tree;
     }
@@ -124,23 +139,34 @@ const useTraverseTree = () => {
 
     let latestNode = [];
     latestNode = tree.items.map((ob: object) => {
-      return insertBoilerFiles(ob, folderId, item, folderName, preview);
+      return insertBoilerFiles(ob, folderId, item, folderName, preview, tags);
     });
 
     return { ...tree, items: latestNode };
 }
 
-
 const updatePreview = ( tree: any,
-  folderId: number,
-  item: string,
-  folderName: string,
-  preview: string) => {
+  fileId: number,
+  preview: string,
+  tags: []) => {
+
+  
+if(fileId == tree.id) {
+  console.log('TAGS', tags)
+  // console.log('TREE PREVIEW', tree.preview)
+  // console.log('PASSED IN PREVIEW', preview)
+  tree.preview = preview;
+  tree.tags = tags
+}
 
 
+let latestNode = [];
+    latestNode = tree.items.map((ob: object) => {
+      return updatePreview(ob, fileId, preview, tags);
+    });
 
-  }
-
+    return { ...tree, items: latestNode };
+}
 
 
 

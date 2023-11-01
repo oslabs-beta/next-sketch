@@ -59,8 +59,11 @@ const App = () => {
 
   // tags context
   const [tags, setTags] = useState<Tag[]>([]);
+  const [currentId, setCurrentId] = useState<number>(8);
+  const [update, setUpdate] = useState<boolean>(false);
+  const [reset, setReset] = useState<boolean>(false);
 
-  const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
+  const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles, updatePreview } =
     useTraverseTree();
 
 
@@ -88,6 +91,12 @@ const srcApp = explorer.items[2]
     setExplorerData(finalTree);
   };
 
+
+const handleUpdatePreview = ( fileId: number, preview: string, tags: []) => {
+    const finalTree: any = updatePreview(explorerData, fileId, preview, tags);
+    setExplorerData(finalTree)
+}
+
   const handleCreateCustomEndpoint = (
     folderId: number,
     item: string,
@@ -106,7 +115,8 @@ const srcApp = explorer.items[2]
     folderId: number,
     item: string,
     folderName: string,
-    preview: string
+    preview: string,
+    tags: []
   ) => {
     // if (item === '') return;
     const finalTree: any = insertBoilerFiles(
@@ -114,7 +124,8 @@ const srcApp = explorer.items[2]
       folderId,
       item,
       folderName,
-      preview
+      preview,
+      tags
     );
 
     setExplorerData(finalTree);
@@ -156,7 +167,7 @@ const srcApp = explorer.items[2]
 
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
-            <AppContext.Provider value={{ tags, setTags }}>
+            <AppContext.Provider value={{ tags, setTags, currentId, setCurrentId, update, setUpdate, reset, setReset }}>
               <Grid
                 container
                 sx={{
@@ -189,6 +200,7 @@ const srcApp = explorer.items[2]
                   <CustomEndpoint
                     handleCreateCustomEndpoint={handleCreateCustomEndpoint}
                     handleInputBoilerFiles={handleInputBoilerFiles}
+                    handleUpdatePreview={handleUpdatePreview}
                     explorer={explorerData}
                     open={open}
                     setOpen={setOpen}
@@ -262,9 +274,9 @@ const srcApp = explorer.items[2]
                         paddingRight: 2,
                       }}
                     >
-                      <DisplayContainer />
+                      <DisplayContainer explorer={explorerData} handleUpdatePreview={handleUpdatePreview} />
                     </Box>
-                    <CodePreview treeData={explorer} />
+                    <CodePreview treeData={explorerData} />
                   </Grid>
                 </DndContext>
               </Grid>

@@ -92,9 +92,32 @@ const fileController = {
   },
 
   updateCode: function (req, res, next) {
-    const fileDir =
-      "server/ExportFolder/NextSketch/src/app/" + req.body.folderName;
-    fs.writeFileSync(path.join(fileDir, req.body.fileName), req.body.code);
+    const folderDir = "server/ExportFolder";
+
+    function recall(folderDir) {
+      const fileList = fs.readdirSync(folderDir);
+
+      for (const file of fileList) {
+        const name = `${folderDir}/${file}`;
+        if (name === "node_modules") {
+          continue;
+        }
+
+        if (file === req.body.folder) {
+          console.log(req.body.codeSnippet)
+          fs.writeFileSync(
+            path.join(name, req.body.fileName),
+            req.body.codeSnippet
+          );
+        }
+        if (fs.statSync(name).isDirectory()) {
+          recall(name);
+        }
+      }
+      return;
+    }
+
+    recall(folderDir)
     return next();
   },
 

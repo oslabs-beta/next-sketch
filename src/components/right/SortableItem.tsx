@@ -51,6 +51,8 @@ const SortableItem = ({ id, children }: SortableItemProps) => {
     position: 'relative',
   };
 
+
+
   return (
     <Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
       {children}
