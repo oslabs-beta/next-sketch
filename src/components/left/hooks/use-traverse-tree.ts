@@ -122,6 +122,7 @@ const useTraverseTree = () => {
     item: string,
     folderName: string,
     preview: string,
+    parent: string,
     tags: []
   ) => {
 
@@ -131,6 +132,7 @@ const useTraverseTree = () => {
         name: item,
         items: [],
         preview: preview,
+        parent: folderName,
         tags: tags
       });
       return tree;
@@ -139,7 +141,7 @@ const useTraverseTree = () => {
 
     let latestNode = [];
     latestNode = tree.items.map((ob: object) => {
-      return insertBoilerFiles(ob, folderId, item, folderName, preview, tags);
+      return insertBoilerFiles(ob, folderId, item, folderName, preview, parent, tags);
     });
 
     return { ...tree, items: latestNode };

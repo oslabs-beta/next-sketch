@@ -41,8 +41,8 @@ const CustomEndpoint = ({
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const {tags, setTags, update, setUpdate, currentId } = useContext(AppContext);
-  const [previewFolder, setPreviewFolder] = useState(false);
+  const {tags, setTags, update, setUpdate, currentId, previewFolder, setPreviewFolder } = useContext(AppContext);
+
 
   //deconstructing the reducer elements
   // const { componentName, updateComponent } = useCode();
@@ -135,6 +135,7 @@ const CustomEndpoint = ({
   };
 
   const handleUpdatingFiles = async (file: string, code: string, previewFolder) => {
+
 
     const body = {
       fileName: file,

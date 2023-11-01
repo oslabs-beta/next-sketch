@@ -10,6 +10,8 @@ interface AppContextType {
   setUpdate: Dispatch<SetStateAction<boolean>>;
   reset: boolean;
   setReset: Dispatch<SetStateAction<boolean>>;
+  previewFolder: string,
+  setPreviewFolder: Dispatch<SetStateAction<string>>;
 }
 
 export default createContext<AppContextType | null>(null); 
