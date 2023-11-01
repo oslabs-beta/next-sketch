@@ -80,12 +80,14 @@ const CustomEndpoint = ({
 
 
   useEffect(() => {
+    console.log('useEffect customendpoint')
 
     //creating new files with code
     if (postData === true) {
+      console.log('posting data')
       handlePostingFiles(folder, componentName, codeSnippet);
     }
-
+    console.log('in useeffect customendpoiunt')
     //updating code in existing files
     if (update === true) {
       handleUpdatingFiles(componentName, codeSnippet, previewFolder);

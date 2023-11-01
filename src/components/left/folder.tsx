@@ -127,8 +127,12 @@ function Folder({
 
     if (!cacheModal.includes(fileName)) {
       cacheModal.push(fileName);
-      setComponentName(fileName);
+      
     }
+
+    setComponentName(fileName);
+
+    console.log('folder state', postData)
 
   };
 

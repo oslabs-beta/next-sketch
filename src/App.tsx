@@ -92,6 +92,8 @@ const App = () => {
   const handleDeleteNode = (folderId: number) => {
     const finalTree: any = deleteNode(explorerData, folderId);
     setExplorerData(finalTree);
+    setSrcApp(finalTree.items[2]);
+
   };
 
 
