@@ -88,8 +88,8 @@ const StaticTagsContainer = (): JSX.Element => {
   return (
     <Box
       sx={{
-        border: 2,
-        borderColor: 'gold',
+        // border: 2,
+        // borderColor: 'gold',
         bgcolor: 'white',
         // flexGrow: 1,
         height: '35vh',
@@ -97,17 +97,18 @@ const StaticTagsContainer = (): JSX.Element => {
         borderRadius: '20px',
       }}
     >
-      <Typography variant='h6' sx={{ textAlign: 'center' }}>
+      <Typography variant='h6' sx={{ textAlign: 'center', marginTop: '4%', fontWeight:'bolder'}}>
         Add Elements
       </Typography>
       <Box
         sx={{
+          fontWeight: 'bolder',
           display: 'flex',
           flexWrap: 'wrap',
-          alignContent: 'flex-start',
+          alignContent: 'center',
           justifyContent: 'center',
-          border: 2,
-          borderColor: 'pink',
+          marginTop: '2%'
+          // border: 2,
           // minHeight: '68vh',
           // maxHeight: '70vh',
         }}

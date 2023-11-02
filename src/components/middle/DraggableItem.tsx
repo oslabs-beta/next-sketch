@@ -33,17 +33,18 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
       variant='contained'
       sx={{
         textAlign: 'center',
-        bgcolor: '#FEFCFB',
-        color: '#0A0908',
-        border: 1,
-        fontSize: 12,
-        margin: 0.5,
+        bgcolor: '#cbb4d4',
+        // color: 'white',
+        // border: 1,
+        fontWeight: 'bolder',
+        fontSize: 15,
+        margin: 0.8,
         borderRadius: '7px',
         paddingLeft: 3.5,
         paddingRight: 3.5,
         width: 'fit-content',
         minWidth: 80,
-        height: 35,
+        height: 50,
         boxShadow: 8,
         ':hover': {
           bgcolor: 'rgba(191, 196, 248, 0.8)',
@@ -68,7 +69,6 @@ export const DraggableItemOverlay = ({ children }: DraggableItemOverlayProps) =>
       sx={{
         textAlign: 'center',
         bgcolor: '#FEFCFB',
-        color: '#0A0908',
         border: 1,
         fontSize: 12,
         margin: 0.5,
