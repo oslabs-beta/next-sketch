@@ -11,6 +11,8 @@ const archiver = require('archiver');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(express.static(path.join(__dirname, '../dist/')));
+
 app.get('/export', (req, res) => {
   const folderPath = 'server/ExportFolder/NextSketch'; // Replace with the actual folder path
   const output = fs.createWriteStream('exported_folder.zip');
