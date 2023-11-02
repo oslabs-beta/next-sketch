@@ -174,17 +174,24 @@ const App = () => {
     <Box sx={{height: '100vh'}}>
       <AppBar position='static' sx={{ bgcolor: 'transparent', marginBottom: '1.3%',  boxShadow:' -1px 6px 11px 0px rgba(131,99,151,0.75)' }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{display: 'flex' }}>
+          <img src='images/logo2.png'     style={{ width: '10%', alignSelf:'center'}}/>
+
           <Typography
             variant='h3'
             sx={{
-              fontFamily: 'Titillium Web',
-              // marginBottom: '0.5em',
-              color: 'white',
-              textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
+            fontFamily: 'Titillium Web',
+            // marginBottom: '0.5em',
+            color: 'white',
+            textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
+            alignSelf:'center'
             }}
           >
-            NextSketch
+  
+          NextSketch
           </Typography>
+          </div>
+        
           <ExportButton />
         </Toolbar>
       </AppBar>
