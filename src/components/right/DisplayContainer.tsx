@@ -33,7 +33,6 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
     },
   });
 
-  console.log('tags', tags);
 
   useDndMonitor({
     // onDragOver: (event: DragOverEvent) => {
@@ -198,12 +197,11 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
   });
 
   return (
-    <Box>
-      <Typography variant='h6'>My Page</Typography>
+    <Box style={{color: 'rgba(101,105,111)'}}>
+      <Typography variant='h6' style={{fontSize: '2rem', paddingTop: '1.5%', paddingLeft:'1%'}}>My Page</Typography>
       <Box
         sx={{
-          border: 2,
-          borderColor: 'magenta',
+          
           ...(isOver && {
             borderColor: 'red',
           }),
@@ -227,6 +225,7 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
               height: '60%',
               justifyContent: 'center',
               alignItems: 'flex-end',
+              color: 'rgba(101,105,111)',
             }}
           >
             <Typography variant='h2'>Drop Here</Typography>

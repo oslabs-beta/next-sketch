@@ -61,14 +61,15 @@ export const TestContainer = ({ tag }: TestContainerProps) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        bgcolor: 'lightgrey',
+        bgcolor: 'white',
         color: 'black',
         margin: 2.5,
         minHeight: 60,
         width: '90%',
         borderRadius: 2,
-        border: 2,
-        borderColor: 'blue',
+        border: '3px solid #6441A5',
+        fontWeight: 'bolder'
+
       }}
     >
       <Box
@@ -169,8 +170,9 @@ export const TestContainerOverlay = ({ tag }: TestContainerOverlayProps) => {
         minHeight: 60,
         width: '90%',
         borderRadius: 2,
-        border: 2,
-        borderColor: 'blue',
+        border: '3px solid #6441A5',
+        fontWeight: 'bolder'
+
       }}
     >
       <Item>{tag.name}</Item>

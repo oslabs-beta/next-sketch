@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
 import { select, tree, zoom, hierarchy, linkVertical, linkHorizontal } from 'd3';
+import {Button} from '@mui/material'
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 
 import Box from '@mui/material/Box';
 
 
-const Tree = ({ explorer, srcApp }) => {
+const Tree = ({ srcApp }) => {
   const svgRef = useRef(null);
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
@@ -121,7 +121,7 @@ svg.call(zoomBehavior);
 
 
 
-  }, [explorer, width, height, srcApp, resetView]);
+  }, [ width, height, srcApp, resetView]);
 
   const treeStyles = {
     height: '100%',
@@ -130,8 +130,9 @@ svg.call(zoomBehavior);
  };
 
   return (
-    <div style={{height: '90%'}}>
-        <button onClick={() => setResetView(!resetView)} style={{color: 'white', marginLeft: '10px', backgroundColor: 'black'}}>Reset View</button>
+    <div style={{height: '100%', position: 'relative'}}>
+      <button className="" onClick={() => setResetView(!resetView)} style={{color: 'white', marginLeft: '10px', border: '2px solid rgba(229, 63, 115)', position: 'absolute', top: '20px', left: '20px', padding: '1%', borderRadius: '10px', fontSize: '1.35rem'}}>Reset View</button>
+        
             <svg ref={svgRef} style={treeStyles}></svg>
 
     </div>
