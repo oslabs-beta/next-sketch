@@ -68,7 +68,9 @@ export const TestContainer = ({ tag }: TestContainerProps) => {
         width: '90%',
         borderRadius: 2,
         border: '3px solid #6441A5',
-        fontWeight: 'bolder'
+        fontWeight: 'bolder',
+        fontSize: '1.4rem',
+
 
       }}
     >
@@ -171,7 +173,9 @@ export const TestContainerOverlay = ({ tag }: TestContainerOverlayProps) => {
         width: '90%',
         borderRadius: 2,
         border: '3px solid #6441A5',
-        fontWeight: 'bolder'
+        fontWeight: 'bolder',
+        fontSize: '1.4rem',
+
 
       }}
     >

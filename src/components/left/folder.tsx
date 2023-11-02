@@ -76,6 +76,7 @@ function Folder({
     color: 'black',
     p: 4,
     borderRadius: '20px',
+    fontSize: '1.6rem'
   };
 
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
@@ -113,7 +114,7 @@ function Folder({
     e?.stopPropagation();
     setExpand(true);
     setFolderIcon('▼');
-    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />);
+    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen}/>);
 
     setShowInput({
       visible: true,
@@ -300,7 +301,7 @@ function Folder({
               template.tsx
             </div>
 
-            <Button onClick={handleClose} sx={{ mt: 3 }}>
+            <Button onClick={handleClose} sx={{ mt: 3, fontSize: '1.3rem' }}>
               Submit
             </Button>
           </Box>
@@ -331,8 +332,9 @@ function Folder({
                 onClick={(e) => {
                   handleNewFolder(e, true);
                 }}
+                style={{color: 'pink'}}
               >
-                <FontAwesomeIcon icon={faFolderPlus} style={{color: 'white'}} />
+                <div style={{color: 'red'}}> <FontAwesomeIcon icon={faFolderPlus} style={{color: 'white', fontSize: '1.4rem'}} /> </div>
               </button>
             ) : (
               ''
@@ -343,7 +345,7 @@ function Folder({
             explorer.name !== 'public' &&
             explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
-                <FontAwesomeIcon  icon={faFileCirclePlus} style={{color: 'white'}} />
+                <FontAwesomeIcon  icon={faFileCirclePlus} style={{color: 'white', fontSize: '1.4rem'}} />
               </button>
             ) : (
               ''
@@ -353,7 +355,7 @@ function Folder({
             explorer.name !== 'src' &&
             explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleDeleteFolder(e, false)}>
-                <FontAwesomeIcon icon={faMinus} style={{color: 'white'}} />
+                <FontAwesomeIcon icon={faMinus} style={{color: 'white', fontSize: '1.4rem'}} />
               </button>
             ) : (
               ''
@@ -425,6 +427,7 @@ function Folder({
             icon={faMinus}
             style={{
             color: 'white',
+            fontSize: '1.4rem'
             }}
            />
           </button>

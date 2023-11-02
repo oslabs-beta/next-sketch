@@ -53,8 +53,8 @@ const Tree = ({ srcApp }) => {
     const handleResize = () => {
       const maxWidth = window.innerWidth - 20;
       const maxHeight = window.innerHeight - 20;
-      const newWidth = Math.min(maxWidth, 600);
-      const newHeight = Math.min(maxHeight, 500);
+      const newWidth = Math.min(maxWidth, 900);
+      const newHeight = Math.min(maxHeight, 700);
       setWidth(newWidth);
       setHeight(newHeight);
     };

@@ -189,7 +189,7 @@ export default ${name};
             
           }}
         >
-          <pre className='line-numbers' style={{height: '100%'}}>
+          <pre className='line-numbers' style={{height: '90%'}}>
             <code className='language-jsx match-braces'>{codeSnippet}</code>
           </pre>
 
