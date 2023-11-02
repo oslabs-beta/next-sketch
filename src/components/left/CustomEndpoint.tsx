@@ -4,6 +4,7 @@ import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
 import { modalLayout } from '../../utils/interfaces';
 import Prism from 'prismjs';
+import AppContext from '../../context/AppContext';
 //import custom hook, from the reducer
 // import { useCode } from '../../utils/reducer/CodeContext'; /*================MODIFIED CODE====================*/
 
@@ -26,6 +27,8 @@ const style = {
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
   handleInputBoilerFiles,
+  handleUpdatePreview,
+  handleInitialPreview,
   explorer,
   setFolder,
   folder,
@@ -39,8 +42,23 @@ const CustomEndpoint = ({
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+
+  const {
+    tags,
+    setTags,
+    update,
+    setUpdate,
+    currentId,
+    previewFolder,
+    setPreviewFolder,
+    currentParent,
+    setCurrentParent,
+  } = useContext(AppContext);
+
   //deconstructing the reducer elements
   // const { componentName, updateComponent } = useCode();
+
+  console.log(currentParent);
 
   const handleClose = () => {
     setOpen(false);
@@ -70,12 +88,25 @@ const CustomEndpoint = ({
 
   function handleChange(e?: any) {
     setFolder(e.target.value);
+    setPreviewFolder(e.target.value);
   }
 
   useEffect(() => {
+    //creating new files with code
     if (postData === true) {
       console.log('posting data');
       handlePostingFiles(folder, componentName, codeSnippet);
+    }
+    console.log('in useeffect customendpoiunt');
+    //updating code in existing files
+    if (update === true) {
+      handleUpdatingFiles(componentName, codeSnippet, previewFolder);
+
+      handleUpdatePreview(currentId, codeSnippet, tags);
+
+      handleInitialPreview(currentParent, componentName, codeSnippet, tags);
+
+      setUpdate(false);
     }
     Prism.highlightAll();
   }, [codeSnippet]);
@@ -83,13 +114,14 @@ const CustomEndpoint = ({
   async function handleModalChange(e?: any) {
     const name = e.target.name.slice(0, -4);
 
+    setTags([]);
+
     setSelectedItems({
       ...selectedItems,
       [name]: true,
     });
 
     const fileName = e.target.name;
-    const folderName = folder;
     setFile(fileName);
 
     setComponentName(fileName);
@@ -109,6 +141,32 @@ const CustomEndpoint = ({
     };
     await fetch('http://localhost:3000/', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setPostData(false);
+        setCurrentParent(data[0]);
+        handleInitialPreview(data[0], data[1], data[2], tags);
+      });
+  };
+
+  const handleUpdatingFiles = async (
+    file: string,
+    code: string,
+    previewFolder
+  ) => {
+    const body = {
+      fileName: file,
+      codeSnippet: code,
+      folder: previewFolder,
+    };
+    await fetch('http://localhost:3000/updatecode', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -157,7 +215,6 @@ const CustomEndpoint = ({
 
       <Modal
         open={open}
-        onClose={handleClose}
         aria-labelledby='modal-title'
         aria-describedby='modal-description'
       >

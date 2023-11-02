@@ -1,20 +1,32 @@
 import React, { useRef, useEffect, useState } from "react";
-import { select, tree, hierarchy, linkVertical, linkHorizontal } from 'd3';
+import { select, tree, zoom, hierarchy, linkVertical, linkHorizontal } from 'd3';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
-const Tree = ({ explorer }) => {
+import Box from '@mui/material/Box';
+
+
+const Tree = ({ explorer, srcApp }) => {
   const svgRef = useRef(null);
-  const [width, setWidth] = useState('100%');
-  const [height, setHeight] = useState('100%');
+  const [width, setWidth] = useState('');
+  const [height, setHeight] = useState('');
+  const [resetView, setResetView] = useState(false)
+
 
   const createTree = (data) => {
+
+
     if (data.isFolder) {
       return {
         name: data.name,
+        isFolder: data.isFolder,
         children: data.items.map((item) => createTree(item)),
       };
     } else {
       return { name: data.name };
     }
+  
   };
 
   const setTreeNodePositions = (node) => {
@@ -41,8 +53,8 @@ const Tree = ({ explorer }) => {
     const handleResize = () => {
       const maxWidth = window.innerWidth - 20;
       const maxHeight = window.innerHeight - 20;
-      const newWidth = Math.min(maxWidth, 700);
-      const newHeight = Math.min(maxHeight, 800);
+      const newWidth = Math.min(maxWidth, 600);
+      const newHeight = Math.min(maxHeight, 500);
       setWidth(newWidth);
       setHeight(newHeight);
     };
@@ -56,7 +68,7 @@ const Tree = ({ explorer }) => {
     const svg = select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const root = hierarchy(createTree(explorer.items[2].items[0]));
+    const root = hierarchy(createTree(srcApp));
 
     // Set the initial positions of tree nodes
     setTreeNodePositions(root);
@@ -81,34 +93,46 @@ const Tree = ({ explorer }) => {
       .attr('opacity', 1)
       .attr('d', pathGenerator);
 
-    const nodes = g.selectAll("g")
-      .data(treeData.descendants())
-      .enter()
-      .append("g")
-      .attr("transform", (d) => `translate(${d.y + 40},${d.x})`);
+      const nodes = g.selectAll("g")
+  .data(treeData.descendants())
+  .enter()
+  .append("g")
+  .attr("transform", (d) => `translate(${d.y + 40},${d.x})`);
 
-    nodes.append("circle")
-      .attr("r", 5)
-      .style('fill', 'white')
+nodes.append("circle")
+  .attr("r", 5)
+  .style('fill', (d) => (d.data.isFolder ? 'yellow' : 'white')); // Change node fill color based on isFolder property
 
-    nodes.append("text")
-      .text((d) => d.data.name)
-      .attr("dy", 20)
-      .attr('dx', -20)
-      .attr("text-anchor", "middle")
-      .attr("fill", '#bdbdbd')
+nodes.append("text")
+  .text((d) => d.data.name)
+  .attr("dy", 20)
+  .attr('dx', -20)
+  .attr("text-anchor", "middle")
+  .attr("fill", (d) => (d.data.isFolder ? 'yellow' : '#bdbdbd'))
+  .style("font-size", "1.00rem");
 
-      .style("font-size", "1.00rem");
-  }, [explorer, width, height]);
+  const zoomBehavior = zoom()
+  .scaleExtent([0.5, 10]) // Set the zoom scale extent
+  .on("zoom", (event) => {
+    g.attr("transform", event.transform); // Apply the zoom transform to the entire tree
+  });
+
+svg.call(zoomBehavior);
+
+
+
+  }, [explorer, width, height, srcApp, resetView]);
 
   const treeStyles = {
-    height: '800px',
+    height: '900px',
     width: '100%',
  };
 
   return (
-    <div >
-      <svg ref={svgRef} style={treeStyles}></svg>
+    <div style={{height: '10px'}}>
+        <button onClick={() => setResetView(!resetView)} style={{color: 'white', marginLeft: '10px', backgroundColor: 'black'}}>Reset View</button>
+            <svg ref={svgRef} style={treeStyles}></svg>
+
     </div>
   );
 };

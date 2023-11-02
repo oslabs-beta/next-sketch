@@ -6,7 +6,8 @@ import {
   faTrash,
   faFileCirclePlus,
   faAtom,
-  faN,
+  faMinus,
+  faSliders,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
@@ -17,6 +18,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
 import { useCode } from '../../utils/reducer/CodeContext';
+import AppContext from '../../context/AppContext';
 
 import { modalLayout } from '../../utils/interfaces';
 import { app } from 'electron';
@@ -32,7 +34,7 @@ function Folder({
   handleInsertNode,
   handleDeleteNode,
   handleInputBoilerFiles,
-  appFolder,
+  handleInitialPreview,
   explorer,
   setFolder,
   folder,
@@ -41,18 +43,25 @@ function Folder({
   setPostData,
   postData,
 }: any) {
-  const [expand, setExpand] = useState<boolean>(false);
   const [folderIcon, setFolderIcon] = useState<string>('▶');
   const [folderLogo, setFolderLogo] = useState(
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
-  let example = [];
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
+  const {
+    tags,
+    setTags,
+    currentId,
+    setCurrentId,
+    reset,
+    setReset,
+    previewFolder,
+    setPreviewFolder,
+  } = useContext(AppContext);
   const [open, setOpen] = useState(false);
-  // const [folder, setFolder] = useState('');
-  // const { componentName, updateComponent } = useCode();
+  const [expand, setExpand] = useState(false);
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -85,6 +94,17 @@ function Folder({
 
   const handleClose = () => {
     setOpen(false);
+    setFolder('');
+    setSelectedItems({
+      default: false,
+      error: false,
+      layout: false,
+      loading: false,
+      notFound: false,
+      route: false,
+      template: false,
+      page: true,
+    });
   };
 
   const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
@@ -97,11 +117,17 @@ function Folder({
       visible: true,
       isFolder: arg,
     });
+
+    if (arg === false) {
+      console.log(e.target);
+      setComponentName();
+    }
   };
 
   const handleModalChange = async (e?: any) => {
     const name = e.target.name.slice(0, -4);
     setPostData(true);
+    setTags([]);
 
     setSelectedItems({
       ...selectedItems,
@@ -110,31 +136,49 @@ function Folder({
 
     const fileName = e.target.name;
     setFile(fileName);
-    const folderName = folder;
+
+    if (!cacheModal.includes(fileName)) {
+      cacheModal.push(fileName);
+    }
 
     setComponentName(fileName);
   };
 
   const retrieveCode = (e?: React.SyntheticEvent) => {
-    setPostData(false);
-    setCodeSnippet(explorer.preview);
-  };
-  // let AllFilesInApp = appFolder.items[2].items[0];
+    //This is to avoid posting a new file every time you click it (useEffect in customEndPoint)
 
-  // console.log(AllFilesInApp.items);
+    setPreviewFolder(explorer.parent);
+
+    setPostData(false);
+
+    //activates the reset, it helps so the useEffect in codePreview doesn't run completely
+    setReset(true);
+
+    //data to relate to the new code snippet
+    setComponentName(explorer.name);
+    setCodeSnippet(explorer.preview);
+    setCurrentId(explorer.id);
+
+    //clears the tags
+    if (explorer.tags === undefined) {
+      setTags([]);
+    } else {
+      setTags(explorer.tags);
+    }
+    // console.log('EXPLORER TAGS', explorer.tags)
+    // setTags(explorer.tags)
+  };
+
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
       handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
 
       setFolder(e.currentTarget.value);
-      const isFolder = showInput.isFolder;
-
-      let fileName = e.currentTarget.value;
 
       const body = {
         fileName: e.currentTarget.value,
         folderName: explorer.name,
-        isFolder: isFolder,
+        isFolder: showInput.isFolder,
       };
 
       await fetch('http://localhost:3000/', {
@@ -147,25 +191,15 @@ function Folder({
 
       setShowInput({ ...showInput, visible: false });
 
-      //recursive helper function to make only files that are inside the app folder make the modal popup
-      function recall(tree: any, fileName: string) {
-        if (tree.name === fileName && showInput.isFolder) {
-          setOpen(true);
-          return;
-        }
-
-        tree.items.map((obj) => {
-          return recall(obj, fileName);
-        });
-      }
-
-      recall(AllFilesInApp, fileName);
+      if (showInput.isFolder) setOpen(true);
     }
   };
 
   const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
     e?.stopPropagation();
     handleDeleteNode(explorer.id);
+    setComponentName('Page');
+    setTags([]);
 
     await fetch('http://localhost:3000/', {
       method: 'Delete',
@@ -183,7 +217,6 @@ function Folder({
       <div style={{ marginTop: 5 }}>
         <Modal
           open={open}
-          onClose={handleClose}
           aria-labelledby='modal-title'
           aria-describedby='modal-description'
         >
@@ -286,8 +319,12 @@ function Folder({
           <span>
             {folderIcon} {folderLogo} {explorer.name}
           </span>
-          <div>
-            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+          <div className='buttons'>
+            {explorer.name !== 'app' &&
+            explorer.name !== 'src' &&
+            explorer.name !== 'node_modules' &&
+            explorer.name !== 'public' &&
+            explorer.name !== 'NextSketch' ? (
               <button
                 onClick={(e) => {
                   handleNewFolder(e, true);
@@ -299,7 +336,10 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'src' ? (
+            {explorer.name !== 'src' &&
+            explorer.name !== 'node_modules' &&
+            explorer.name !== 'public' &&
+            explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
                 <FontAwesomeIcon icon={faFileCirclePlus} />
               </button>
@@ -307,9 +347,11 @@ function Folder({
               ''
             )}
 
-            {explorer.name !== 'app' && explorer.name !== 'src' ? (
+            {explorer.name !== 'app' &&
+            explorer.name !== 'src' &&
+            explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleDeleteFolder(e, false)}>
-                <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon icon={faMinus} />
               </button>
             ) : (
               ''
@@ -342,7 +384,6 @@ function Folder({
                 handleInsertNode={handleInsertNode}
                 handleDeleteNode={handleDeleteNode}
                 handleInputBoilerFiles={handleInputBoilerFiles}
-                appFolder={appFolder}
                 explorer={exp}
                 key={exp.id}
                 setFolder={setFolder}
@@ -367,10 +408,13 @@ function Folder({
         )}
         {explorer.name}
         {explorer.name === 'page.tsx' ? (
-          ''
+          '   '
         ) : (
-          <button onClick={(e) => handleDeleteFolder(e, false)}>
-            <FontAwesomeIcon icon={faTrash} />
+          <button
+            className='deletebtn'
+            onClick={(e) => handleDeleteFolder(e, false)}
+          >
+            <FontAwesomeIcon icon={faMinus} />
           </button>
         )}
       </div>
