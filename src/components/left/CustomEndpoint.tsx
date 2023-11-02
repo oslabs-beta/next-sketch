@@ -21,6 +21,8 @@ const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: '20px',
+  fontSize: '1.6rem'
+
 };
 //MUI styling fior modal
 //-----------------
@@ -290,7 +292,7 @@ const CustomEndpoint = ({
             template.tsx
           </div>
 
-          <Button onClick={handleClose} sx={{ mt: 3 }}>
+          <Button onClick={handleClose} sx={{ mt: 3, fontSize: '1.3rem' }}>
             Submit
           </Button>
         </Box>

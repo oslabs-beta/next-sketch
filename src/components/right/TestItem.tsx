@@ -54,6 +54,7 @@ export const TestItem = ({ tag }: TestItemProps) => {
         bgcolor: 'transparent',
         color: 'rgba(229, 63, 115)',
         margin: 2.5,
+        fontSize: '1.4rem',
         fontWeight: 'bolder',
         height: 35,
         width: '90%',

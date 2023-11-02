@@ -16,17 +16,18 @@
     width: 90%;
     cursor: pointer;
     border-radius: 4px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
     margin-top: 5%;
     overflow-y: scroll;
-    opacity: 0.9
+    opacity: 0.9;
+
   }
   
   /* Styling for the folder text and buttons */
   .folder span {
     font-family: Arial, sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: normal;
     color: white;
     
@@ -55,16 +56,13 @@
   /* background-color: pink; */
 }
 
-.deletebtn{
-  color: white
-}
 
 /* Styles for the form element */
 form {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   border-radius: 5px;
   padding: 10px;
   width: 90%; /* Set to 75% width */
@@ -91,7 +89,8 @@ input {
   font-size: 16px;
   margin-right: 5px;
   animation: blink 1s step-end 10; /* Apply the animation */
-  color: white
+  color: white;
+  font-size: 3rem;
 }
 
 /* Styles for the submit button */
@@ -164,13 +163,12 @@ button[type="submit"]:disabled {
   width: 100%;
   line-height: 100%;
   margin: 0;
-  font-size: 20px;
+  font-size: 1.5rem;
   background-color: transparent;
   
 }
 
 .page {
-  background-color: pink;
   justify-content: space-between;
   padding-right: 30%;
 }
@@ -248,5 +246,19 @@ button[type="submit"]:disabled {
   }
   100% {
     transform: translateY(0);
+  }
+};
+
+div .buttons {
+  font-size: 100px;
+}
+
+
+@media (min-width: 2000px) {
+  .folder {
+    /* Define the styles to apply when the screen width is 2000px or larger */
+    /* For example, you can modify the background-color and box-shadow here */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add any other styles you want to change */
   }
 }
