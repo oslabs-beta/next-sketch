@@ -1,3 +1,7 @@
+* {
+  margin: 0 auto,
+}
+
 /* Styling for the outer div with margin-top: 5 */
 div {
     margin-top: 5px;
@@ -10,7 +14,7 @@ div {
     align-items: center;
     justify-content: space-between;
     padding: 5px;
-    width: 75%;
+    width: 90%;
     cursor: pointer;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -46,20 +50,21 @@ div {
  /* Styles for the form container */
 .cursor {
   margin-top: 3px;
-  display: flex;
-  align-items: center;
+  /* background-color: pink; */
 }
 
 /* Styles for the form element */
 form {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   padding: 10px;
-  width: 75%; /* Set to 75% width */
+  width: 90%; /* Set to 75% width */
   max-width: 600px;
   box-sizing: border-box; /* Include padding and border in the width */
+  box-shadow: inset 2px -3px 10px rgba(0, 0, 0, 0.2);
   
 }
 
@@ -71,7 +76,7 @@ form:hover{
 input {
   flex: 1;
   padding: 10px;
-  /* border: 1px solid #ccc; */
+  border: 10px solid #ccc;
   width: 80%;
   border-radius: 5px;
   font-size: 16px;
@@ -123,7 +128,9 @@ button[type="submit"]:disabled {
 /* Styles for the input container */
 .input-container {
   position: relative;
+  height: 100%
 }
+
 
 /* Styles for the input field */
 #searchInput {
@@ -131,7 +138,10 @@ button[type="submit"]:disabled {
   outline: none; /* Remove the default input focus outline */
   padding: 0; /* Remove any padding or margins */
   width: 100%;
-  
+  line-height: 100%;
+  margin: 0;
+  font-size: 20px;
+  background-color: transparent;
   
 }
 

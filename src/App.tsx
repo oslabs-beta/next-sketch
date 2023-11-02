@@ -171,15 +171,15 @@ const App = () => {
   };
 
   return (
-    <Box sx={{ border: 2, borderColor: 'brown' }}>
-      <AppBar position='static' sx={{ bgcolor: 'skyblue' }}>
+    <Box sx={{height: '100vh'}}>
+      <AppBar position='static' sx={{ bgcolor: 'transparent', marginBottom: '1.3%',  boxShadow:' -1px 6px 11px 0px rgba(131,99,151,0.75)' }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography
             variant='h3'
             sx={{
               fontFamily: 'Titillium Web',
               // marginBottom: '0.5em',
-              color: '#061E47',
+              color: 'white',
               textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
             }}
           >
@@ -191,18 +191,24 @@ const App = () => {
 
       <Box
         sx={{
-          marginTop: 6,
-          marginLeft: 1,
-          marginRight: 1,
+        
+          height: '88vh',
+          width: '95vw',
+          marginLeft: 5,
+          marginRight: 4,
+          
           // margin: 1,
           padding: 1,
           borderRadius: 3,
-          bgcolor: 'rgba(255, 255, 255, 0.7)',
-          boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
-          border: 2,
-          borderColor: 'red',
+          // bgcolor: 'rgba(255, 255, 255, 0.7)',
+          // boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
+          boxShadow: '-1px 3px 22px 0px rgba(131,99,151,0.75)',
+          backgroundColor: 'white',
+          paddingTop: '1%'
+          // border: 2,
+          // borderColor: 'red',
         }}
-      >
+      > 
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider
@@ -224,21 +230,22 @@ const App = () => {
               <Grid
                 container
                 sx={{
-                  height: '79vh',
-                  border: 2,
-                  borderColor: 'blue',
+                  height: '',
+                  // border: 2,
+                  // borderColor: 'blue',
+                  gap: '30px'
                 }}
               >
                 <Grid
                   item
-                  sm={4.5}
-                  md={4}
-                  lg={3.5}
-                  xl={3}
+                  sm={3}
+                  md={3}
+                  lg={3}
+                  xl={2.5}
                   sx={{
-                    maxHeight: '79vh',
-                    border: 2,
-                    borderColor: 'pink',
+                    maxHeight: '86vh',
+                    // border: 2,
+                    // borderColor: 'pink',
                     paddingLeft: 1,
                     overflow: 'auto',
                     scrollbarWidth: 'none',
@@ -285,14 +292,15 @@ const App = () => {
                 <DndContext>
                   <Grid
                     item
-                    sm={3.75}
+                    sm={4}
                     md={4}
                     lg={4.25}
                     xl={4.5}
                     sx={{
-                      border: 2,
-                      borderColor: 'black',
+                      // border: 2,
+                      // borderColor: 'black',
                       display: 'flex',
+                      gap: '30px',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
                     }}
@@ -300,10 +308,12 @@ const App = () => {
                     <StaticTagsContainer />
                     <Box
                       sx={{
-                        border: 2,
-                        borderColor: 'lawngreen',
+                        // border: 1,
+                        // borderColor: 'lawngreen',
                         flexGrow: 1,
                         background: '#42464C',
+                        boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
+                        borderRadius: '20px',
                       }}
                     >
                       <Tree explorer={explorerData} srcApp={srcApp} />
@@ -312,7 +322,7 @@ const App = () => {
 
                   <Grid
                     item
-                    sm={3.75}
+                    sm={4}
                     md={4}
                     lg={4.25}
                     xl={4.5}
@@ -320,18 +330,23 @@ const App = () => {
                       justifyContent: 'space-between',
                       display: 'flex',
                       flexDirection: 'column',
-                      border: 2,
-                      borderColor: 'cyan',
+                      // border: 2,
+                      gap: '30px',
+                      // borderColor: 'cyan',
+                      
                     }}
                   >
                     <Box
                       sx={{
                         width: '100%',
                         height: '35vh',
-                        border: 2,
-                        borderColor: 'orange',
+                        // border: 2,
+                        // borderColor: 'orange',
                         paddingLeft: 2,
                         paddingRight: 2,
+                        boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
+                        borderRadius: '20px',
+                        
                       }}
                     >
                       <DisplayContainer
