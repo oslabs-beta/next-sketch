@@ -176,12 +176,14 @@ const App = () => {
       <AppBar position='static' sx={{ bgcolor: 'transparent', marginBottom: '2%' }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{display: 'flex' }}>
-          <img src='images/logo2.png'     style={{ width: '10%', alignSelf:'center'}}/>
+          <img src='images/nslogo.png' style={{ transform: 'rotate(30deg)', width: '10%', alignSelf: 'center', paddingRight: '2%', marginTop: '2%' }} />
+
 
           <Typography
+            className='logo'
             variant='h3'
             sx={{
-            fontFamily: 'Titillium Web',
+            fontFamily: 'Roboto Mono',
             // marginBottom: '0.5em',
             color: 'white',
             textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
@@ -236,7 +238,8 @@ const App = () => {
               <Grid
                 container
                 sx={{
-                  height: '',
+                  height: '85vh',
+                  paddingLeft: '1.3%',
                   // border: 2,
                   // borderColor: 'blue',
                   gap: '23px'
@@ -306,18 +309,21 @@ const App = () => {
                       // border: 2,
                       // borderColor: 'black',
                       display: 'flex',
-                      gap: '40px',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
                   
                     }}
-                  >
-                    <StaticTagsContainer />
+                  > 
+                    <Box style={{alignSelf: 'flex-start', height: '40vh'}}>
+                      <StaticTagsContainer />
+                    </Box>
+                    
                     <Box
                       sx={{
                         // border: 1,
                         // borderColor: 'lawngreen',
                         // flexGrow: 1,
+                        height: '45vh',
                         background: 'transparent',
                         boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
                         borderRadius: '20px',
@@ -336,11 +342,9 @@ const App = () => {
                     xl={4.5}
                     sx={{
                       justifyContent: 'space-between',
+                      maxHeight: '100%',
                       display: 'flex',
                       flexDirection: 'column',
-                      // border: 2,
-                      gap: '40px',
-                      // borderColor: 'cyan',
                       
                     }}
                   >
@@ -364,7 +368,11 @@ const App = () => {
                         handleUpdatePreview={handleUpdatePreview}
                       />
                     </Box>
+
+                    <Box sx={{height: '45vh'}}>
                     <CodePreview treeData={explorerData} />
+                    </Box>
+                    
                   </Grid>
                   <DragOverlayWrapper />
                 </DndContext>

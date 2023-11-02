@@ -343,7 +343,7 @@ function Folder({
             explorer.name !== 'public' &&
             explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
-                <FontAwesomeIcon icon={faFileCirclePlus} style={{color: 'white'}} />
+                <FontAwesomeIcon  icon={faFileCirclePlus} style={{color: 'white'}} />
               </button>
             ) : (
               ''
@@ -376,7 +376,10 @@ function Folder({
                   setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />);
                   setExpand(false);
                 }}
+                style = {{backgroundColor: 'transparent', color: 'white'}}
               />
+                      
+
             </div>
           )}
 
@@ -402,9 +405,9 @@ function Folder({
     );
   } else if (explorer.name) {
     return (
-      <div className='folder' onClick={retrieveCode} style={{color: 'white'}}>
+      <div className={`folder${explorer.name === 'page.tsx' ? ' page ' : ''}`} onClick={retrieveCode} style={{color: 'white'}}>
         {explorer.name.slice(-3) === 'tsx' ? (
-          <FontAwesomeIcon icon={faAtom} />
+          <FontAwesomeIcon className='icon' icon={faAtom} />
         ) : (
           '📄'
         )}
@@ -417,7 +420,13 @@ function Folder({
             onClick={(e) => handleDeleteFolder(e, false)}
 
           >
-            <FontAwesomeIcon icon={faMinus} style={{color: 'white'}}/>
+           <FontAwesomeIcon
+            className='icon'
+            icon={faMinus}
+            style={{
+            color: 'white',
+            }}
+           />
           </button>
         )}
       </div>

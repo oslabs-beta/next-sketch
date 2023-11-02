@@ -124,15 +124,15 @@ svg.call(zoomBehavior);
   }, [ width, height, srcApp, resetView]);
 
   const treeStyles = {
-    height: '500px',
+    height: '100%',
     width: '100%',
     // overflowY:'hidden',
  };
 
   return (
-    <div style={{height: '500px'}}>
-      {/* <button className="" onClick={() => setResetView(!resetView)} style={{color: 'white', marginLeft: '10px', border: '2px solid rgba(229, 63, 115)'}}>Reset View</button>
-         */}
+    <div style={{height: '100%', position: 'relative'}}>
+      <button className="" onClick={() => setResetView(!resetView)} style={{color: 'white', marginLeft: '10px', border: '2px solid rgba(229, 63, 115)', position: 'absolute', top: '20px', left: '20px', padding: '1%', borderRadius: '10px', fontSize: '1.35rem'}}>Reset View</button>
+        
             <svg ref={svgRef} style={treeStyles}></svg>
 
     </div>

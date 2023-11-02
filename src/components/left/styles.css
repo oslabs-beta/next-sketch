@@ -1,13 +1,10 @@
 * {
   /* color: white; */
-  font-size: 18px;
+  /* font-size: 18px; */
 
 }
 
-/* Styling for the outer div with margin-top: 5 */
-div {
-    margin-top: 5px;
-  }
+
   
   /* Styling for the folder element */
   .folder {
@@ -19,6 +16,7 @@ div {
     width: 90%;
     cursor: pointer;
     border-radius: 4px;
+    font-size: 1.4rem;
     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
     margin-top: 5%;
     overflow-y: scroll;
@@ -28,7 +26,7 @@ div {
   /* Styling for the folder text and buttons */
   .folder span {
     font-family: Arial, sans-serif;
-    font-size: 18px;
+    font-size: 1.4rem;
     font-weight: normal;
     color: white;
     
@@ -135,6 +133,10 @@ button[type="submit"]:disabled {
   /* Add other styles as needed */
 }
 
+.logo {
+  font-family: 'Roboto Mono', monospace;
+}
+
 
  
  
@@ -167,6 +169,12 @@ button[type="submit"]:disabled {
   
 }
 
+.page {
+  background-color: pink;
+  justify-content: space-between;
+  padding-right: 30%;
+}
+
 /* Styles for the blinking cursor (initially hidden) */
 .text-cursor {
   position: absolute;
@@ -187,6 +195,8 @@ button[type="submit"]:disabled {
   }
  
 }
+
+
 
 #searchInput::placeholder {
   color: #ccc; /* Customize the placeholder text color */

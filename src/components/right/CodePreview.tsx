@@ -163,16 +163,16 @@ export default ${name};
           paddingLeft: 2,
           paddingRight: 2,
           bgcolor: 'rgba(229, 63, 115)',
-          height: '500px',
+          height: '100%',
 
         }}
       >
-        <Typography variant='h6' style={{color: 'white'}}>Code Preview</Typography>
+        <Typography variant='h6' style={{color: 'white', fontSize: '1.8rem', paddingTop: '1.5%', paddingLeft:'1%'}}>Code Preview</Typography>
         <Box
           sx={{
             // border: 2,
-            // borderColor: 'darkred',
-            height: '400px',
+            // borderColor: 'darkred'
+            height: '90%',
             overflow: 'auto',
             scrollbarWidth: 'none', // Hide the scrollbar for firefox
             '&::-webkit-scrollbar': {
@@ -181,10 +181,15 @@ export default ${name};
             '&-ms-overflow-style:': {
               display: 'none', // Hide the scrollbar for IE
             },
+            fontSize: '20px',
+            '@media (min-width: 2000px)': {
+              /* CSS styles to apply when the screen is larger than 2000px */
+              fontSize: '30px',
+            },
             
           }}
         >
-          <pre className='line-numbers' style={{height: '400px', fontSize: '1.3rem'}}>
+          <pre className='line-numbers' style={{height: '100%'}}>
             <code className='language-jsx match-braces'>{codeSnippet}</code>
           </pre>
 
