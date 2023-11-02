@@ -196,7 +196,6 @@ const CustomEndpoint = ({
   return (
     <div className='cursor'>
       <form>
-        <div className='input-container'>
           <input
             type='text'
             autoFocus
@@ -206,7 +205,6 @@ const CustomEndpoint = ({
             id='searchInput'
           />
           <div className='text-cursor'></div>
-        </div>
 
         <button type='submit' onClick={handleCreateCustomFolder}>
           Submit
