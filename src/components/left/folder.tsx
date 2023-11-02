@@ -73,7 +73,9 @@ function Folder({
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
+    color: 'black',
     p: 4,
+    borderRadius: '20px',
   };
 
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
@@ -311,7 +313,7 @@ function Folder({
               setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />);
             } else {
               setFolderIcon('▶');
-              setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />);
+              setFolderLogo(<FontAwesomeIcon icon={faFolderClosed}  />);
             }
             setExpand(!expand);
           }}
@@ -330,7 +332,7 @@ function Folder({
                   handleNewFolder(e, true);
                 }}
               >
-                <FontAwesomeIcon icon={faFolderPlus} />
+                <FontAwesomeIcon icon={faFolderPlus} style={{color: 'white'}} />
               </button>
             ) : (
               ''
@@ -341,7 +343,7 @@ function Folder({
             explorer.name !== 'public' &&
             explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
-                <FontAwesomeIcon icon={faFileCirclePlus} />
+                <FontAwesomeIcon icon={faFileCirclePlus} style={{color: 'white'}} />
               </button>
             ) : (
               ''
@@ -351,7 +353,7 @@ function Folder({
             explorer.name !== 'src' &&
             explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleDeleteFolder(e, false)}>
-                <FontAwesomeIcon icon={faMinus} />
+                <FontAwesomeIcon icon={faMinus} style={{color: 'white'}} />
               </button>
             ) : (
               ''
@@ -361,7 +363,7 @@ function Folder({
 
         <div style={{ display: expand ? 'block' : 'none', paddingLeft: 25 }}>
           {showInput.visible && (
-            <div className='inputContainer'>
+            <div className='inputContainer' >
               <span>{showInput.isFolder ? ' 📁' : '📄'} </span>
               <input
                 type='text'
@@ -396,11 +398,11 @@ function Folder({
             );
           })}
         </div>
-      </div>
+      </div> 
     );
   } else if (explorer.name) {
     return (
-      <div className='folder' onClick={retrieveCode}>
+      <div className='folder' onClick={retrieveCode} style={{color: 'white'}}>
         {explorer.name.slice(-3) === 'tsx' ? (
           <FontAwesomeIcon icon={faAtom} />
         ) : (
@@ -413,8 +415,9 @@ function Folder({
           <button
             className='deletebtn'
             onClick={(e) => handleDeleteFolder(e, false)}
+
           >
-            <FontAwesomeIcon icon={faMinus} />
+            <FontAwesomeIcon icon={faMinus} style={{color: 'white'}}/>
           </button>
         )}
       </div>

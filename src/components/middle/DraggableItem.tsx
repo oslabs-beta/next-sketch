@@ -33,9 +33,12 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
       variant='contained'
       sx={{
         textAlign: 'center',
-        bgcolor: '#cbb4d4',
+        bgcolor: 'transparent',
+        border: '2px solid #6441A5',
+        color: 'white',
         // color: 'white',
         // border: 1,
+        opacity: '0.9',
         fontWeight: 'bolder',
         fontSize: 15,
         margin: 0.8,

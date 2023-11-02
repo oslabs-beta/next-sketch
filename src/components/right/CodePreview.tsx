@@ -158,22 +158,21 @@ export default ${name};
     <>
       <Box
         sx={{
-          border: 2,
-          borderColor: 'darkgreen',
           borderRadius: '20px',
           boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
-          flexGrow: 1,
           paddingLeft: 2,
           paddingRight: 2,
-          bgcolor: 'white',
+          bgcolor: 'rgba(229, 63, 115)',
+          height: '500px',
+
         }}
       >
-        <Typography variant='h6'>Code Preview</Typography>
+        <Typography variant='h6' style={{color: 'white'}}>Code Preview</Typography>
         <Box
           sx={{
             // border: 2,
             // borderColor: 'darkred',
-            height: '35vh',
+            height: '400px',
             overflow: 'auto',
             scrollbarWidth: 'none', // Hide the scrollbar for firefox
             '&::-webkit-scrollbar': {
@@ -185,7 +184,7 @@ export default ${name};
             
           }}
         >
-          <pre className='line-numbers' style={{height: '100%', fontSize: '15px'}}>
+          <pre className='line-numbers' style={{height: '400px', fontSize: '1.3rem'}}>
             <code className='language-jsx match-braces'>{codeSnippet}</code>
           </pre>
 

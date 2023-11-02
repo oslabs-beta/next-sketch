@@ -20,6 +20,7 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  borderRadius: '20px',
 };
 //MUI styling fior modal
 //-----------------
@@ -55,10 +56,6 @@ const CustomEndpoint = ({
     setCurrentParent,
   } = useContext(AppContext);
 
-  //deconstructing the reducer elements
-  // const { componentName, updateComponent } = useCode();
-
-  console.log(currentParent);
 
   const handleClose = () => {
     setOpen(false);
@@ -94,10 +91,9 @@ const CustomEndpoint = ({
   useEffect(() => {
     //creating new files with code
     if (postData === true) {
-      console.log('posting data');
+     
       handlePostingFiles(folder, componentName, codeSnippet);
     }
-    console.log('in useeffect customendpoiunt');
     //updating code in existing files
     if (update === true) {
       handleUpdatingFiles(componentName, codeSnippet, previewFolder);
@@ -206,7 +202,7 @@ const CustomEndpoint = ({
           />
           <div className='text-cursor'></div>
 
-        <button type='submit' onClick={handleCreateCustomFolder}>
+        <button type='submit' onClick={handleCreateCustomFolder} className="jumpBtn">
           Submit
         </button>
       </form>

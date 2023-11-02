@@ -34,11 +34,14 @@ const ExportButton = () => {
     <Button className='exportButton' onClick={handleClick} variant="contained"
     color="primary"
     sx={{
-      backgroundColor: '#cbb4d4',
+      backgroundColor: '#6441A5',
       '&:hover': {
-        backgroundColor: 'darkblue',
+        backgroundColor: '#6441A5',
+        fontWeight: 'bold',
+        opacity: '0.9'
+        // boxShadow: '0 2px 4px rgba(255, 255, 255, 0.2)'
+
       },
-      fontWeight: 'bolder',
       fontSize: '1.00em',
 
     }}>

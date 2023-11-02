@@ -93,11 +93,13 @@ const StaticTagsContainer = (): JSX.Element => {
         bgcolor: 'white',
         // flexGrow: 1,
         height: '35vh',
-        boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
+        // boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
+        border: '1px solid rgba(101, 105, 111)',
         borderRadius: '20px',
+        bgcolor: 'transparent'
       }}
     >
-      <Typography variant='h6' sx={{ textAlign: 'center', marginTop: '4%', fontWeight:'bolder'}}>
+      <Typography variant='h6' sx={{ textAlign: 'center', marginTop: '4%', fontWeight:'bolder', color: 'rgba(101,105,111)', fontSize: '1.5em'}}>
         Add Elements
       </Typography>
       <Box
@@ -107,7 +109,7 @@ const StaticTagsContainer = (): JSX.Element => {
           flexWrap: 'wrap',
           alignContent: 'center',
           justifyContent: 'center',
-          marginTop: '2%'
+          marginTop: '2%',
           // border: 2,
           // minHeight: '68vh',
           // maxHeight: '70vh',
