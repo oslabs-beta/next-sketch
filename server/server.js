@@ -8,9 +8,9 @@ const PORT = 3000;
 app.use(cors());
 const fileController = require('./fileController.js');
 const archiver = require('archiver');
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname, '../dist/')));
 
 app.get('/export', (req, res) => {
