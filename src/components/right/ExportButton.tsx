@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
+import {Button} from '@mui/material'
 
 const ExportButton = () => {
   async function handleClick(e?: any) {
@@ -30,9 +31,19 @@ const ExportButton = () => {
   }
 
   return (
-    <button className='exportButton' onClick={handleClick}>
+    <Button className='exportButton' onClick={handleClick} variant="contained"
+    color="primary"
+    sx={{
+      backgroundColor: '#cbb4d4',
+      '&:hover': {
+        backgroundColor: 'darkblue',
+      },
+      fontWeight: 'bolder',
+      fontSize: '1.00em',
+
+    }}>
       EXPORT
-    </button>
+    </Button>
   );
 };
 
