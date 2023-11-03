@@ -2,7 +2,7 @@
 
 Introducing your next-level prototyping tool — NextSketch. The tool streamlines the process of creating Next.js prototypes by simplifing your workflow and allows you, developers, to focus on designing and creating your application.
 
-Features
+## Features
 
 Create your custom endpoint by submitting a name through the ‘New Endpoint’ form and selecting optional unique file conventions that are reserved for Next.js applications. Each route will be created within only the app folder and can be deleted through the (—) button. All routes and its files are displayed upon creation via a tree hierachy.
 
@@ -14,24 +14,30 @@ Congrats on making your first mock up of a Next.js application.
 
 We would like to thank you all for your support ! If you enjoyed our application or are interested in discussing possible new features, please give us a star on GitHub and follow us on LinkedIn for new updates/features!
 
-Check Out NextSketch
+## Navigating the Command Line
 
-[https://nextsketch.vercel.app/](url)
+Fork and clone the next-sketch repository
 
-NextSketch Team
+Install your dependencies:
 
-James Huang | [LinkedIn](https://www.linkedin.com/in/james-huang-220392243/).
+    npm install
 
-LinkedIn GitHub
+Spin up the application:
 
-Jordan Lim
+    npm run dev
 
-LinkedIn GitHub
+## Check Out NextSketch
 
-Laura Ramirez
+[NextSketch](https://nextsketch.vercel.app/)
 
-LinkedIn GitHub
+[Medium Article](https://medium.com/@jhuang4647/supercharge-prototyping-with-nextsketch-df90eec49682)
 
-Christopher Wardrip| [LinkedIn](https://www.linkedin.com/in/christopherwardrip/).
+## NextSketch Team
 
-LinkedIn GitHub
+James Huang | [LinkedIn](https://www.linkedin.com/in/james-huang-220392243/) | [Github](https://github.com/jameshuangcoding)
+
+Jordan Lim | [LinkedIn](https://www.linkedin.com/in/jordanlim1/) | [Github](https://github.com/jordanlim1)
+
+Laura Ramirez | [LinkedIn](https://www.linkedin.com/in/laura-ramirez-0bb66885/) | [Github](https://github.com/lauraramirez05)
+
+Christopher Wardrip| [LinkedIn](https://www.linkedin.com/in/christopherwardrip/) | [Github](https://github.com/cwardrip)
