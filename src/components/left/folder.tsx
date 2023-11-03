@@ -73,7 +73,10 @@ function Folder({
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
+    color: 'black',
     p: 4,
+    borderRadius: '20px',
+    fontSize: '1.6rem'
   };
 
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
@@ -111,7 +114,7 @@ function Folder({
     e?.stopPropagation();
     setExpand(true);
     setFolderIcon('▼');
-    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />);
+    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen}/>);
 
     setShowInput({
       visible: true,
@@ -298,7 +301,7 @@ function Folder({
               template.tsx
             </div>
 
-            <Button onClick={handleClose} sx={{ mt: 3 }}>
+            <Button onClick={handleClose} sx={{ mt: 3, fontSize: '1.3rem' }}>
               Submit
             </Button>
           </Box>
@@ -311,7 +314,7 @@ function Folder({
               setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />);
             } else {
               setFolderIcon('▶');
-              setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />);
+              setFolderLogo(<FontAwesomeIcon icon={faFolderClosed}  />);
             }
             setExpand(!expand);
           }}
@@ -329,8 +332,9 @@ function Folder({
                 onClick={(e) => {
                   handleNewFolder(e, true);
                 }}
+                style={{color: 'pink'}}
               >
-                <FontAwesomeIcon icon={faFolderPlus} />
+                <div style={{color: 'red'}}> <FontAwesomeIcon icon={faFolderPlus} style={{color: 'white', fontSize: '1.4rem'}} /> </div>
               </button>
             ) : (
               ''
@@ -341,7 +345,7 @@ function Folder({
             explorer.name !== 'public' &&
             explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
-                <FontAwesomeIcon icon={faFileCirclePlus} />
+                <FontAwesomeIcon  icon={faFileCirclePlus} style={{color: 'white', fontSize: '1.4rem'}} />
               </button>
             ) : (
               ''
@@ -351,7 +355,7 @@ function Folder({
             explorer.name !== 'src' &&
             explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleDeleteFolder(e, false)}>
-                <FontAwesomeIcon icon={faMinus} />
+                <FontAwesomeIcon icon={faMinus} style={{color: 'white', fontSize: '1.4rem'}} />
               </button>
             ) : (
               ''
@@ -361,7 +365,7 @@ function Folder({
 
         <div style={{ display: expand ? 'block' : 'none', paddingLeft: 25 }}>
           {showInput.visible && (
-            <div className='inputContainer'>
+            <div className='inputContainer' >
               <span>{showInput.isFolder ? ' 📁' : '📄'} </span>
               <input
                 type='text'
@@ -374,7 +378,10 @@ function Folder({
                   setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />);
                   setExpand(false);
                 }}
+                style = {{backgroundColor: 'transparent', color: 'white'}}
               />
+                      
+
             </div>
           )}
 
@@ -396,13 +403,13 @@ function Folder({
             );
           })}
         </div>
-      </div>
+      </div> 
     );
   } else if (explorer.name) {
     return (
-      <div className='folder' onClick={retrieveCode}>
+      <div className={`folder${explorer.name === 'page.tsx' ? ' page ' : ''}`} onClick={retrieveCode} style={{color: 'white'}}>
         {explorer.name.slice(-3) === 'tsx' ? (
-          <FontAwesomeIcon icon={faAtom} />
+          <FontAwesomeIcon className='icon' icon={faAtom} />
         ) : (
           '📄'
         )}
@@ -413,8 +420,16 @@ function Folder({
           <button
             className='deletebtn'
             onClick={(e) => handleDeleteFolder(e, false)}
+
           >
-            <FontAwesomeIcon icon={faMinus} />
+           <FontAwesomeIcon
+            className='icon'
+            icon={faMinus}
+            style={{
+            color: 'white',
+            fontSize: '1.4rem'
+            }}
+           />
           </button>
         )}
       </div>

@@ -1,15 +1,14 @@
 * {
-  margin: 0 auto,
+  /* color: white; */
+  /* font-size: 18px; */
+
 }
 
-/* Styling for the outer div with margin-top: 5 */
-div {
-    margin-top: 5px;
-  }
+
   
   /* Styling for the folder element */
   .folder {
-    background-color: white;
+    /* background-color:#bdc3c7; */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -17,17 +16,20 @@ div {
     width: 90%;
     cursor: pointer;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 3px;
+    font-size: 1.5rem;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    margin-top: 5%;
     overflow-y: scroll;
+    opacity: 0.9;
+
   }
   
   /* Styling for the folder text and buttons */
   .folder span {
     font-family: Arial, sans-serif;
-    font-size: 16px;
+    font-size: 1.5rem;
     font-weight: normal;
-    color: #333;
+    color: white;
     
   }
   
@@ -37,7 +39,7 @@ div {
     border: none;
     cursor: pointer;
     font-size: 16px;
-    color: #333;
+    color: #000046;
     margin-left: 10px;
   }
   
@@ -45,6 +47,7 @@ div {
   .folder .folder-contents {
     display: block;
     padding-left: 25px;
+    color: white;
   }
   
  /* Styles for the form container */
@@ -53,44 +56,51 @@ div {
   /* background-color: pink; */
 }
 
+
 /* Styles for the form element */
 form {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   border-radius: 5px;
   padding: 10px;
   width: 90%; /* Set to 75% width */
   max-width: 600px;
   box-sizing: border-box; /* Include padding and border in the width */
   box-shadow: inset 2px -3px 10px rgba(0, 0, 0, 0.2);
+  color: white;
   
 }
 
 form:hover{
   cursor: text;
+  color: white;
+
 }
 
 /* Styles for the input field */
 input {
   flex: 1;
   padding: 10px;
-  border: 10px solid #ccc;
+  border: 1px solid #ccc;
   width: 80%;
   border-radius: 5px;
   font-size: 16px;
   margin-right: 5px;
   animation: blink 1s step-end 10; /* Apply the animation */
+  color: white;
+  font-size: 3rem;
 }
 
 /* Styles for the submit button */
 button[type="submit"] {
-  background-color: #007BFF;
-  color: #fff;
-  border: none;
+  background-color: transparent;
+  color: rgba(229, 63, 115);
+  border: 1px solid rgba(229, 63, 115);
   border-radius: 5px;
-  padding: 0px 10px;
+  /* padding: 10px 15px; */
+  padding: 2%;
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -100,7 +110,10 @@ button[type="submit"] {
 
 /* Hover state for the submit button */
 button[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: rgba(229, 63, 115);
+  color: white;
+  font-weight: 700;
+  
 }
 
 /* Disabled state for the submit button */
@@ -119,6 +132,10 @@ button[type="submit"]:disabled {
   /* Add other styles as needed */
 }
 
+.logo {
+  font-family: 'Roboto Mono', monospace;
+}
+
 
  
  
@@ -128,7 +145,13 @@ button[type="submit"]:disabled {
 /* Styles for the input container */
 .input-container {
   position: relative;
-  height: 100%
+  height: 100%;
+  background-color: transparent;
+}
+
+.inputContainer input{
+
+  background-color: transparent;
 }
 
 
@@ -140,9 +163,14 @@ button[type="submit"]:disabled {
   width: 100%;
   line-height: 100%;
   margin: 0;
-  font-size: 20px;
+  font-size: 1.5rem;
   background-color: transparent;
   
+}
+
+.page {
+  justify-content: space-between;
+  padding-right: 30%;
 }
 
 /* Styles for the blinking cursor (initially hidden) */
@@ -153,6 +181,8 @@ button[type="submit"]:disabled {
   height: 100%;
   width: 2px; /* Adjust the width as needed */
   animation: none; /* Blinking animation */
+  color: rgba(135,215,243);
+  z-index: 2
 }
 
 @keyframes cursor-blink {
@@ -161,14 +191,19 @@ button[type="submit"]:disabled {
   }
   50% {
   }
+ 
 }
+
+
 
 #searchInput::placeholder {
   color: #ccc; /* Customize the placeholder text color */
+  z-index: 1;
 }
 
 #searchInput:focus + .text-cursor {
   animation: cursor-blink 1s infinite; /* Start blinking animation when focused */
+  color: rgba(135,215,243);
 }
 
 .buttons{
@@ -193,3 +228,37 @@ button[type="submit"]:disabled {
   fill: blue;
 }
 
+
+.jumpBtn {
+  transition: transform 0.2s ease;
+}
+
+.jumpBtn.clicked {
+  animation: jump 0.5s ease;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+};
+
+div .buttons {
+  font-size: 100px;
+}
+
+
+@media (min-width: 2000px) {
+  .folder {
+    /* Define the styles to apply when the screen width is 2000px or larger */
+    /* For example, you can modify the background-color and box-shadow here */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add any other styles you want to change */
+  }
+}

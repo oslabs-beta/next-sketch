@@ -51,14 +51,17 @@ export const TestItem = ({ tag }: TestItemProps) => {
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        bgcolor: 'lightgrey',
-        color: 'black',
+        bgcolor: 'transparent',
+        color: 'rgba(229, 63, 115)',
         margin: 2.5,
+        fontSize: '1.4rem',
+        fontWeight: 'bolder',
         height: 35,
         width: '90%',
         borderRadius: 2,
         border: 2,
-        borderColor: 'red',
+        borderColor: '#6441A5',
+        paddingBottom: '5%',
       }}
     >
       <Box

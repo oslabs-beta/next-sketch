@@ -93,24 +93,36 @@ const StaticTagsContainer = (): JSX.Element => {
         bgcolor: 'white',
         // flexGrow: 1,
         height: '35vh',
-        boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
+        // boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
+        border: '1px solid rgba(101, 105, 111)',
         borderRadius: '20px',
+        bgcolor: 'transparent',
+
+        '@media (min-width: 2000px)': {
+          padding: '50px', /* Add padding when screen width is larger than 2000px */
+        }
       }}
     >
-      <Typography variant='h6' sx={{ textAlign: 'center', marginTop: '4%', fontWeight:'bolder'}}>
+      <Typography variant='h6' sx={{ textAlign: 'center', marginTop: '4%', fontWeight:'bolder', color: 'rgba(101,105,111)', marginBottom: '5%', '@media (min-width: 2000px)': {
+          fontSize: '2.5rem',
+        }}}>
         Add Elements
       </Typography>
       <Box
         sx={{
+          height: '60%',
           fontWeight: 'bolder',
           display: 'flex',
           flexWrap: 'wrap',
           alignContent: 'center',
           justifyContent: 'center',
-          marginTop: '2%'
           // border: 2,
           // minHeight: '68vh',
           // maxHeight: '70vh',
+
+          '@media (min-width: 2000px)': {
+            height: '40%',
+          }
         }}
       >
         {staticTags.map((staticTag) => (

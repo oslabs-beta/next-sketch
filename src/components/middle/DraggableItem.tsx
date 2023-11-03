@@ -9,7 +9,7 @@ import { Tag } from '../../utils/interfaces';
  */
 
 interface DraggableItemProps {
-  id: UniqueIdentifier
+  id: UniqueIdentifier;
   children: Tag;
 }
 
@@ -33,9 +33,12 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
       variant='contained'
       sx={{
         textAlign: 'center',
-        bgcolor: '#cbb4d4',
+        bgcolor: 'transparent',
+        border: '2px solid #6441A5',
+        color: 'white',
         // color: 'white',
         // border: 1,
+        opacity: '0.9',
         fontWeight: 'bolder',
         fontSize: 15,
         margin: 0.8,
@@ -53,16 +56,18 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
         },
       }}
     >
-      {children.name}
+      {name}
     </Button>
   );
 };
 
 interface DraggableItemOverlayProps {
-  children: string
+  children: string;
 }
 
-export const DraggableItemOverlay = ({ children }: DraggableItemOverlayProps) => {
+export const DraggableItemOverlay = ({
+  children,
+}: DraggableItemOverlayProps) => {
   return (
     <Button
       variant='contained'
