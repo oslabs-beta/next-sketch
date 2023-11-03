@@ -176,7 +176,7 @@ const App = () => {
       <AppBar position='static' sx={{ bgcolor: 'transparent', marginBottom: '2%' }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{display: 'flex' }}>
-          <img src='images/nslogo.png' style={{ transform: 'rotate(30deg)', width: '10%', alignSelf: 'center', paddingRight: '2%', marginTop: '2%' }} />
+          <img src='images/nslogo.png' style={{ transform: 'rotate(30deg)', width: '10%', alignSelf: 'center', height: '60px', paddingRight: '2%', marginTop: '2%' }} />
 
 
           <Typography

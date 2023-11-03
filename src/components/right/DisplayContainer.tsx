@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import {
   DragEndEvent,
+  DragOverEvent,
   UniqueIdentifier,
   useDndMonitor,
   useDroppable,
@@ -33,10 +34,9 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
     },
   });
 
-
   useDndMonitor({
     // onDragOver: (event: DragOverEvent) => {
-    //   console.log('drag over event', event.over);
+    //   console.log('drag over event', event);
     // },
     onDragEnd: async (event: DragEndEvent) => {
       console.log('drag end event', event);
@@ -201,7 +201,6 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
       <Typography variant='h6' style={{fontSize: '2rem', paddingTop: '1.5%', paddingLeft:'1%'}}>My Page</Typography>
       <Box
         sx={{
-          
           ...(isOver && {
             borderColor: 'red',
           }),
