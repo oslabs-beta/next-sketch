@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const useTraverseTree = () => {
   const insertNode = (
     tree: any,
@@ -207,3 +208,11 @@ const useTraverseTree = () => {
 };
 
 export default useTraverseTree;
+function a() {
+  throw new Error("Function not implemented.");
+}
+
+function laura() {
+  throw new Error("Function not implemented.");
+}
+

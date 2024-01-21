@@ -1,22 +1,21 @@
-import React, { useRef, useEffect, useState } from "react";
-import { select, tree, zoom, hierarchy, linkVertical, linkHorizontal } from 'd3';
-import {Button} from '@mui/material'
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
-
-import Box from '@mui/material/Box';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useRef, useEffect, useState, useCallback } from 'react';
+import {
+  select,
+  tree,
+  zoom,
+  hierarchy,
+  HierarchyPointNode,
+  linkHorizontal,
+} from 'd3';
 
 const Tree = ({ srcApp }) => {
   const svgRef = useRef(null);
-  const [width, setWidth] = useState('');
-  const [height, setHeight] = useState('');
-  const [resetView, setResetView] = useState(false)
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [resetView, setResetView] = useState(false);
 
-
-  const createTree = (data) => {
-
-
+  const createTree = useCallback((data) => {
     if (data.isFolder) {
       return {
         name: data.name,
@@ -26,12 +25,11 @@ const Tree = ({ srcApp }) => {
     } else {
       return { name: data.name };
     }
-  
-  };
+  }, []);
 
-  const setTreeNodePositions = (node) => {
+  const setTreeNodePositions = useCallback((node) => {
     let x = 0;
-    let y = 0;
+    const y = 0;
 
     if (node.children) {
       // Adjust the x position based on the children
@@ -47,13 +45,13 @@ const Tree = ({ srcApp }) => {
     node.y = y;
 
     return node;
-  };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
       const maxWidth = window.innerWidth - 20;
       const maxHeight = window.innerHeight - 20;
-      const newWidth = Math.min(maxWidth, 900);
+      const newWidth = Math.min(maxWidth, 800);
       const newHeight = Math.min(maxHeight, 700);
       setWidth(newWidth);
       setHeight(newHeight);
@@ -66,75 +64,94 @@ const Tree = ({ srcApp }) => {
 
   useEffect(() => {
     const svg = select(svgRef.current);
-    svg.selectAll("*").remove();
+    svg.selectAll('*').remove();
 
     const root = hierarchy(createTree(srcApp));
 
     // Set the initial positions of tree nodes
     setTreeNodePositions(root);
 
-    const treeLayout = tree()
-      .size([height, width]);
+    const treeLayout = tree().size([height, width]);
 
-    const treeData = treeLayout(root);
+    const treeData: HierarchyPointNode<any> = treeLayout(root);
 
     const pathGenerator = linkHorizontal()
       .x((d) => d.y + 40)
       .y((d) => d.x);
 
+    // const pathGenerator = (d: any) => {
+    //   return `M${d.source.y + 40},${d.source.x}L${d.target.y + 40},${
+    //     d.target.x
+    //   }`;
+    // };
     const g = svg.append('g');
 
     g.selectAll('path')
       .data(treeData.links())
       .enter()
       .append('path')
-      .attr("stroke", 'white')
+      .attr('stroke', 'white')
       .attr('fill', 'none')
       .attr('opacity', 1)
       .attr('d', pathGenerator);
 
-      const nodes = g.selectAll("g")
-  .data(treeData.descendants())
-  .enter()
-  .append("g")
-  .attr("transform", (d) => `translate(${d.y + 40},${d.x})`);
+    const nodes = g
+      .selectAll('g')
+      .data(treeData.descendants())
+      .enter()
+      .append('g')
+      .attr('transform', (d) => `translate(${d.y + 40},${d.x})`);
 
-nodes.append("circle")
-  .attr("r", 5)
-  .style('fill', (d) => (d.data.isFolder ? 'yellow' : 'white')); // Change node fill color based on isFolder property
+    nodes
+      .append('circle')
+      .attr('r', 5)
+      .style('fill', (d) => (d.data.isFolder ? 'yellow' : 'white')); // Change node fill color based on isFolder property
 
-nodes.append("text")
-  .text((d) => d.data.name)
-  .attr("dy", 20)
-  .attr('dx', -20)
-  .attr("text-anchor", "middle")
-  .attr("fill", (d) => (d.data.isFolder ? 'yellow' : '#bdbdbd'))
-  .style("font-size", "1.00rem");
+    nodes
+      .append('text')
+      .text((d) => d.data.name)
+      .attr('dy', 20)
+      .attr('dx', -20)
+      .attr('text-anchor', 'middle')
+      .attr('fill', (d) => (d.data.isFolder ? 'yellow' : '#bdbdbd'))
+      .style('font-size', '1.00rem');
 
-  const zoomBehavior = zoom()
-  .scaleExtent([0.5, 10]) // Set the zoom scale extent
-  .on("zoom", (event) => {
-    g.attr("transform", event.transform); // Apply the zoom transform to the entire tree
-  });
+    const zoomBehavior = zoom()
+      .scaleExtent([0.5, 10]) // Set the zoom scale extent
+      .on('zoom', (event) => {
+        g.attr('transform', event.transform); // Apply the zoom transform to the entire tree
+      });
 
-svg.call(zoomBehavior);
-
-
-
-  }, [ width, height, srcApp, resetView]);
+    svg.call(zoomBehavior);
+  }, [width, height, srcApp, resetView, createTree, setTreeNodePositions]);
 
   const treeStyles = {
     height: '100%',
     width: '100%',
     // overflowY:'hidden',
- };
+  };
 
   return (
-    <div style={{height: '100%', position: 'relative'}}>
-      <button className="" onClick={() => setResetView(!resetView)} style={{color: 'white', marginLeft: '10px', border: '2px solid rgba(229, 63, 115)', position: 'absolute', top: '20px', left: '20px', padding: '1%', borderRadius: '10px', fontSize: '1.35rem'}}>Reset View</button>
-        
-            <svg ref={svgRef} style={treeStyles}></svg>
+    <div style={{ height: '100%', position: 'relative' }}>
+      <button
+        className=''
+        onClick={() => setResetView(!resetView)}
+        style={{
+          color: 'white',
+          marginLeft: '10px',
+          border: '2px solid rgba(229, 63, 115)',
+          position: 'absolute',
+          top: '20px',
+          left: '20px',
+          padding: '1%',
+          borderRadius: '10px',
+          fontSize: '1.35rem',
+        }}
+      >
+        Reset View
+      </button>
 
+      <svg ref={svgRef} style={treeStyles}></svg>
     </div>
   );
 };

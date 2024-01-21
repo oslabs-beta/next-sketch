@@ -1,9 +1,7 @@
-import JSZip from 'jszip';
-import FileSaver from 'file-saver';
 import {Button} from '@mui/material'
 
 const ExportButton = () => {
-  async function handleClick(e?: any) {
+  async function handleClick() {
     try {
       const response = await fetch('http://localhost:3000/export');
 

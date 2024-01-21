@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run start\"",
     "start": "node server/server.js",
-    "build": "vite build",
+    "build": "tsc && vite build && electron-builder",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "package": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "engines": {
     "node": "18.x"

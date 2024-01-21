@@ -90,7 +90,6 @@ const StaticTagsContainer = (): JSX.Element => {
       sx={{
         // border: 2,
         // borderColor: 'gold',
-        bgcolor: 'white',
         // flexGrow: 1,
         height: '35vh',
         // boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',

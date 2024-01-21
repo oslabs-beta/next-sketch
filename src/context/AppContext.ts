@@ -2,6 +2,10 @@ import { Dispatch, SetStateAction, createContext } from 'react';
 import { Tag } from '../utils/interfaces';
 
 interface AppContextType {
+  componentName: string;
+  setComponentName: Dispatch<SetStateAction<string>>;
+  codeSnippet: string;
+  setCodeSnippet: Dispatch<SetStateAction<string>>;
   tags: Tag[];
   setTags: Dispatch<SetStateAction<Tag[]>>;
   currentId: number;
@@ -10,10 +14,10 @@ interface AppContextType {
   setUpdate: Dispatch<SetStateAction<boolean>>;
   reset: boolean;
   setReset: Dispatch<SetStateAction<boolean>>;
-  previewFolder: string,
+  previewFolder: string;
   setPreviewFolder: Dispatch<SetStateAction<string>>;
-  currentParent: string,
+  currentParent: string;
   setCurrentParent: Dispatch<SetStateAction<string>>;
 }
 
-export default createContext<AppContextType | null>(null); 
+export default createContext<AppContextType | null>(null);
