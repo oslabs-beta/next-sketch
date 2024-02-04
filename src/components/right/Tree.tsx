@@ -14,6 +14,7 @@ const Tree = ({ srcApp }) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [resetView, setResetView] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const createTree = useCallback((data) => {
     if (data.isFolder) {
@@ -28,14 +29,18 @@ const Tree = ({ srcApp }) => {
   }, []);
 
   const setTreeNodePositions = useCallback((node) => {
-    let x = 0;
-    const y = 0;
+    // let x = 0;
+    // const y = 0;
+    let { x, y } = position;
 
     if (node.children) {
       // Adjust the x position based on the children
       node.children.forEach((child) => {
         setTreeNodePositions(child);
-        x += child.x;
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          x: prevPosition.x + child.x,
+        }));
       });
       x /= node.children.length;
     }
@@ -75,9 +80,9 @@ const Tree = ({ srcApp }) => {
 
     const treeData: HierarchyPointNode<any> = treeLayout(root);
 
-    const pathGenerator = linkHorizontal()
-      .x((d) => d.y + 40)
-      .y((d) => d.x);
+    const pathGenerator = linkHorizontal<any, any>()
+      .x((d) => (d as any).y + 40)
+      .y((d) => (d as any).x);
 
     // const pathGenerator = (d: any) => {
     //   return `M${d.source.y + 40},${d.source.x}L${d.target.y + 40},${

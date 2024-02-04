@@ -149,7 +149,7 @@ const App = () => {
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex' }}>
             <img
-              src='src/images/nslogo.png'
+              src='./src/images/nslogo.png'
               style={{
                 transform: 'rotate(30deg)',
                 width: '6%',
