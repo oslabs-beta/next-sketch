@@ -6,6 +6,7 @@ export interface Tag  {
     container: boolean;
     parent?: UniqueIdentifier | undefined | boolean;
     attribute?: string
+    children?: undefined[];
 }
 
 export interface Elements {

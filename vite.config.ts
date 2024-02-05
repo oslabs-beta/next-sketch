@@ -1,7 +1,6 @@
-import { defineConfig } from 'vite'
-import path from 'node:path'
-import electron from 'vite-plugin-electron/simple'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import electron from 'vite-plugin-electron/simple';
+import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -13,5 +12,9 @@ export default defineConfig({
         entry: 'electron/main.ts',
       },
     }),
-  ]
-})
+  ],
+
+  build: {
+    outDir: 'dist-electron',
+  },
+});

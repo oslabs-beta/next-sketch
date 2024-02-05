@@ -1,29 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFolderPlus,
   faFolderClosed,
   faFolderOpen,
-  faTrash,
   faFileCirclePlus,
   faAtom,
   faMinus,
-  faSliders,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '@mui/material/Modal';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import React, { useContext, useEffect, useState } from 'react';
-import { CodeContext, CodeSnippetContext } from '../../App';
-import { FaReact } from 'react-icons/fa';
-import { useCode } from '../../utils/reducer/CodeContext';
+import React, { useContext, useState } from 'react';
 import AppContext from '../../context/AppContext';
 
 import { modalLayout } from '../../utils/interfaces';
-import { app } from 'electron';
-import { file } from 'jszip';
-import Tree from '../right/Tree';
 
 interface Input {
   visible: boolean | undefined;
@@ -34,7 +27,6 @@ function Folder({
   handleInsertNode,
   handleDeleteNode,
   handleInputBoilerFiles,
-  handleInitialPreview,
   explorer,
   setFolder,
   folder,
@@ -48,23 +40,19 @@ function Folder({
     <FontAwesomeIcon icon={faFolderClosed} />
   );
 
-  const [componentName, setComponentName] = useContext(CodeContext);
-  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
   const {
-    tags,
+    setCodeSnippet,
+    setComponentName,
     setTags,
-    currentId,
     setCurrentId,
-    reset,
     setReset,
-    previewFolder,
     setPreviewFolder,
   } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [expand, setExpand] = useState(false);
 
   const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute' as const,
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -76,7 +64,7 @@ function Folder({
     color: 'black',
     p: 4,
     borderRadius: '20px',
-    fontSize: '1.6rem'
+    fontSize: '1.6rem',
   };
 
   const [selectedItems, setSelectedItems] = useState<modalLayout>({
@@ -114,7 +102,7 @@ function Folder({
     e?.stopPropagation();
     setExpand(true);
     setFolderIcon('▼');
-    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen}/>);
+    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />);
 
     setShowInput({
       visible: true,
@@ -123,7 +111,7 @@ function Folder({
 
     if (arg === false) {
       console.log(e.target);
-      setComponentName();
+      // setComponentName();
     }
   };
 
@@ -147,7 +135,7 @@ function Folder({
     setComponentName(fileName);
   };
 
-  const retrieveCode = (e?: React.SyntheticEvent) => {
+  const retrieveCode = () => {
     //This is to avoid posting a new file every time you click it (useEffect in customEndPoint)
 
     setPreviewFolder(explorer.parent);
@@ -198,7 +186,7 @@ function Folder({
     }
   };
 
-  const handleDeleteFolder = async (e?: React.MouseEvent, arg?: boolean) => {
+  const handleDeleteFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     handleDeleteNode(explorer.id);
     setComponentName('Page');
@@ -314,7 +302,7 @@ function Folder({
               setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />);
             } else {
               setFolderIcon('▶');
-              setFolderLogo(<FontAwesomeIcon icon={faFolderClosed}  />);
+              setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />);
             }
             setExpand(!expand);
           }}
@@ -332,9 +320,15 @@ function Folder({
                 onClick={(e) => {
                   handleNewFolder(e, true);
                 }}
-                style={{color: 'pink'}}
+                style={{ color: 'pink' }}
               >
-                <div style={{color: 'red'}}> <FontAwesomeIcon icon={faFolderPlus} style={{color: 'white', fontSize: '1.4rem'}} /> </div>
+                <div style={{ color: 'red' }}>
+                  {' '}
+                  <FontAwesomeIcon
+                    icon={faFolderPlus}
+                    style={{ color: 'white', fontSize: '1.4rem' }}
+                  />{' '}
+                </div>
               </button>
             ) : (
               ''
@@ -345,7 +339,10 @@ function Folder({
             explorer.name !== 'public' &&
             explorer.name !== 'NextSketch' ? (
               <button onClick={(e) => handleNewFolder(e, false)}>
-                <FontAwesomeIcon  icon={faFileCirclePlus} style={{color: 'white', fontSize: '1.4rem'}} />
+                <FontAwesomeIcon
+                  icon={faFileCirclePlus}
+                  style={{ color: 'white', fontSize: '1.4rem' }}
+                />
               </button>
             ) : (
               ''
@@ -354,8 +351,11 @@ function Folder({
             {explorer.name !== 'app' &&
             explorer.name !== 'src' &&
             explorer.name !== 'NextSketch' ? (
-              <button onClick={(e) => handleDeleteFolder(e, false)}>
-                <FontAwesomeIcon icon={faMinus} style={{color: 'white', fontSize: '1.4rem'}} />
+              <button onClick={(e) => handleDeleteFolder(e)}>
+                <FontAwesomeIcon
+                  icon={faMinus}
+                  style={{ color: 'white', fontSize: '1.4rem' }}
+                />
               </button>
             ) : (
               ''
@@ -365,7 +365,7 @@ function Folder({
 
         <div style={{ display: expand ? 'block' : 'none', paddingLeft: 25 }}>
           {showInput.visible && (
-            <div className='inputContainer' >
+            <div className='inputContainer'>
               <span>{showInput.isFolder ? ' 📁' : '📄'} </span>
               <input
                 type='text'
@@ -378,10 +378,8 @@ function Folder({
                   setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />);
                   setExpand(false);
                 }}
-                style = {{backgroundColor: 'transparent', color: 'white'}}
+                style={{ backgroundColor: 'transparent', color: 'white' }}
               />
-                      
-
             </div>
           )}
 
@@ -403,11 +401,15 @@ function Folder({
             );
           })}
         </div>
-      </div> 
+      </div>
     );
   } else if (explorer.name) {
     return (
-      <div className={`folder${explorer.name === 'page.tsx' ? ' page ' : ''}`} onClick={retrieveCode} style={{color: 'white'}}>
+      <div
+        className={`folder${explorer.name === 'page.tsx' ? ' page ' : ''}`}
+        onClick={retrieveCode}
+        style={{ color: 'white' }}
+      >
         {explorer.name.slice(-3) === 'tsx' ? (
           <FontAwesomeIcon className='icon' icon={faAtom} />
         ) : (
@@ -417,19 +419,15 @@ function Folder({
         {explorer.name === 'page.tsx' ? (
           '   '
         ) : (
-          <button
-            className='deletebtn'
-            onClick={(e) => handleDeleteFolder(e, false)}
-
-          >
-           <FontAwesomeIcon
-            className='icon'
-            icon={faMinus}
-            style={{
-            color: 'white',
-            fontSize: '1.4rem'
-            }}
-           />
+          <button className='deletebtn' onClick={(e) => handleDeleteFolder(e)}>
+            <FontAwesomeIcon
+              className='icon'
+              icon={faMinus}
+              style={{
+                color: 'white',
+                fontSize: '1.4rem',
+              }}
+            />
           </button>
         )}
       </div>

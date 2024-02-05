@@ -1,16 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useState, useEffect } from 'react';
 import { Box, Button, Typography, Modal, Checkbox } from '@mui/material';
-import { CodeSnippetContext, CodeContext } from '../../App';
-import Code from '@mui/icons-material/Code';
 import { modalLayout } from '../../utils/interfaces';
 import Prism from 'prismjs';
 import AppContext from '../../context/AppContext';
-//import custom hook, from the reducer
-// import { useCode } from '../../utils/reducer/CodeContext'; /*================MODIFIED CODE====================*/
 
-//----------------
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -21,8 +17,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: '20px',
-  fontSize: '1.6rem'
-
+  fontSize: '1.6rem',
 };
 //MUI styling fior modal
 //-----------------
@@ -40,13 +35,12 @@ const CustomEndpoint = ({
   setPostData,
   postData,
 }: any) => {
-  // const [folder, setFolder] = useState('');
-  // const [file, setFile] = useState('');
   const [open, setOpen] = useState(false);
-  const [componentName, setComponentName] = useContext(CodeContext);
-  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
   const {
+    componentName,
+    setComponentName,
+    codeSnippet,
     tags,
     setTags,
     update,
@@ -57,7 +51,6 @@ const CustomEndpoint = ({
     currentParent,
     setCurrentParent,
   } = useContext(AppContext);
-
 
   const handleClose = () => {
     setOpen(false);
@@ -93,7 +86,6 @@ const CustomEndpoint = ({
   useEffect(() => {
     //creating new files with code
     if (postData === true) {
-     
       handlePostingFiles(folder, componentName, codeSnippet);
     }
     //updating code in existing files
@@ -107,6 +99,7 @@ const CustomEndpoint = ({
       setUpdate(false);
     }
     Prism.highlightAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codeSnippet]);
 
   async function handleModalChange(e?: any) {
@@ -194,17 +187,21 @@ const CustomEndpoint = ({
   return (
     <div className='cursor'>
       <form>
-          <input
-            type='text'
-            autoFocus
-            placeholder='New Endpoint in src/app'
-            onChange={handleChange}
-            value={folder}
-            id='searchInput'
-          />
-          <div className='text-cursor'></div>
+        <input
+          type='text'
+          autoFocus
+          placeholder='New Endpoint in src/app'
+          onChange={handleChange}
+          value={folder}
+          id='searchInput'
+        />
+        <div className='text-cursor'></div>
 
-        <button type='submit' onClick={handleCreateCustomFolder} className="jumpBtn">
+        <button
+          type='submit'
+          onClick={handleCreateCustomFolder}
+          className='jumpBtn'
+        >
           Submit
         </button>
       </form>
