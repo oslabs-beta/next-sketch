@@ -3,18 +3,19 @@ module.exports = {
   appId: 'com.NextSketch|electron.app',
   directories: {
     output: 'dist-electron', //where buildt application files will be output, same as main in package.json
-    buildResources: 'server', //additional resources
+    buildResources: ['server', 'images'], //additional resources
     app: 'src', //main code is located
   },
   asar: true, //enble asar package
   files: [
     'dist-electron/**/*', // Include main process files
+    'images/**/*',
     'server/**/*', // Include additional resources
     'package.json',
   ],
   build: {
     mac: {
-      icon: './src/images/nslogo.icns',
+      icon: 'images/nslogo.png',
       category: 'public.app-category.productivity',
       target: {
         target: 'default',
@@ -43,7 +44,7 @@ module.exports = {
       ],
     },
     win: {
-      icon: './src/images/nslogo.ico',
+      icon: 'images/nslogo.ico',
       target: [
         {
           target: 'nsis',
@@ -52,7 +53,7 @@ module.exports = {
       ],
     },
     linux: {
-      icon: './src/images/nslogo.png',
+      icon: 'images/nslogo.png',
       target: ['deb', 'rpm', 'snap', 'AppImage'],
     },
     extraResources: [

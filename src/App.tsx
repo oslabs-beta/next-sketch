@@ -15,6 +15,7 @@ import Tree from './components/right/Tree';
 import CodePreview from './components/right/CodePreview';
 import { DndContext } from '@dnd-kit/core';
 import DragOverlayWrapper from './components/middle/DragOverlayWrapper';
+import iconImg from '../images/nslogo.png';
 
 const App = () => {
   const [folderExpanded, setFolderExpanded] = useState(false);
@@ -149,7 +150,7 @@ const App = () => {
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex' }}>
             <img
-              src='./src/images/nslogo.png'
+              src={iconImg}
               style={{
                 transform: 'rotate(30deg)',
                 width: '6%',
