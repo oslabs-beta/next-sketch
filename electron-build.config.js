@@ -47,7 +47,7 @@ module.exports = {
       icon: 'images/nslogo.ico',
       target: [
         {
-          target: 'nsis',
+          target: '--windows',
           arch: ['x64'],
         },
       ],
