@@ -6,6 +6,8 @@
     "dev": "concurrently \"vite\" \"npm run start\"",
     "start": "node server/server.js",
     "build": "tsc && vite build && electron-builder",
+    "build-windows": "npm run build && electron-builder --windows",
+    "build-linux": "npm run build && electron-builder --linux",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "package": "electron-builder --dir",
