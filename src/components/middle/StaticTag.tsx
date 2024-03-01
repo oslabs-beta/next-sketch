@@ -7,19 +7,19 @@ import { Tag } from '../../utils/interfaces';
  * @parent - StaticTagsContainer.tsx
  */
 
-interface DraggableItemProps {
+interface StaticTagProps {
   id: UniqueIdentifier;
   children: Tag;
 }
 
-export const DraggableItem = ({ id, children }: DraggableItemProps) => {
+export const StaticTag = ({ id, children }: StaticTagProps) => {
   const { name, container, attribute } = children;
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: id,
     data: {
       name: name,
       container: container,
-      isDraggableItem: true,
+      isStaticTag: true,
       attribute: attribute,
     },
   });
@@ -60,13 +60,11 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
   );
 };
 
-interface DraggableItemOverlayProps {
+interface StaticTagOverlayProps {
   children: string;
 }
 
-export const DraggableItemOverlay = ({
-  children,
-}: DraggableItemOverlayProps) => {
+export const StaticTagOverlay = ({ children }: StaticTagOverlayProps) => {
   return (
     <Button
       variant='contained'

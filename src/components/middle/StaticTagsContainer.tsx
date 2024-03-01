@@ -1,4 +1,4 @@
-import { DraggableItem } from './DraggableItem';
+import { StaticTag } from './StaticTag';
 import { Tag } from '../../utils/interfaces';
 import { Box, Typography } from '@mui/material';
 import { generateId } from '../../utils/generateId';
@@ -6,7 +6,7 @@ import { generateId } from '../../utils/generateId';
 /**
  * @description - container for draggable HTML tag elements
  * @parent - MiddleContainer.tsx (make this)
- * @children - DraggableItem.tsx
+ * @children - StaticTag.tsx
  */
 
 const StaticTagsContainer = (): JSX.Element => {
@@ -125,12 +125,12 @@ const StaticTagsContainer = (): JSX.Element => {
         }}
       >
         {staticTags.map((staticTag) => (
-          <DraggableItem
+          <StaticTag
             key={`${staticTag.name}-${staticTag.id}`}
             id={staticTag.id}
           >
             {staticTag}
-          </DraggableItem>
+          </StaticTag>
         ))}
       </Box>
     </Box>
