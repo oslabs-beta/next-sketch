@@ -1,10 +1,10 @@
 import { Active, DragOverlay, useDndMonitor } from '@dnd-kit/core';
 import { useContext, useState } from 'react';
-import { DraggableItemOverlay } from './DraggableItem';
+import { StaticTagOverlay } from './StaticTag';
 import AppContext from '../../context/AppContext';
 import { Box } from '@mui/material';
-import { TestItemOverlay } from '../right/TestItem';
-import { TestContainerOverlay } from '../right/TestContainer';
+import { NonContainerTagOverlay } from '../right/NonContainerTag';
+import { ContainerTagOverlay } from '../right/ContainerTag';
 
 const DragOverlayWrapper = () => {
   const { tags } = useContext(AppContext);
@@ -26,34 +26,34 @@ const DragOverlayWrapper = () => {
 
   let node = <Box>no drag overlay!</Box>;
 
-  const isDraggableItem = draggedItem?.data?.current?.isDraggableItem;
+  const isStaticTag = draggedItem?.data?.current?.isStaticTag;
 
-  if (isDraggableItem) {
+  if (isStaticTag) {
     const itemName = draggedItem?.data?.current?.name;
-    node = <DraggableItemOverlay>{itemName}</DraggableItemOverlay>;
+    node = <StaticTagOverlay>{itemName}</StaticTagOverlay>;
   }
 
-  const isTestItem = draggedItem?.data?.current?.isTestItem;
+  const isNonContainerTag = draggedItem?.data?.current?.isNonContainerTag;
 
-  if (isTestItem) {
+  if (isNonContainerTag) {
     const tagId = draggedItem?.data?.current?.tagId;
     const tag = tags[tags.findIndex((tag) => tag.id === tagId)];
 
     if (!tag) node = <Box>tag not found!</Box>;
     else {
-      node = <TestItemOverlay tag={tag} />;
+      node = <NonContainerTagOverlay tag={tag} />;
     }
   }
 
-  const isTestContainer = draggedItem?.data?.current?.isTestContainer;
+  const isContainerTag = draggedItem?.data?.current?.isContainerTag;
 
-  if (isTestContainer) {
+  if (isContainerTag) {
     const tagId = draggedItem?.data?.current?.tagId;
     const tag = tags[tags.findIndex((tag) => tag.id === tagId)];
 
     if (!tag) node = <Box>tag not found!</Box>;
     else {
-        node = <TestContainerOverlay tag={tag} />;
+        node = <ContainerTagOverlay tag={tag} />;
       }
   }
 

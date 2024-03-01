@@ -1,15 +1,15 @@
 import { Box } from '@mui/material';
 import { Tag } from '../../utils/interfaces';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { Item, TestItem } from './TestItem';
+import { Item, NonContainerTag } from './NonContainerTag';
 import { useContext } from 'react';
 import AppContext from '../../context/AppContext';
 
-interface TestContainerProps {
+interface ContainerTagProps {
   tag: Tag;
 }
 
-export const TestContainer = ({ tag }: TestContainerProps) => {
+export const ContainerTag = ({ tag }: ContainerTagProps) => {
   const { tags } = useContext(AppContext);
 
   const childrenTags = tags.filter((prev) => prev.parent === tag.id);
@@ -21,7 +21,7 @@ export const TestContainer = ({ tag }: TestContainerProps) => {
     id: tag.id + '-container-top',
     data: {
       tagId: tag.id,
-      isTopAreaTestContainer: true,
+      isTopAreaContainerTag: true,
     },
   });
 
@@ -29,7 +29,7 @@ export const TestContainer = ({ tag }: TestContainerProps) => {
     id: tag.id + '-container-middle',
     data: {
       tagId: tag.id,
-      isMiddleAreaTestContainer: true,
+      isMiddleAreaContainerTag: true,
     },
   });
 
@@ -37,7 +37,7 @@ export const TestContainer = ({ tag }: TestContainerProps) => {
     id: tag.id + '-container-bottom',
     data: {
       tagId: tag.id,
-      isBottomAreaTestContainer: true,
+      isBottomAreaContainerTag: true,
     },
   });
 
@@ -45,7 +45,7 @@ export const TestContainer = ({ tag }: TestContainerProps) => {
     id: tag.id + '-container-drag-handler',
     data: {
       tagId: tag.id,
-      isTestContainer: true,
+      isContainerTag: true,
     },
   });
 
@@ -121,9 +121,9 @@ export const TestContainer = ({ tag }: TestContainerProps) => {
       <Item>{tag.name}</Item>
       {childrenTags.map((childTag) => {
         if (childTag.container) {
-          return <TestContainer key={childTag.id} tag={childTag} />;
+          return <ContainerTag key={childTag.id} tag={childTag} />;
         }
-        return <TestItem key={childTag.id} tag={childTag} />;
+        return <NonContainerTag key={childTag.id} tag={childTag} />;
       })}
       {middleArea.isOver && (
         <Box
@@ -151,11 +151,11 @@ export const TestContainer = ({ tag }: TestContainerProps) => {
   );
 };
 
-interface TestContainerOverlayProps {
+interface ContainerTagOverlayProps {
   tag: Tag;
 }
 
-export const TestContainerOverlay = ({ tag }: TestContainerOverlayProps) => {
+export const ContainerTagOverlay = ({ tag }: ContainerTagOverlayProps) => {
   const { tags } = useContext(AppContext);
 
   const childrenTags = tags.filter((prev) => prev.parent === tag.id);
@@ -182,9 +182,9 @@ export const TestContainerOverlay = ({ tag }: TestContainerOverlayProps) => {
       <Item>{tag.name}</Item>
       {childrenTags.map((childTag) => {
         if (childTag.container) {
-          return <TestContainer key={childTag.id} tag={childTag} />;
+          return <ContainerTag key={childTag.id} tag={childTag} />;
         }
-        return <TestItem key={childTag.id} tag={childTag} />;
+        return <NonContainerTag key={childTag.id} tag={childTag} />;
       })}
     </Box>
   );
