@@ -12,8 +12,17 @@ const archiver = require('archiver');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/hello', (req, res) => {
-  return res.status(200).send('hello');
+const _dirname = path.dirname("")
+const buildPath = path.join(_dirname, "dist-electron")
+
+app.use(express.static(buildPath))
+app.get('/', (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "../dist-electron/index.html"), 
+    function(err){
+      if(err) res.status(500).send(err)
+    }
+  )
 });
 
 app.get('/export', (req, res) => {
