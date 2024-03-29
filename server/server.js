@@ -18,7 +18,7 @@ const buildPath = path.join(_dirname, "dist-electron")
 app.use(express.static(buildPath))
 app.get('/', (req, res) => {
   res.sendFile(
-    path.join(__dirname, "../dist-electron/index.html"), 
+    path.join(__dirname, "dist-electron/index.html"), 
     function(err){
       if(err) res.status(500).send(err)
     }
