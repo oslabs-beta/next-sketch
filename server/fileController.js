@@ -11,8 +11,6 @@ const fileController = {
   postFolder: function (req, res, next) {
     const folderDir = 'server/ExportFolder/';
 
-    console.log('hello')
-
     const fileProperties = [
       req.body.folderName,
       req.body.fileName,
