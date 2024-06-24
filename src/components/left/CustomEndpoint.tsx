@@ -2,11 +2,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Box, Button, Typography, Modal, Checkbox } from '@mui/material';
 import { CodeSnippetContext, CodeContext } from '../../App';
 import Code from '@mui/icons-material/Code';
-import { modalLayout } from '../../utils/interfaces';
+import { modalLayout, CustomEndpointProps } from '../../utils/interfaces';
 import Prism from 'prismjs';
-import AppContext from '../../context/AppContext';
-//import custom hook, from the reducer
-// import { useCode } from '../../utils/reducer/CodeContext'; /*================MODIFIED CODE====================*/
+import AppContext, {AppContextType} from '../../context/AppContext';
 
 //----------------
 const style = {
@@ -27,6 +25,8 @@ const style = {
 //MUI styling fior modal
 //-----------------
 
+
+
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
   handleInputBoilerFiles,
@@ -39,9 +39,7 @@ const CustomEndpoint = ({
   file,
   setPostData,
   postData,
-}: any) => {
-  // const [folder, setFolder] = useState('');
-  // const [file, setFile] = useState('');
+}: CustomEndpointProps) => {
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
@@ -56,7 +54,7 @@ const CustomEndpoint = ({
     setPreviewFolder,
     currentParent,
     setCurrentParent,
-  } = useContext(AppContext);
+  }: AppContextType = useContext(AppContext)!;
 
 
   const handleClose = () => {
@@ -85,9 +83,9 @@ const CustomEndpoint = ({
     page: true,
   });
 
-  function handleChange(e?: any) {
-    setFolder(e.target.value);
-    setPreviewFolder(e.target.value);
+  function handleChange(e?: React.ChangeEvent<HTMLInputElement>) {
+    setFolder(e?.target.value);
+    setPreviewFolder(e?.target.value as string);
   }
 
   useEffect(() => {
@@ -109,17 +107,17 @@ const CustomEndpoint = ({
     Prism.highlightAll();
   }, [codeSnippet]);
 
-  async function handleModalChange(e?: any) {
-    const name = e.target.name.slice(0, -4);
+  async function handleModalChange(e?: React.ChangeEvent<HTMLInputElement>) {
+    const name = e?.target.name.slice(0, -4);
 
     setTags([]);
 
     setSelectedItems({
       ...selectedItems,
-      [name]: true,
+      [name as string]: true,
     });
 
-    const fileName = e.target.name;
+    const fileName = e?.target.name;
     setFile(fileName);
 
     setComponentName(fileName);
@@ -163,7 +161,7 @@ const CustomEndpoint = ({
       codeSnippet: code,
       folder: previewFolder,
     };
-    await fetch('http://localhost:3000/updatecode', {
+    await fetch('/updatecode', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

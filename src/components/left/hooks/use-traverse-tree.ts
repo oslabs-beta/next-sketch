@@ -1,11 +1,14 @@
+import explorer from "../data/folderData";
+import { Tag } from "../../../utils/interfaces";
+
 const useTraverseTree = () => {
   const insertNode = (
-    tree: any,
+    tree: typeof explorer,
     folderId: number,
     item: string,
     isFolder: boolean,
-    preview: string
-  ) => {
+    preview?: string
+  ): typeof explorer => {
     if (tree.id === folderId && tree.isFolder) {
       for (const files of tree.items) {
         if (files.name.toLowerCase() === item.toLowerCase()) {
@@ -45,13 +48,13 @@ const useTraverseTree = () => {
     return { ...tree, items: latestNode };
   };
 
-  const deleteNode = (tree: any, folderId: number) => {
+  const deleteNode = (tree: typeof explorer, folderId?: number): typeof explorer => {
     const items = tree.items.filter((ob: any) => {
       return ob.id !== folderId;
     });
 
     if (items.length === tree.items.length) {
-      const temp = tree.items.map((obj) => deleteNode(obj, folderId));
+      const temp = tree.items.map((obj: object) => deleteNode(obj, folderId));
       return { ...tree, items: temp };
     }
 
@@ -59,11 +62,11 @@ const useTraverseTree = () => {
   };
 
   const createCustomEndpoint = (
-    tree: any,
+    tree: typeof explorer,
     folderId: number,
     item: string,
-    isFolder: boolean
-  ) => {
+    isFolder?: boolean
+  ): typeof explorer | void => {
     let fileAlreadyExists = false;
 
     if (tree.name === 'app') {
@@ -71,7 +74,7 @@ const useTraverseTree = () => {
         if (files.name.toLowerCase() === item.toLowerCase()) {
           alert('Folder name already exists!');
           fileAlreadyExists = true;
-          return laura();
+          return a();
         }
       }
 
@@ -113,17 +116,17 @@ const useTraverseTree = () => {
 
     return { ...tree, items: latestNode };
   };
-  // const retrieveCode =
+
 
   const insertBoilerFiles = (
-    tree: any,
+    tree: typeof explorer,
     folderId: number,
     item: string,
     folderName: string,
-    preview: string,
-    parent: string,
-    tags: []
-  ) => {
+    preview?: string,
+    parent?: string,
+    tags?: Tag[]
+  ): typeof explorer | void => {
     if (tree.name === folderName) {
       tree.items.unshift({
         id: new Date().getTime(),
@@ -157,12 +160,9 @@ const useTraverseTree = () => {
     fileId: number,
 
     preview: string,
-    tags: []
-  ) => {
+    tags: Tag[]
+  ): typeof explorer | void => {
     if (fileId == tree.id) {
-      console.log('TAGS', tags);
-      // console.log('TREE PREVIEW', tree.preview)
-      // console.log('PASSED IN PREVIEW', preview)
       tree.preview = preview;
       tree.tags = tags;
     }
@@ -180,10 +180,9 @@ const useTraverseTree = () => {
     folderName: string,
     fileName: string,
     preview: string,
-    tags: []
-  ) => {
-    // console.log('folderName', folderName);
-    // console.log('fileName', fileName);
+    tags: Tag[]
+  ): typeof explorer | void => {
+    
     if (folderName == tree.parent && fileName == tree.name) {
       tree.preview = preview;
       tree.tags = tags;

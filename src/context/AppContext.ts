@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, createContext } from 'react';
 import { Tag } from '../utils/interfaces';
 
-interface AppContextType {
+export interface AppContextType {
   tags: Tag[];
   setTags: Dispatch<SetStateAction<Tag[]>>;
   currentId: number;

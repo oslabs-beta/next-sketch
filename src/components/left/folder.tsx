@@ -18,23 +18,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import { CodeContext, CodeSnippetContext } from '../../App';
 import { FaReact } from 'react-icons/fa';
 import { useCode } from '../../utils/reducer/CodeContext';
-import AppContext from '../../context/AppContext';
+import AppContext, {AppContextType} from '../../context/AppContext';
 
-import { modalLayout } from '../../utils/interfaces';
+import { modalLayout, FolderProps, Input } from '../../utils/interfaces';
 import { app } from 'electron';
 import { file } from 'jszip';
 import Tree from '../right/Tree';
 
-interface Input {
-  visible: boolean | undefined;
-  isFolder: boolean | null | undefined;
-}
+
 const cacheModal: string[] = [];
+
+
 function Folder({
   handleInsertNode,
   handleDeleteNode,
   handleInputBoilerFiles,
-  handleInitialPreview,
   explorer,
   setFolder,
   folder,
@@ -42,7 +40,7 @@ function Folder({
   file,
   setPostData,
   postData,
-}: any) {
+}: FolderProps) {
   const [folderIcon, setFolderIcon] = useState<string>('▶');
   const [folderLogo, setFolderLogo] = useState(
     <FontAwesomeIcon icon={faFolderClosed} />
@@ -59,7 +57,9 @@ function Folder({
     setReset,
     previewFolder,
     setPreviewFolder,
-  } = useContext(AppContext);
+  }: AppContextType = useContext(AppContext)!;
+
+
   const [open, setOpen] = useState(false);
   const [expand, setExpand] = useState(false);
 
@@ -92,7 +92,7 @@ function Folder({
 
   const [showInput, setShowInput] = useState<Input>({
     visible: false,
-    isFolder: null,
+    isFolder: false,
   });
 
   const handleClose = () => {
@@ -122,26 +122,25 @@ function Folder({
     });
 
     if (arg === false) {
-      console.log(e.target);
       setComponentName();
     }
   };
 
-  const handleModalChange = async (e?: any) => {
-    const name = e.target.name.slice(0, -4);
+  const handleModalChange = async (e?: React.ChangeEvent<HTMLInputElement>) => {
+    const name: string | undefined = e?.target?.name.slice(0, -4);
     setPostData(true);
     setTags([]);
 
     setSelectedItems({
       ...selectedItems,
-      [name]: true,
+      [name as string]: true,
     });
 
-    const fileName = e.target.name;
-    setFile(fileName);
+    const fileName = e?.target.name;
+    setFile(fileName as string);
 
-    if (!cacheModal.includes(fileName)) {
-      cacheModal.push(fileName);
+    if (!cacheModal.includes(fileName as string)) {
+      cacheModal.push(fileName as string);
     }
 
     setComponentName(fileName);
@@ -174,7 +173,7 @@ function Folder({
 
   const onAddFolder = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (e?.key === 'Enter' && e?.currentTarget.value) {
-      handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder);
+      handleInsertNode(explorer.id, e.currentTarget.value, showInput.isFolder as boolean);
 
       setFolder(e.currentTarget.value);
 
@@ -204,7 +203,7 @@ function Folder({
     setComponentName('Page');
     setTags([]);
 
-    await fetch('http://localhost:3000/', {
+    await fetch('/', {
       method: 'Delete',
       headers: {
         'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ import useTraverseTree from './components/left/hooks/use-traverse-tree';
 import CustomEndpoint from './components/left/CustomEndpoint';
 import TabsComponent from './components/right/TabsComponent';
 import DisplayContainer from './components/right/DisplayContainer';
-import { Tag, Elements } from './utils/interfaces';
+import { Tag, Elements, ComponentNameType, CodeSnippetType } from './utils/interfaces';
 import { generateId } from './utils/generateId';
 import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
@@ -28,15 +28,7 @@ import { image } from 'd3';
 
 // test
 
-interface ComponentNameType {
-  componentName: string;
-  setComponentName: Dispatch<SetStateAction<string>>;
-}
 
-interface CodeSnippetType {
-  codeSnippet: string;
-  setCodeSnippet: Dispatch<SetStateAction<string>>;
-}
 
 export const CodeContext = createContext<ComponentNameType | undefined>(
   undefined
@@ -81,9 +73,9 @@ const App = () => {
     folderId: number,
     item: string,
     isFolder: boolean,
-    preview: string
+    preview?: string
   ) => {
-    const finalTree: any = insertNode(
+    const finalTree: typeof explorer = insertNode(
       explorerData,
       folderId,
       item,
@@ -92,22 +84,22 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
-    // setSrcApp(finalTree.items[2]);
+    
     for (let items of finalTree.items) {
       if (items.name === 'src') setSrcApp(items);
     }
   };
 
-  const handleDeleteNode = (folderId: number) => {
-    const finalTree: any = deleteNode(explorerData, folderId);
+  const handleDeleteNode = (folderId?: number) => {
+    const finalTree: typeof explorer = deleteNode(explorerData, folderId);
     setExplorerData(finalTree);
     for (let items of finalTree.items) {
       if (items.name === 'src') setSrcApp(items);
     }
   };
 
-  const handleUpdatePreview = (fileId: number, preview: string, tags: []) => {
-    const finalTree: any = updatePreview(explorerData, fileId, preview, tags);
+  const handleUpdatePreview = (fileId: number, preview: string, tags: Tag[]): typeof explorer | void => {
+    const finalTree: typeof explorer = updatePreview(explorerData, fileId, preview, tags);
 
     setExplorerData(finalTree);
   };
@@ -117,8 +109,8 @@ const App = () => {
     fileName: string,
     preview: string,
     tags: []
-  ) => {
-    const finalTree: any = initialPreview(
+  ): typeof explorer | void => {
+    const finalTree: typeof explorer = initialPreview(
       explorerData,
       folderName,
       fileName,
@@ -132,16 +124,16 @@ const App = () => {
   const handleCreateCustomEndpoint = (
     folderId: number,
     item: string,
-    isFolder: boolean
-  ) => {
-    const finalTree: any = createCustomEndpoint(
+    isFolder?: boolean
+  ): typeof explorer | void => {
+    const finalTree = createCustomEndpoint(
       explorerData,
       folderId,
       item,
       isFolder
     );
     setExplorerData(finalTree);
-    // setSrcApp(finalTree.items[2])
+   
     for (let items of finalTree.items) {
       if (items.name === 'src') setSrcApp(items);
     }
@@ -151,21 +143,18 @@ const App = () => {
     folderId: number,
     item: string,
     folderName: string,
-    preview: string,
-    tags: []
-  ) => {
-    // if (item === '') return;
+    preview?: string
+  ): typeof explorer | void => {
     const finalTree: any = insertBoilerFiles(
       explorerData,
       folderId,
       item,
       folderName,
       preview,
-      tags
     );
 
     setExplorerData(finalTree);
-    // setSrcApp(finalTree.items[2]);
+
     for (let items of finalTree.items) {
       if (items.name === 'src') setSrcApp(items);
     }
@@ -285,7 +274,6 @@ const App = () => {
                     handleInsertNode={handleInsertNode}
                     handleDeleteNode={handleDeleteNode}
                     handleInputBoilerFiles={handleInputBoilerFiles}
-                    handleInitialPreview={handleInitialPreview}
                     explorer={explorerData}
                     folderExpanded={folderExpanded}
                     setFolderExpanded={setFolderExpanded}
