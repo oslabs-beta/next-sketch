@@ -1,12 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useState, useEffect } from 'react';
 import { Box, Button, Typography, Modal, Checkbox } from '@mui/material';
-import { modalLayout } from '../../utils/interfaces';
+import { CodeSnippetContext, CodeContext } from '../../App';
+import Code from '@mui/icons-material/Code';
+import { modalLayout, CustomEndpointProps } from '../../utils/interfaces';
 import Prism from 'prismjs';
-import AppContext from '../../context/AppContext';
+import AppContext, {AppContextType} from '../../context/AppContext';
 
+//----------------
 const style = {
-  position: 'absolute' as const,
+  position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -17,10 +19,13 @@ const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: '20px',
-  fontSize: '1.6rem',
+  fontSize: '1.6rem'
+
 };
 //MUI styling fior modal
 //-----------------
+
+
 
 const CustomEndpoint = ({
   handleCreateCustomEndpoint,
@@ -34,13 +39,12 @@ const CustomEndpoint = ({
   file,
   setPostData,
   postData,
-}: any) => {
+}: CustomEndpointProps) => {
   const [open, setOpen] = useState(false);
+  const [componentName, setComponentName] = useContext(CodeContext);
+  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
   const {
-    componentName,
-    setComponentName,
-    codeSnippet,
     tags,
     setTags,
     update,
@@ -50,7 +54,8 @@ const CustomEndpoint = ({
     setPreviewFolder,
     currentParent,
     setCurrentParent,
-  } = useContext(AppContext);
+  }: AppContextType = useContext(AppContext)!;
+
 
   const handleClose = () => {
     setOpen(false);
@@ -78,14 +83,15 @@ const CustomEndpoint = ({
     page: true,
   });
 
-  function handleChange(e?: any) {
-    setFolder(e.target.value);
-    setPreviewFolder(e.target.value);
+  function handleChange(e?: React.ChangeEvent<HTMLInputElement>) {
+    setFolder(e?.target.value);
+    setPreviewFolder(e?.target.value as string);
   }
 
   useEffect(() => {
     //creating new files with code
     if (postData === true) {
+     
       handlePostingFiles(folder, componentName, codeSnippet);
     }
     //updating code in existing files
@@ -99,20 +105,19 @@ const CustomEndpoint = ({
       setUpdate(false);
     }
     Prism.highlightAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codeSnippet]);
 
-  async function handleModalChange(e?: any) {
-    const name = e.target.name.slice(0, -4);
+  async function handleModalChange(e?: React.ChangeEvent<HTMLInputElement>) {
+    const name = e?.target.name.slice(0, -4);
 
     setTags([]);
 
     setSelectedItems({
       ...selectedItems,
-      [name]: true,
+      [name as string]: true,
     });
 
-    const fileName = e.target.name;
+    const fileName = e?.target.name;
     setFile(fileName);
 
     setComponentName(fileName);
@@ -156,7 +161,7 @@ const CustomEndpoint = ({
       codeSnippet: code,
       folder: previewFolder,
     };
-    await fetch('http://localhost:3000/updatecode', {
+    await fetch('/updatecode', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -187,21 +192,17 @@ const CustomEndpoint = ({
   return (
     <div className='cursor'>
       <form>
-        <input
-          type='text'
-          autoFocus
-          placeholder='New Endpoint in src/app'
-          onChange={handleChange}
-          value={folder}
-          id='searchInput'
-        />
-        <div className='text-cursor'></div>
+          <input
+            type='text'
+            autoFocus
+            placeholder='New Endpoint in src/app'
+            onChange={handleChange}
+            value={folder}
+            id='searchInput'
+          />
+          <div className='text-cursor'></div>
 
-        <button
-          type='submit'
-          onClick={handleCreateCustomFolder}
-          className='jumpBtn'
-        >
+        <button type='submit' onClick={handleCreateCustomFolder} className="jumpBtn">
           Submit
         </button>
       </form>

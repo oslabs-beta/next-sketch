@@ -12,18 +12,7 @@ const archiver = require('archiver');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const _dirname = path.dirname("")
-const buildPath = path.join(_dirname, "dist-electron")
 
-app.use(express.static(buildPath))
-app.get('/', (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "dist-electron/index.html"), 
-    function(err){
-      if(err) res.status(500).send(err)
-    }
-  )
-});
 
 app.get('/export', (req, res) => {
   const folderPath = 'server/ExportFolder/NextSketch'; // Replace with the actual folder path
