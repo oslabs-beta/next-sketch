@@ -10,7 +10,7 @@ Create your custom endpoint by submitting a name through the ‘New Endpoint’ 
 
 Drag-and-drop elements from the ‘Add Elements’ section to ‘My Page’ section to customize each file within your routes. Movement of elements are reflected by various colored highlighting. When a user hovers an element over a valid drop are, the area will turn green, blue, or red, indicating where the element will be dropped. A variety of elements such as div and form tags can have children, which is displayed by a blue highlighted area when hovering elements over the middle region of a container tag. Green and red areas depict either top or bottom placement of an element, respectively. Elements can also be dragged directly above, below, or within an element, and with no designated highlight, the element will be dropped to the bottom ‘My Page’ section. After you are satisifed with your prototype, click the ‘Export’ button to download your prototype to your local machine as a zip file.
 
-Congrats on making your first mock up of a Next.js application.
+Congrats on making your first mock up of a Next.js application. Go ahead and view your new application to see the current routing structure!
 
 We would like to thank you all for your support ! If you enjoyed our application or are interested in discussing possible new features, please give us a star on GitHub and follow us on LinkedIn for new updates/features!
 
